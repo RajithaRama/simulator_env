@@ -1,22 +1,31 @@
-import mesa
+from mesa.visualization import ModularVisualization, modules
 
-from mesa_exp_1 import Home
+from mesa_exp_1 import *
 
 
-def robot_portrayal(agent):
+def agent_portrayal(agent):
     portrayal = {
         "Filled": "true",
         "Layer": 0,
-        "r": 0.5,
-    }
 
+    }
+    # portrayal["Color"] = "red"
+    # portrayal["Shape"] = "circle"
     if agent.type == 'robot':
         portrayal["Color"] = "red"
-        portrayal["Shape"] = "square"
+        portrayal["Shape"] = "circle"
+        portrayal["r"] = 0.5
     elif agent.type == 'patient':
         portrayal["Color"] = "blue"
         portrayal["Shape"] = "circle"
-
+        portrayal["r"] = 0.5
+    elif agent.type == 'wall':
+        portrayal["Color"] = "black"
+        portrayal["Shape"] = "rect"
+        portrayal["w"] = 1
+        portrayal["h"] = 1
+        portrayal["xAlign"] = 0.5
+        portrayal["yAlign"] = 0.5
     return portrayal
 
 
@@ -30,4 +39,14 @@ def robot_portrayal(agent):
 #     }
 #     return portrayal
 
-grid = mesa.visualization.CanvasGrid()
+grid = modules.CanvasGrid(agent_portrayal, 13, 13, 500, 500)
+
+server = ModularVisualization.ModularServer(
+    Home,
+    [grid],
+    "Home model", {}
+)
+
+server.port = 8123
+
+server.launch()
