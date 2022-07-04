@@ -87,7 +87,6 @@ class Home(Model):
         self.patient = Patient(2, 'patient1', self)
         self.grid = space.SingleGrid(13, 13, False)
 
-
         # adding agents
         self.schedule = time.BaseScheduler(self)
         self.schedule.add(self.patient)
@@ -125,26 +124,23 @@ class Home(Model):
         wall, end_id = self.add_horizontal_wall(6, 11, 7, end_id)
         self.walls.append(wall)
 
-        #bathroom
+        # bathroom
         wall, end_id = self.add_vertical_wall(9, 9, 11, end_id)
         self.walls.append(wall)
 
-
-
-
-        self.grid.place_agent(self.patient, (10, 10))
-        self.grid.place_agent(self.robot, (10, 11))
+        self.grid.place_agent(self.patient, (5, 5))
+        self.grid.place_agent(self.robot, (5, 6))
 
     def step(self):
         self.schedule.step()
 
     def add_vertical_wall(self, x, ystart, yend, start_id):
-        coordinates = [(x, y) for y in range(ystart, yend+1)]
+        coordinates = [(x, y) for y in range(ystart, yend + 1)]
         wall, end_id = self.place_wall(coordinates, start_id)
         return wall, end_id
 
     def add_horizontal_wall(self, xstart, xend, y, start_id):
-        coordinates = [(x, y) for x in range(xstart, xend+1)]
+        coordinates = [(x, y) for x in range(xstart, xend + 1)]
         wall, end_id = self.place_wall(coordinates, start_id)
         return wall, end_id
 
