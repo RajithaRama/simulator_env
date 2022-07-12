@@ -4,6 +4,8 @@ import numpy as np
 from mesa import Agent, Model, space, time
 
 import numpy as np
+
+
 def _bresenhamline_nslope(slope):
     """
     Normalize slope for Bresenham's line algorithm.
@@ -14,6 +16,7 @@ def _bresenhamline_nslope(slope):
     normalizedslope = np.array(slope, dtype=np.double) / scale
     normalizedslope[zeroslope] = np.zeros(slope[0].shape)
     return normalizedslope
+
 
 def _bresenhamlines(start, end, max_iter):
     """
@@ -54,6 +57,7 @@ def _bresenhamlines(start, end, max_iter):
     # Approximate to nearest int
     return np.array(np.rint(bline), dtype=start.dtype)
 
+
 def bresenhamline(start, end, max_iter=5):
     """
     Returns a list of points from (start, end] by ray tracing a line b/w the
@@ -73,6 +77,7 @@ def bresenhamline(start, end, max_iter=5):
 
     # Return the points as a single array
     return _bresenhamlines(start, end, max_iter).reshape(-1, start.shape[-1])
+
 
 class Direction(Enum):
     left = 0
@@ -151,22 +156,39 @@ class Patient(HomeAgent):
         print(possible_steps)
 
 
+class GenId:
+    def __init__(self, start):
+        self.start = start
+        self.current_id = start
+
+    def get_id(self):
+        ret_id = self.current_id
+        self.current_id += 1
+
+        return ret_id
+
+
 class Home(Model):
     def __init__(self):
         super().__init__()
-        self.robot = Robot(1, 'robot1', self)
-        self.patient = Patient(2, 'patient1', self)
+        self.locations = None
+        self.init_locations()
+        id_gen = GenId(1)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self)
+        self.patient1 = Patient(id_gen.get_id(), 'patient1', self)
+        self.patient2 = Patient(id_gen.get_id(), 'patient2', self)
         self.grid = space.SingleGrid(13, 13, False)
 
         # adding agents
         self.schedule = time.BaseScheduler(self)
-        self.schedule.add(self.patient)
+        self.schedule.add(self.patient1)
+        self.schedule.add(self.patient2)
         self.schedule.add(self.robot)
 
         # adding walls
         # house
         self.walls = []
-        wall, end_id = self.add_vertical_wall(0, 0, 12, 3)
+        wall, end_id = self.add_vertical_wall(0, 0, 12, id_gen)
         self.walls.append(wall)
         wall, end_id = self.add_vertical_wall(12, 0, 12, end_id)
         self.walls.append(wall)
@@ -199,10 +221,58 @@ class Home(Model):
         wall, end_id = self.add_vertical_wall(9, 9, 11, end_id)
         self.walls.append(wall)
 
-        self.grid.place_agent(self.patient, (6, 9))
+        self.grid.place_agent(self.patient1, (6, 9))
+        self.grid.place_agent(self.patient2, (8, 9))
         self.grid.place_agent(self.robot, (5, 6))
 
-    def visible_stakeholders(self):
+    def init_locations(self):
+        self.locations = {}
+
+        # Place the lower left coordinate first and the upper right coordinate second
+        self.locations["Kitchen"] = [[(1, 1), (5, 3)], [(5, 4), (5, 4)]]
+        self.locations["Living"] = [[(7, 1), (11, 3)], [(7, 4), (7, 4)]]
+        self.locations["Hall"] = [[(1, 5), (11, 6)]]
+        self.locations["Utility"] = [[(1, 8), (3, 11)], [(3, 7), (3, 7)]]
+        self.locations["Bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
+        self.locations["Bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
+
+    def get_location(self, pos):
+        location_name = None
+        for location, area_coordinates in self.locations.items():
+            for points in area_coordinates:
+                if points[0][0] <= pos[0] <= points[1][0] and points[0][1] <= pos[1] <= points[1][1]:
+                    if location_name:
+                        raise EnvironmentError("Overlapping location names for: " + str(pos) + ". "
+                                               + location_name + " and " + location)
+                    location_name = location
+        if location_name:
+            return location_name
+        else:
+            raise EnvironmentError("Agent Location Unknown for position: " + str(pos))
+
+    def step(self):
+        self.schedule.step()
+
+    def add_vertical_wall(self, x, ystart, yend, id_gen):
+        coordinates = [(x, y) for y in range(ystart, yend + 1)]
+        wall, id_gen = self.place_wall(coordinates, id_gen)
+        return wall, id_gen
+
+    def add_horizontal_wall(self, xstart, xend, y, id_gen):
+        coordinates = [(x, y) for x in range(xstart, xend + 1)]
+        wall, id_gen = self.place_wall(coordinates, id_gen)
+        return wall, id_gen
+
+    def place_wall(self, coordinates, id_gen):
+        wall = []
+        for point in coordinates:
+            point_wall = Wall(id_gen.get_id(), self)
+            self.schedule.add(point_wall)
+            self.grid.place_agent(point_wall, (point[0], point[1]))
+            wall.append(point_wall)
+        return wall, id_gen
+
+    def visible_stakeholders_to_robot(self):
         neighbors = self.grid.get_neighbors(self.robot.pos, moore=True, radius=3)
         print("neigh: " + str(neighbors))
 
@@ -223,6 +293,7 @@ class Home(Model):
             # robot_pos = robot_pos.reshape(1, 1)
             # print(robot_pos.shape)
             visible_line = bresenhamline(np.array([np.array(self.robot.pos)]), np.array([np.array(neighbor.pos)]), -1)
+
             # print(visible_line)
             visible = True
             for point in visible_line:
@@ -235,30 +306,8 @@ class Home(Model):
         print("visible: " + str(visible_neighbors))
 
 
-    def step(self):
-        self.schedule.step()
-
-    def add_vertical_wall(self, x, ystart, yend, start_id):
-        coordinates = [(x, y) for y in range(ystart, yend + 1)]
-        wall, end_id = self.place_wall(coordinates, start_id)
-        return wall, end_id
-
-    def add_horizontal_wall(self, xstart, xend, y, start_id):
-        coordinates = [(x, y) for x in range(xstart, xend + 1)]
-        wall, end_id = self.place_wall(coordinates, start_id)
-        return wall, end_id
-
-    def place_wall(self, coordinates, start_id):
-        wall = []
-        for point in coordinates:
-            point_wall = Wall(start_id, self)
-            self.schedule.add(point_wall)
-            self.grid.place_agent(point_wall, (point[0], point[1]))
-            wall.append(point_wall)
-            start_id += 1
-        return wall, start_id
-
-
 model = Home()
 model.step()
-model.visible_stakeholders()
+model.visible_stakeholders_to_robot()
+print(model.get_location((5, 6)))
+print(model.get_location((5, 7)))
