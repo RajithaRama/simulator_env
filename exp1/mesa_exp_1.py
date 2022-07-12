@@ -1,10 +1,9 @@
 from enum import Enum
 import numpy as np
 
-from mesa import Agent, Model, space, time
+from mesa_updated import Agent, Model, space, time
 
-import numpy as np
-
+PATIENT_2 = True
 
 def _bresenhamline_nslope(slope):
     """
@@ -176,13 +175,15 @@ class Home(Model):
         id_gen = GenId(1)
         self.robot = Robot(id_gen.get_id(), 'robot1', self)
         self.patient1 = Patient(id_gen.get_id(), 'patient1', self)
-        self.patient2 = Patient(id_gen.get_id(), 'patient2', self)
+        if PATIENT_2:
+            self.patient2 = Patient(id_gen.get_id(), 'patient2', self)
         self.grid = space.SingleGrid(13, 13, False)
 
         # adding agents
         self.schedule = time.BaseScheduler(self)
         self.schedule.add(self.patient1)
-        self.schedule.add(self.patient2)
+        if PATIENT_2:
+            self.schedule.add(self.patient2)
         self.schedule.add(self.robot)
 
         # adding walls
@@ -222,7 +223,8 @@ class Home(Model):
         self.walls.append(wall)
 
         self.grid.place_agent(self.patient1, (6, 9))
-        self.grid.place_agent(self.patient2, (8, 9))
+        if PATIENT_2:
+            self.grid.place_agent(self.patient2, (8, 9))
         self.grid.place_agent(self.robot, (5, 6))
 
     def init_locations(self):

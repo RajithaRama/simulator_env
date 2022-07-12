@@ -1,4 +1,4 @@
-from mesa.visualization import ModularVisualization, modules
+from mesa_updated.visualization import ModularVisualization, modules
 
 from mesa_exp_1 import *
 
@@ -6,7 +6,7 @@ from mesa_exp_1 import *
 def agent_portrayal(agent):
     portrayal = {
         "Filled": "true",
-        "Layer": 0,
+        "Layer": 1,
 
     }
     # portrayal["Color"] = "red"
@@ -39,7 +39,7 @@ def agent_portrayal(agent):
 #     }
 #     return portrayal
 
-grid = modules.CanvasGrid(agent_portrayal, 13, 13, 500, 500)
+grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
 server = ModularVisualization.ModularServer(
     Home,
