@@ -6,8 +6,8 @@ Core Objects: Model, and Agent.
 """
 import datetime
 
-from mesa.model import Model
-from mesa.agent import Agent
+from mesa_updated.model import Model
+from mesa_updated.agent import Agent
 
 
 __all__ = ["Model", "Agent"]

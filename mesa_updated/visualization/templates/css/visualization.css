@@ -23,4 +23,5 @@ canvas.world-grid-updated {
     border:1px dotted;
     background-color: #5bc0de;
     color: #5bc0de;
+    background-image: url("/static/background/sim_background.png")
 }
