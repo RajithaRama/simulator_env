@@ -238,6 +238,17 @@ class Home(Model):
         self.locations["Bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
         self.locations["Bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
 
+    def init_things(self):
+        self.things = {}
+
+        # add all the coordinate a thing should cover
+        self.things['Couch'] = [(8, 2), (9, 2), (10, 2)]
+        self.things['Chair'] = [(2, 2)]
+        self.things['table'] = [(2, 3)]
+        self.things['bed'] = [(8, 10), (8, 11)]
+        self.things['charge_station'] = [(1, 9)]
+        self.things['tub'] = [(11, 10), (11, 11)]
+
     def get_location(self, pos):
         location_name = None
         for location, area_coordinates in self.locations.items():
@@ -251,6 +262,15 @@ class Home(Model):
             return location_name
         else:
             raise EnvironmentError("Agent Location Unknown for position: " + str(pos))
+
+    def get_things(self, pos):
+        things = []
+
+        for thing, coordinates in self.things.items():
+            if pos in coordinates:
+                things.append(thing)
+
+        return things
 
     def step(self):
         self.schedule.step()
