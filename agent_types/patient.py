@@ -9,9 +9,5 @@ class Patient(HomeAgent):
         self.move()
 
     def move(self):
-        possible_steps = self.model.grid.get_neighborhood(
-            self.pos,
-            moore=False,
-            include_center=False
-        )
-        print(possible_steps)
+        possible_steps = self.model.get_moveable_area(self.pos)
+        print("possible steps: " + str(possible_steps))

@@ -14,7 +14,11 @@ class Home(Model):
     def __init__(self):
         super().__init__()
         self.locations = None
+        self.things = None
+
         self.init_locations()
+        self.init_things()
+
         id_gen = GenId(1)
         self.robot = Robot(id_gen.get_id(), 'robot1', self)
         self.patient1 = Patient(id_gen.get_id(), 'patient1', self)
@@ -68,7 +72,7 @@ class Home(Model):
         self.grid.place_agent(self.patient1, (6, 9))
         if PATIENT_2:
             self.grid.place_agent(self.patient2, (8, 9))
-        self.grid.place_agent(self.robot, (5, 6))
+        self.grid.place_agent(self.robot, (5, 7))
 
     def init_locations(self):
         self.locations = {}
@@ -115,9 +119,6 @@ class Home(Model):
 
         return things
 
-    def step(self):
-        self.schedule.step()
-
     def add_vertical_wall(self, x, ystart, yend, id_gen):
         coordinates = [(x, y) for y in range(ystart, yend + 1)]
         wall, id_gen = self.place_wall(coordinates, id_gen)
@@ -137,8 +138,11 @@ class Home(Model):
             wall.append(point_wall)
         return wall, id_gen
 
-    def visible_stakeholders_to_robot(self):
-        neighbors = self.grid.get_neighbors(self.robot.pos, moore=True, radius=3)
+    def step(self):
+        self.schedule.step()
+
+    def visible_stakeholders(self, center_agent, visibility_radius):
+        neighbors = self.grid.get_neighbors(center_agent.pos, moore=True, radius=visibility_radius)
         print("neigh: " + str(neighbors))
 
         coordinate_neighbors = {}
@@ -169,3 +173,29 @@ class Home(Model):
                 visible_neighbors.append(neighbor)
 
         print("visible: " + str(visible_neighbors))
+        return visible_neighbors
+
+    def get_moveable_area(self, pos):
+        neighbourhood = self.grid.get_neighborhood(
+            pos,
+            moore=False,
+            include_center=False
+        )
+        neighbours = self.grid.get_neighbors(
+            pos,
+            moore=True,
+            include_center=False,
+            radius= 1
+        )
+
+        possible_steps = []
+        for step in neighbourhood:
+            impossible = False
+            for agent in neighbours:
+                if step == agent.pos:
+                    impossible = True
+                    break
+            if impossible:
+                continue
+            possible_steps.append(step)
+        return possible_steps

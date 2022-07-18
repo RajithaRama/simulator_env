@@ -13,23 +13,15 @@ class Robot(HomeAgent):
         self.move()
 
     def move(self):
-        possible_steps = self.model.grid.get_neighborhood(
-            self.pos,
-            moore=False,
-            include_center=False
-        )
-        print(possible_steps)
+        possible_steps = self.model.get_moveable_area(self.pos)
+        print("poss steps robot: " + str(possible_steps))
 
     def get_env_data(self):
         env = {}
-        agents = self.model.grid.get_neighbors(
-            self.pos,
-            moore=True,
-            radius=2
-        )
+        visible_stakeholders = self.model.visible_stakeholders(self, 3)
 
         stakeholders = []
-        for agent in agents:
+        for agent in visible_stakeholders:
             # print(agent.type)
             agent_data = {}
             if agent.type == 'wall':
@@ -39,4 +31,5 @@ class Robot(HomeAgent):
             stakeholders.append(agent_data)
         env['stakeholders'] = stakeholders
 
-        print(env)
+        print("robot env: " + str(env))
+
