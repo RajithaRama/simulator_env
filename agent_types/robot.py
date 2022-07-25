@@ -1,16 +1,55 @@
 from agent_types.home_agent import HomeAgent
+import numpy as np
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model):
+    def __init__(self, unique_id, name, model, follower_name):
         super().__init__(unique_id, name, model, "robot")
         self.battery = 10
+        self.time = 0
+        self.last_seen_location = None
+        self.last_seen_time = None
+        self.follower_name = follower_name
 
     def step(self):
         self.battery = self.battery - 1
         print("battery_lvl: " + str(self.battery))
-        self.get_env_data()
+        env = self.get_env_data()
+        self.follow(env)
+
         self.move()
+
+    def follow(self, env):
+        possible_steps = self.model.get_moveable_area(self.pos)
+        try:
+            buffered_instruction = self.model.human_instructions.pop()
+        except IndexError:
+            buffered_instruction = None
+
+        dist_min = True
+        if buffered_instruction == 'make_clear':
+            dist_min = False
+
+        visible_neighbors = self.model.visible_stakeholders(self, 3)
+
+        follower = None
+        for neighbor in visible_neighbors:
+            if neighbor.id == self.follower_name:
+                follower = neighbor
+
+
+
+        distances = {}
+        for step in possible_steps:
+            distances[self.model.get_manhatton_dist(step, follower.pos)] = step
+
+        if dist_min:
+            next_pos = distances[min(distances.keys())]
+        else:
+            next_pos = distances[max(distances.keys())]
+
+        self.model.grid.move_agent(self, next_pos)
+
 
     def move(self):
         possible_steps = self.model.get_moveable_area(self.pos)
@@ -32,4 +71,4 @@ class Robot(HomeAgent):
         env['stakeholders'] = stakeholders
 
         print("robot env: " + str(env))
-
+        return env

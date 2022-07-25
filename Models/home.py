@@ -11,26 +11,34 @@ PATIENT_2 = True
 
 
 class Home(Model):
-    def __init__(self):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths):
         super().__init__()
         self.locations = None
         self.things = None
 
         self.init_locations()
         self.init_things()
+        self.time_of_day = 'Day'
+        self.human_instructions = []
 
         id_gen = GenId(1)
-        self.robot = Robot(id_gen.get_id(), 'robot1', self)
-        self.patient1 = Patient(id_gen.get_id(), 'patient1', self)
-        if PATIENT_2:
-            self.patient2 = Patient(id_gen.get_id(), 'patient2', self)
+        # Init robot
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0')
+
+        # Init_stakeholders
+        self.stakeholders = []
+        for i in range(no_patients):
+
+            self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i]))
+
         self.grid = space.SingleGrid(13, 13, False)
 
         # adding agents
         self.schedule = time.BaseScheduler(self)
-        self.schedule.add(self.patient1)
-        if PATIENT_2:
-            self.schedule.add(self.patient2)
+
+        for stakeholder in self.stakeholders:
+            self.schedule.add(stakeholder)
+
         self.schedule.add(self.robot)
 
         # adding walls
@@ -69,10 +77,10 @@ class Home(Model):
         wall, end_id = self.add_vertical_wall(9, 9, 11, end_id)
         self.walls.append(wall)
 
-        self.grid.place_agent(self.patient1, (6, 9))
-        if PATIENT_2:
-            self.grid.place_agent(self.patient2, (8, 9))
-        self.grid.place_agent(self.robot, (5, 7))
+        for i in range(no_patients):
+            self.grid.place_agent(self.stakeholders[i], patient_starts[i])
+
+        self.grid.place_agent(self.robot, robot_start)
 
     def init_locations(self):
         self.locations = {}
@@ -179,7 +187,7 @@ class Home(Model):
         neighbourhood = self.grid.get_neighborhood(
             pos,
             moore=False,
-            include_center=False
+            include_center=True
         )
         neighbours = self.grid.get_neighbors(
             pos,
@@ -199,3 +207,6 @@ class Home(Model):
                 continue
             possible_steps.append(step)
         return possible_steps
+
+    def get_manhatton_dist(self, a, b):
+        return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
