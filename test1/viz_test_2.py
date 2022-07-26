@@ -63,6 +63,7 @@ for i in range(15):
     patient_1_path.append((2, 2))
 
 
+
 #Patient 2 path
 
 patient_2_path = []

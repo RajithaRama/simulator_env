@@ -27,6 +27,9 @@ class Robot(HomeAgent):
             buffered_instruction = None
 
         dist_min = True
+
+        # If user istruct to make clear. it robot try to maximize the space user have. Otherwise it try to minimize so
+        # that it can closely monitor
         if buffered_instruction == 'make_clear':
             dist_min = False
 
@@ -36,8 +39,6 @@ class Robot(HomeAgent):
         for neighbor in visible_neighbors:
             if neighbor.id == self.follower_name:
                 follower = neighbor
-
-
 
         distances = {}
         for step in possible_steps:

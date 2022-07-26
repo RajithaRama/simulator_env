@@ -13,6 +13,7 @@ PATIENT_2 = True
 class Home(Model):
     def __init__(self, no_patients, patient_starts, robot_start, patient_paths):
         super().__init__()
+        self.things_robot_inaccessible = None
         self.locations = None
         self.things = None
 
@@ -99,10 +100,12 @@ class Home(Model):
         # add all the coordinate a thing should cover
         self.things['Couch'] = [(8, 2), (9, 2), (10, 2)]
         self.things['Chair'] = [(2, 2)]
-        self.things['table'] = [(2, 3)]
+        self.things['table'] = [(3, 2)]
         self.things['bed'] = [(8, 10), (8, 11)]
         self.things['charge_station'] = [(1, 9)]
         self.things['tub'] = [(11, 10), (11, 11)]
+
+        self.things_robot_inaccessible = ['Couch', 'Chair', 'table', 'bed', 'charge_station']
 
     def get_location(self, pos):
         location_name = None
@@ -201,6 +204,10 @@ class Home(Model):
             impossible = False
             for agent in neighbours:
                 if step == agent.pos:
+                    impossible = True
+                    break
+            for thing_id, thing_coordinates in self.things.items():
+                if (step in thing_coordinates) and (thing_id in self.things_robot_inaccessible):
                     impossible = True
                     break
             if impossible:
