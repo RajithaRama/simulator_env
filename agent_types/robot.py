@@ -21,17 +21,17 @@ class Robot(HomeAgent):
 
     def follow(self, env):
         possible_steps = self.model.get_moveable_area(self.pos)
-        try:
-            buffered_instruction = self.model.human_instructions.pop()
-        except IndexError:
-            buffered_instruction = None
+
+        buffered_instructions = self.model.get_commands(self)
 
         dist_min = True
 
-        # If user istruct to make clear. it robot try to maximize the space user have. Otherwise it try to minimize so
-        # that it can closely monitor
-        if buffered_instruction == 'make_clear':
-            dist_min = False
+        if len(buffered_instructions):
+            # If user istruct to make clear. it robot try to maximize the space user have. Otherwise it try to minimize so
+            # that it can closely monitor
+            for instruction in buffered_instructions:
+                if 'make_clear' == instruction[0]:
+                    dist_min = False
 
         visible_neighbors = self.model.visible_stakeholders(self, 3)
 

@@ -20,7 +20,7 @@ class Patient(HomeAgent):
         except Exception as e:
             print(e)
             self.model.grid.move_agent(self, self.pos)
-            self.model.human_instructions.append('make_clear')
+            self.model.give_command('make_clear', self, self.model.robot)
             return
 
         self.steps += 1

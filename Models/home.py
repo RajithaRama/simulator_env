@@ -20,7 +20,7 @@ class Home(Model):
         self.init_locations()
         self.init_things()
         self.time_of_day = 'Day'
-        self.human_instructions = []
+        self.instructions = {}
 
         id_gen = GenId(1)
         # Init robot
@@ -217,3 +217,11 @@ class Home(Model):
 
     def get_manhatton_dist(self, a, b):
         return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
+
+    def give_command(self, command, giver, receiver):
+        self.instructions.setdefault(receiver, []).append([command, giver])
+
+    def get_commands(self, receiver):
+        instructions = self.instructions[receiver] if receiver in self.instructions.keys() else []
+        self.instructions[receiver] = []
+        return instructions
