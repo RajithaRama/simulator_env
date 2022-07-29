@@ -15,23 +15,21 @@ class Robot(HomeAgent):
         self.battery = self.battery - 1
         print("battery_lvl: " + str(self.battery))
         env = self.get_env_data()
-        self.follow(env)
+        # self.follow(env)
+        self.next_action(env)
 
-        self.move()
-
-    def follow(self, env):
-        possible_steps = self.model.get_moveable_area(self.pos)
+    def next_action(self, env):
 
         buffered_instructions = self.model.get_commands(self)
 
-        dist_min = True
+        possible_actions = []
 
         if len(buffered_instructions):
-            # If user istruct to make clear. it robot try to maximize the space user have. Otherwise it try to minimize so
-            # that it can closely monitor
+            # If user istruct to make clear, robot try to move away from the said user
             for instruction in buffered_instructions:
+                # instruction = (command, giver)
                 if 'make_clear' == instruction[0]:
-                    dist_min = False
+                    possible_actions.append((self.move_away, instruction[1]))
 
         visible_neighbors = self.model.visible_stakeholders(self, 3)
 
@@ -40,21 +38,57 @@ class Robot(HomeAgent):
             if neighbor.id == self.follower_name:
                 follower = neighbor
 
+        if follower:
+            possible_actions.append((self.follow, follower))
+        else:
+            possible_actions.append((self.go_to_pos, self.last_seen_location))
+
+        self.make_final_decision(possible_actions)
+
+    def make_final_decision(self, possible_actions):
+        for action in possible_actions:
+            if self.move_away == action[0]:
+                action[0](*action[1:])
+                return
+
+        possible_actions[0][0](*possible_actions[0][1:])
+
+    def move_away(self, follower):
+        """ pos - position to move away from"""
+        possible_steps = self.model.get_moveable_area(self.pos, [self])
+
         distances = {}
         for step in possible_steps:
-            distances[self.model.get_manhatton_dist(step, follower.pos)] = step
+            distances[self.model.get_shortest_distance(step, follower.pos, [self, follower])] = step
 
-        if dist_min:
-            next_pos = distances[min(distances.keys())]
-        else:
-            next_pos = distances[max(distances.keys())]
+        next_pos = distances[max(distances.keys())]
 
-        self.model.grid.move_agent(self, next_pos)
+        self.move(next_pos)
 
+    def follow(self, follower):
+        possible_steps = self.model.get_moveable_area(self.pos, [self])
 
-    def move(self):
+        distances = {}
+        for step in possible_steps:
+            distances[self.model.get_shortest_distance(step, follower.pos, [self, follower])] = step
+
+        next_pos = distances[min(distances.keys())]
+
+        self.move(next_pos)
+
+    def go_to_pos(self, pos):
         possible_steps = self.model.get_moveable_area(self.pos)
-        print("poss steps robot: " + str(possible_steps))
+
+        distances = {}
+        for step in possible_steps:
+            distances[self.model.get_shortest_distance(step, pos)] = step
+
+        next_pos = distances[min(distances.keys())]
+
+        self.move(next_pos)
+
+    def move(self, pos):
+        self.model.grid.move_agent(self, pos)
 
     def get_env_data(self):
         env = {}

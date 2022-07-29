@@ -1,3 +1,5 @@
+import sys
+
 from mesa_updated import Model, space, time
 
 from common_functions.gen_id import GenId
@@ -7,8 +9,13 @@ from agent_types.patient import Patient
 from agent_types.robot import Robot
 from agent_types.wall import Wall
 
+from collections import deque
+
+
 PATIENT_2 = True
 
+GRID_WIDTH = 13
+GRID_HEIGHT = 13
 
 class Home(Model):
     def __init__(self, no_patients, patient_starts, robot_start, patient_paths):
@@ -32,7 +39,7 @@ class Home(Model):
 
             self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i]))
 
-        self.grid = space.SingleGrid(13, 13, False)
+        self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
 
         # adding agents
         self.schedule = time.BaseScheduler(self)
@@ -186,7 +193,8 @@ class Home(Model):
         print("visible: " + str(visible_neighbors))
         return visible_neighbors
 
-    def get_moveable_area(self, pos):
+    def get_moveable_area(self, pos, ignore_agents=None):
+        """ from_agent: agent that is trying to move"""
         neighbourhood = self.grid.get_neighborhood(
             pos,
             moore=False,
@@ -203,10 +211,15 @@ class Home(Model):
         for step in neighbourhood:
             impossible = False
             for agent in neighbours:
-                if step == agent.pos:
+                # Not possible if an agent is in the position. Ignore the agents in the ignore list.
+                if step == agent.pos and \
+                        (all([agent.unique_id != ignore_agent.unique_id for ignore_agent in ignore_agents]) if ignore_agents else 1):
                     impossible = True
                     break
             for thing_id, thing_coordinates in self.things.items():
+                # Avoid things too. If any ignore list agent on a thing, ignore that thing as well.
+                if ignore_agents and any([ignore_agent.pos in thing_coordinates for ignore_agent in ignore_agents]):
+                    break
                 if (step in thing_coordinates) and (thing_id in self.things_robot_inaccessible):
                     impossible = True
                     break
@@ -215,8 +228,43 @@ class Home(Model):
             possible_steps.append(step)
         return possible_steps
 
-    def get_manhatton_dist(self, a, b):
-        return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
+    def get_shortest_distance(self, current, dest, ignore_agents = None):
+        """ from_agent: agent that is trying to move"""
+
+        i, j = current
+        x, y = dest
+
+        visited = [[False for x in range(GRID_HEIGHT)] for y in range(GRID_HEIGHT)]
+
+        q = deque()
+
+        # Mark source as visited
+        visited[i][j] = True
+
+        # (i, j, distance from the source)
+        q.append((i, j, 0))
+
+        min_dist = sys.maxsize
+
+        while q:
+            (i, j, dist) = q.popleft()
+
+            if i == x and j == y:
+                min_dist = dist
+                break
+            # Breath-first search
+            possible_moves = self.get_moveable_area((i, j), ignore_agents=ignore_agents)
+            for move in possible_moves:
+                if not visited[move[0]][move[1]]:
+                    visited[move[0]][move[1]] = True
+                    q.append((move[0], move[1], dist+1))
+
+        if min_dist != sys.maxsize:
+            return min_dist
+        else:
+            return -1
+
+        # return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
 
     def give_command(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])
