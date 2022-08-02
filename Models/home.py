@@ -112,7 +112,7 @@ class Home(Model):
         self.things['charge_station'] = [(1, 9)]
         self.things['tub'] = [(11, 10), (11, 11)]
 
-        self.things_robot_inaccessible = ['Couch', 'Chair', 'table', 'bed', 'charge_station']
+        self.things_robot_inaccessible = ['Couch', 'Chair', 'table', 'bed', 'tub']
 
     def get_location(self, pos):
         location_name = None
@@ -161,7 +161,7 @@ class Home(Model):
 
     def visible_stakeholders(self, center_agent, visibility_radius):
         neighbors = self.grid.get_neighbors(center_agent.pos, moore=True, radius=visibility_radius)
-        print("neigh: " + str(neighbors))
+        # print("neigh: " + str(neighbors))
 
         coordinate_neighbors = {}
         walls = {}
@@ -171,12 +171,12 @@ class Home(Model):
             else:
                 coordinate_neighbors[neighbor.pos] = neighbor
 
-        print(coordinate_neighbors)
+        # print(coordinate_neighbors)
 
         visible_neighbors = []
         for coordinate, neighbor in coordinate_neighbors.items():
             robot_pos = np.array([np.array(self.robot.pos)])
-            print(robot_pos.shape)
+            # print(robot_pos.shape)
             # robot_pos = robot_pos.reshape(1, 1)
             # print(robot_pos.shape)
             visible_line = bresenhamline(np.array([np.array(self.robot.pos)]), np.array([np.array(neighbor.pos)]), -1)
@@ -190,7 +190,7 @@ class Home(Model):
             if visible:
                 visible_neighbors.append(neighbor)
 
-        print("visible: " + str(visible_neighbors))
+        # print("visible: " + str(visible_neighbors))
         return visible_neighbors
 
     def get_moveable_area(self, pos, ignore_agents=None):
@@ -204,7 +204,7 @@ class Home(Model):
             pos,
             moore=True,
             include_center=False,
-            radius= 1
+            radius=1
         )
 
         possible_steps = []

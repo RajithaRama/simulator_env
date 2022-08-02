@@ -1,18 +1,23 @@
 from agent_types.home_agent import HomeAgent
 import numpy as np
 
+SELF_CHARGING = True
+
 
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, follower_name):
         super().__init__(unique_id, name, model, "robot")
-        self.battery = 10
+        self.battery = 50
         self.time = 0
         self.last_seen_location = None
         self.last_seen_time = None
         self.follower_name = follower_name
 
     def step(self):
-        self.battery = self.battery - 1
+        if self.pos in self.model.things['charge_station']:
+            self.battery += 3
+        else:
+            self.battery -= 1
         print("battery_lvl: " + str(self.battery))
         env = self.get_env_data()
         # self.follow(env)
@@ -37,15 +42,29 @@ class Robot(HomeAgent):
         for neighbor in visible_neighbors:
             if neighbor.id == self.follower_name:
                 follower = neighbor
+                self.last_seen_location = follower.pos
 
         if follower:
             possible_actions.append((self.follow, follower))
         else:
-            possible_actions.append((self.go_to_pos, self.last_seen_location))
+            possible_actions.append((self.go_to_last_seen, ))
 
-        self.make_final_decision(possible_actions)
+        if SELF_CHARGING:
+            possible_actions.append((self.go_to_charge_station, ))
 
-    def make_final_decision(self, possible_actions):
+        self.make_final_decision(possible_actions, env)
+
+    def make_final_decision(self, possible_actions, env):
+        # Check for low battery
+        if self.battery < 20 or (self.battery < 80 and (self.pos in self.model.things['charge_station'])):
+            for action in possible_actions:
+                if self.go_to_charge_station == action[0]:
+                    action[0](*action[1:])
+                    return
+
+
+
+        # Check for move away
         for action in possible_actions:
             if self.move_away == action[0]:
                 action[0](*action[1:])
@@ -76,16 +95,38 @@ class Robot(HomeAgent):
 
         self.move(next_pos)
 
-    def go_to_pos(self, pos):
-        possible_steps = self.model.get_moveable_area(self.pos)
+    def go_to_pos(self, pos, ignore_agents=None):
+        if pos == self.pos:
+            return
+
+        for thing in self.model.things_robot_inaccessible:
+            if (pos in self.model.things[thing]) or not (self.model.grid.is_cell_empty(pos)):
+                raise EnvironmentError("Robot cannot move onto " + thing)
+
+        possible_steps = self.model.get_moveable_area(self.pos, ignore_agents)
 
         distances = {}
         for step in possible_steps:
-            distances[self.model.get_shortest_distance(step, pos)] = step
+            distances[self.model.get_shortest_distance(step, pos, ignore_agents)] = step
 
         next_pos = distances[min(distances.keys())]
 
         self.move(next_pos)
+
+    def go_to_charge_station(self):
+        self.go_to_pos(self.model.things['charge_station'][0], [self])
+
+    def go_to_last_seen(self):
+        possible_locations = [self.last_seen_location]
+
+        while len(possible_locations):
+            try:
+                possible_pos = possible_locations.pop(0)
+                self.go_to_pos(possible_pos, [self])
+            except EnvironmentError:
+                possible_locations.extend(self.model.get_moveable_area(possible_pos))
+                continue
+            break
 
     def move(self, pos):
         self.model.grid.move_agent(self, pos)
@@ -105,5 +146,5 @@ class Robot(HomeAgent):
             stakeholders.append(agent_data)
         env['stakeholders'] = stakeholders
 
-        print("robot env: " + str(env))
+        # print("robot env: " + str(env))
         return env

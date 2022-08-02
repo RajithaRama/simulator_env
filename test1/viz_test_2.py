@@ -58,8 +58,8 @@ for i in range(5):
 patient_1_path.extend([(8, 2), (8, 3), (7, 3), (7, 4), (7, 5), (6, 5), (5, 5), (5, 4), (5, 3), (4, 3), (3, 3), (2, 3),
                        (2, 2)])
 
-# wait in kitchen chair for 15 secs
-for i in range(15):
+# wait in kitchen chair for 105 secs
+for i in range(105):
     patient_1_path.append((2, 2))
 
 
