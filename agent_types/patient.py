@@ -13,9 +13,11 @@ class Patient(HomeAgent):
     def move(self):
         # possible_steps = self.model.get_moveable_area(self.pos)
         # print("possible steps: " + str(possible_steps))
-        next_pos = self.path[self.steps]
+        next_pos, instruction = self.path[self.steps]
 
         try:
+            if instruction != '':
+                self.model.give_command(instruction, self, self.model.robot)
             self.model.grid.move_agent(self, next_pos)
         except Exception as e:
             print(e)

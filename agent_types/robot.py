@@ -12,6 +12,8 @@ class Robot(HomeAgent):
         self.last_seen_location = None
         self.last_seen_time = None
         self.follower_name = follower_name
+        self.not_follow_request = False
+        self.not_follow_locations = []
 
     def step(self):
         if self.pos in self.model.things['charge_station']:
@@ -22,6 +24,7 @@ class Robot(HomeAgent):
         env = self.get_env_data()
         # self.follow(env)
         self.next_action(env)
+        self.time += 1
 
     def next_action(self, env):
 
@@ -29,13 +32,22 @@ class Robot(HomeAgent):
 
         possible_actions = []
 
+        # get and apply buffered_instructions
         if len(buffered_instructions):
             # If user istruct to make clear, robot try to move away from the said user
             for instruction in buffered_instructions:
                 # instruction = (command, giver)
+                # add make clear instruction to possible action list
                 if 'make_clear' == instruction[0]:
                     possible_actions.append((self.move_away, instruction[1]))
+                if 'do_not_follow_to' in instruction[0]:
+                    ins_split = instruction[0].split('__')
+                    if ins_split[1] in self.model.locations.keys():
+                        self.do_not_follow_to(to_location=ins_split[1], follower=instruction[1])
+                if 'continue' == instruction[0] and self.not_follow_request:
+                    self.remove_not_follow()
 
+        # get visible neighbours and set follower
         visible_neighbors = self.model.visible_stakeholders(self, 3)
 
         follower = None
@@ -43,11 +55,18 @@ class Robot(HomeAgent):
             if neighbor.id == self.follower_name:
                 follower = neighbor
                 self.last_seen_location = follower.pos
+                old_last_seen_time = self.last_seen_time
+                self.last_seen_time = self.time
 
+        # Follow or go to last seen
         if follower:
             possible_actions.append((self.follow, follower))
         else:
             possible_actions.append((self.go_to_last_seen, ))
+
+        # if follower in a restricted area stay
+        if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
+            possible_actions.append(self.move(self.pos))
 
         if SELF_CHARGING:
             possible_actions.append((self.go_to_charge_station, ))
@@ -83,6 +102,15 @@ class Robot(HomeAgent):
         next_pos = distances[max(distances.keys())]
 
         self.move(next_pos)
+
+    def do_not_follow_to(self, to_location, follower):
+        self.not_follow_request = True
+        self.not_follow_locations.append(to_location)
+
+
+    def remove_do_not_follow(self):
+        self.not_follow_request = False
+        self.not_follow_locations.pop()
 
     def follow(self, follower):
         possible_steps = self.model.get_moveable_area(self.pos, [self])

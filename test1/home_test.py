@@ -10,7 +10,7 @@ patient_1_path.append((6, 5))
 patient_1_path.extend([(7, 5), (7, 4), (7, 3), (8, 3), (8, 2)])
 
 # wait in couch for 60 secs
-for i in range(60):
+for i in range(30):
     patient_1_path.append((8, 2))
 
 # move to Kitchen
