@@ -19,7 +19,7 @@ class Robot(HomeAgent):
         if self.pos in self.model.things['charge_station']:
             self.battery += 3
         else:
-            self.battery -= 1
+            self.battery -= 0.1
         print("battery_lvl: " + str(self.battery))
         env = self.get_env_data()
         # self.follow(env)
@@ -45,7 +45,7 @@ class Robot(HomeAgent):
                     if ins_split[1] in self.model.locations.keys():
                         self.do_not_follow_to(to_location=ins_split[1], follower=instruction[1])
                 if 'continue' == instruction[0] and self.not_follow_request:
-                    self.remove_not_follow()
+                    self.remove_do_not_follow()
 
         # get visible neighbours and set follower
         visible_neighbors = self.model.visible_stakeholders(self, 3)
@@ -66,7 +66,9 @@ class Robot(HomeAgent):
 
         # if follower in a restricted area stay
         if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
-            possible_actions.append(self.move(self.pos))
+            possible_actions.append((self.stay, ))
+        elif not follower and (self.model.get_location(self.last_seen_location) in self.not_follow_locations):
+            possible_actions.append((self.stay, ))
 
         if SELF_CHARGING:
             possible_actions.append((self.go_to_charge_station, ))
@@ -88,6 +90,9 @@ class Robot(HomeAgent):
             if self.move_away == action[0]:
                 action[0](*action[1:])
                 return
+            if self.not_follow_request and (self.stay == action[0]):
+                action[0](*action[1:])
+                return
 
         possible_actions[0][0](*possible_actions[0][1:])
 
@@ -102,6 +107,12 @@ class Robot(HomeAgent):
         next_pos = distances[max(distances.keys())]
 
         self.move(next_pos)
+
+    def stay(self, location=None):
+        if location:
+            self.move(location)
+        else:
+            self.move(self.pos)
 
     def do_not_follow_to(self, to_location, follower):
         self.not_follow_request = True

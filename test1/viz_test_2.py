@@ -62,10 +62,19 @@ patient_1_path.extend([((8, 2), ''), ((8, 3), ''), ((7, 3), ''), ((7, 4), ''), (
 for i in range(50):
     patient_1_path.append(((2, 2), ''))
 
-# Path to bathroom (with command 'stay')
+# Path to bathroom (with command 'do_not_follow_to__bathroom')
 patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''),  ((5, 4), ''), ((5, 5), ''), ((5, 6), ''),
-                       ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''), ((9, 8), 'stay'), ((10, 8), ''),
+                       ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''), ((9, 8), 'do_not_follow_to__bathroom'), ((10, 8), ''),
                        ((10, 9), '')])
+
+# Wait in Kitchen
+for i in range(20):
+    patient_1_path.append(((10, 10), ''))
+
+# Path to kitchen (with command 'continue')
+patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), 'continue'), ((8, 8), ''), ((7, 8), ''), ((6, 8), ''),
+                       ((5, 8), ''),  ((5, 7), ''), ((5, 6), ''), ((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''),
+                       ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
 
 #Patient 2 path
 

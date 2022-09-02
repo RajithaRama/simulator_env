@@ -94,12 +94,12 @@ class Home(Model):
         self.locations = {}
 
         # Place the lower left coordinate first and the upper right coordinate second
-        self.locations["Kitchen"] = [[(1, 1), (5, 3)], [(5, 4), (5, 4)]]
-        self.locations["Living"] = [[(7, 1), (11, 3)], [(7, 4), (7, 4)]]
-        self.locations["Hall"] = [[(1, 5), (11, 6)]]
-        self.locations["Utility"] = [[(1, 8), (3, 11)], [(3, 7), (3, 7)]]
-        self.locations["Bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
-        self.locations["Bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
+        self.locations["kitchen"] = [[(1, 1), (5, 3)], [(5, 4), (5, 4)]]
+        self.locations["living"] = [[(7, 1), (11, 3)], [(7, 4), (7, 4)]]
+        self.locations["hall"] = [[(1, 5), (11, 6)]]
+        self.locations["utility"] = [[(1, 8), (3, 11)], [(3, 7), (3, 7)]]
+        self.locations["bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
+        self.locations["bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
 
     def init_things(self):
         self.things = {}
