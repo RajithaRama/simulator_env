@@ -1,3 +1,5 @@
+from Models.home import Home
+
 model = Home()
 model.step()
 model.visible_stakeholders_to_robot()

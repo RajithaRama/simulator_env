@@ -1,0 +1,8 @@
+Environment: { }
+Stakeholders: 
+  user: [False, False] # Healthy, Motivated
+  robot: []
+Suggested_actions:
+  - lying
+  - not lying
+Other_inputs: None

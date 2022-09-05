@@ -13,7 +13,10 @@ class Patient(HomeAgent):
     def move(self):
         # possible_steps = self.model.get_moveable_area(self.pos)
         # print("possible steps: " + str(possible_steps))
-        next_pos, instruction = self.path[self.steps]
+        try:
+            next_pos, instruction = self.path[self.steps]
+        except IndexError:
+            return
 
         try:
             if instruction != '':
