@@ -80,7 +80,8 @@ class Robot(HomeAgent):
 
     def make_final_decision(self, possible_actions, env):
 
-        recommendations = self.ethical_governor.recommend()
+        env['Suggested_actions'] = possible_actions
+        recommendations = self.ethical_governor.recommend(env)
         print(recommendations)
 
         # Check for low battery
@@ -101,7 +102,7 @@ class Robot(HomeAgent):
 
         possible_actions[0][0](*possible_actions[0][1:])
 
-    def move_away(self, follower):
+    def move_away(self, follower, act=True):
         """ pos - position to move away from"""
         possible_steps = self.model.get_moveable_area(self.pos, [self])
 
@@ -111,13 +112,23 @@ class Robot(HomeAgent):
 
         next_pos = distances[max(distances.keys())]
 
-        self.move(next_pos)
-
-    def stay(self, location=None):
-        if location:
-            self.move(location)
+        if act:
+            self.move(next_pos)
         else:
-            self.move(self.pos)
+            return next_pos
+
+    def stay(self, location=None, act=True):
+        if location:
+            next_pos = location
+        else:
+            next_pos = self.pos
+
+        if act:
+            self.move(next_pos)
+        else:
+            return next_pos
+
+
 
     def do_not_follow_to(self, to_location, follower):
         self.not_follow_request = True
@@ -127,7 +138,7 @@ class Robot(HomeAgent):
         self.not_follow_request = False
         self.not_follow_locations.pop()
 
-    def follow(self, follower):
+    def follow(self, follower, act=True):
         possible_steps = self.model.get_moveable_area(self.pos, [self])
 
         distances = {}
@@ -136,9 +147,12 @@ class Robot(HomeAgent):
 
         next_pos = distances[min(distances.keys())]
 
-        self.move(next_pos)
+        if act:
+            self.move(next_pos)
+        else:
+            return next_pos
 
-    def go_to_pos(self, pos, ignore_agents=None):
+    def go_to_pos(self, pos, ignore_agents=None, act=True):
         if pos == self.pos:
             return
 
@@ -154,18 +168,21 @@ class Robot(HomeAgent):
 
         next_pos = distances[min(distances.keys())]
 
-        self.move(next_pos)
+        if act:
+            self.move(next_pos)
+        else:
+            return next_pos
 
-    def go_to_charge_station(self):
-        self.go_to_pos(self.model.things['charge_station'][0], [self])
+    def go_to_charge_station(self, act=True):
+        self.go_to_pos(self.model.things['charge_station'][0], [self], act=act)
 
-    def go_to_last_seen(self):
+    def go_to_last_seen(self, act=True):
         possible_locations = [self.last_seen_location]
 
         while len(possible_locations):
             try:
                 possible_pos = possible_locations.pop(0)
-                self.go_to_pos(possible_pos, [self])
+                self.go_to_pos(possible_pos, [self], act=act)
             except EnvironmentError:
                 possible_locations.extend(self.model.get_moveable_area(possible_pos))
                 continue
@@ -175,7 +192,7 @@ class Robot(HomeAgent):
         self.model.grid.move_agent(self, pos)
 
     def get_env_data(self):
-        env = {}
+        env_data = {}
         visible_stakeholders = self.model.visible_stakeholders(self, 3)
 
         follower_in_data = False
@@ -191,6 +208,7 @@ class Robot(HomeAgent):
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
             agent_data['last_seen'] = self.time
+            agent_data['pos'] = agent.pos
 
             stakeholders.append(agent_data)
 
@@ -199,8 +217,15 @@ class Robot(HomeAgent):
                 True}
             stakeholders.append(agent_data)
 
-        env['stakeholders'] = stakeholders
+        robot_data = {"id": "this", "type": "robot", 'pos': self.pos}
+        stakeholders.append(robot_data)
+
+        env_data['stakeholders'] = stakeholders
         # env['']
 
+        environment = {"time_of_day": "day"}
+        env_data['environment'] = environment
+
+
         # print("robot env: " + str(env))
-        return env
+        return env_data

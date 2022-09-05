@@ -53,9 +53,9 @@ class Blackboard:
         evaluator_class = getattr(self.evaluator_module, self.conf["evaluator"]["class_name"])
         self.evaluator = evaluator_class()
 
-    def load_data(self):
+    def load_data(self, env):
         # Loading data
-        self.data = data_structure.Data(self.data_loader.load(), self.conf)
+        self.data = data_structure.Data(self.data_loader.load(env), self.conf)
         self.process_logger.info('Loaded the data to the blackboard.')
         self.data.log_table(self.process_logger)
 
