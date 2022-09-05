@@ -1,4 +1,4 @@
-import blackboard.ethicaltests.ethical_test as ethical_test
+import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import yaml
 import os
 

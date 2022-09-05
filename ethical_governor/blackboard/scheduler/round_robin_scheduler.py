@@ -1,4 +1,4 @@
-import blackboard.scheduler.scheduler as scheduler
+import ethical_governor.blackboard.scheduler.scheduler as scheduler
 # import scheduler
 
 

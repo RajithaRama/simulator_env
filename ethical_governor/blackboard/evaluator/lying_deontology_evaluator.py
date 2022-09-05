@@ -1,4 +1,4 @@
-import blackboard.evaluator.evaluator as evaluator
+import ethical_governor.blackboard.evaluator.evaluator as evaluator
 
 
 class DeontologyEvaluator(evaluator.Evaluator):

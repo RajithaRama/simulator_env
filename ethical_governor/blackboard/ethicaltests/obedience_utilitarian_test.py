@@ -1,7 +1,7 @@
 # To-Do:
 from math import sqrt
 
-import blackboard.ethicaltests.ethical_test as ethical_test
+import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 
 
 class UtilitarianTest(ethical_test.EthicalTest):

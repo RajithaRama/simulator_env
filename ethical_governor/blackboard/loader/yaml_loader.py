@@ -1,5 +1,5 @@
 import yaml
-import blackboard.loader.loader as loader
+import ethical_governor.blackboard.loader.loader as loader
 
 
 
