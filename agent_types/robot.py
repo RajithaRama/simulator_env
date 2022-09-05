@@ -1,4 +1,6 @@
 from agent_types.home_agent import HomeAgent
+from ethical_governor.deontology_governor import DeontologyGovernor
+
 import numpy as np
 
 SELF_CHARGING = True
@@ -14,6 +16,7 @@ class Robot(HomeAgent):
         self.follower_name = follower_name
         self.not_follow_request = False
         self.not_follow_locations = []
+        self.ethical_governor = DeontologyGovernor()
 
     def step(self):
         if self.pos in self.model.things['charge_station']:
@@ -62,28 +65,30 @@ class Robot(HomeAgent):
         if follower:
             possible_actions.append((self.follow, follower))
         else:
-            possible_actions.append((self.go_to_last_seen, ))
+            possible_actions.append((self.go_to_last_seen,))
 
         # if follower in a restricted area stay
         if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
-            possible_actions.append((self.stay, ))
+            possible_actions.append((self.stay,))
         elif not follower and (self.model.get_location(self.last_seen_location) in self.not_follow_locations):
-            possible_actions.append((self.stay, ))
+            possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
-            possible_actions.append((self.go_to_charge_station, ))
+            possible_actions.append((self.go_to_charge_station,))
 
         self.make_final_decision(possible_actions, env)
 
     def make_final_decision(self, possible_actions, env):
+
+        recommendations = self.ethical_governor.recommend()
+        print(recommendations)
+
         # Check for low battery
         if self.battery < 20 or (self.battery < 80 and (self.pos in self.model.things['charge_station'])):
             for action in possible_actions:
                 if self.go_to_charge_station == action[0]:
                     action[0](*action[1:])
                     return
-
-
 
         # Check for move away
         for action in possible_actions:
@@ -117,7 +122,6 @@ class Robot(HomeAgent):
     def do_not_follow_to(self, to_location, follower):
         self.not_follow_request = True
         self.not_follow_locations.append(to_location)
-
 
     def remove_do_not_follow(self):
         self.not_follow_request = False
@@ -174,16 +178,29 @@ class Robot(HomeAgent):
         env = {}
         visible_stakeholders = self.model.visible_stakeholders(self, 3)
 
+        follower_in_data = False
+
         stakeholders = []
         for agent in visible_stakeholders:
             # print(agent.type)
             agent_data = {}
             if agent.type == 'wall':
                 continue
+            if agent.id == self.follower_name:
+                follower_in_data = True
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
+            agent_data['last_seen'] = self.time
+
             stakeholders.append(agent_data)
+
+        if not follower_in_data:
+            agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen': self.last_seen_time, 'follower':
+                True}
+            stakeholders.append(agent_data)
+
         env['stakeholders'] = stakeholders
+        # env['']
 
         # print("robot env: " + str(env))
         return env

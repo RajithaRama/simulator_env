@@ -2,7 +2,7 @@ import yaml
 import importlib
 import logging
 
-import blackboard.data_structure as data_structure
+import ethical_governor.blackboard.data_structure as data_structure
 
 
 
@@ -17,7 +17,7 @@ def load_yaml(input_yaml):
 
 class Blackboard:
 
-    def __init__(self, input_yaml, conf=CONF_FILE):
+    def __init__(self, input_yaml=None, conf=CONF_FILE):
         self.conf = load_yaml(conf)
 
         # Loading logger
@@ -43,11 +43,6 @@ class Blackboard:
         data_loader_class = getattr(self.data_loader_module, self.conf["loader"]["class_name"])
         self.data_loader = data_loader_class()
 
-        # Loading data
-        self.data = data_structure.Data(self.data_loader.load(input_yaml), self.conf)
-        self.process_logger.info('Loaded the data to the blackboard.')
-        self.data.log_table(self.process_logger)
-
         # Loading scheduler
         self.scheduler_module = importlib.import_module("blackboard.scheduler." + self.conf["scheduler"]["module_name"])
         scheduler_class = getattr(self.scheduler_module, self.conf["scheduler"]["class_name"])
@@ -57,6 +52,12 @@ class Blackboard:
         self.evaluator_module = importlib.import_module("blackboard.evaluator." + self.conf["evaluator"]["module_name"])
         evaluator_class = getattr(self.evaluator_module, self.conf["evaluator"]["class_name"])
         self.evaluator = evaluator_class()
+
+    def load_data(self):
+        # Loading data
+        self.data = data_structure.Data(self.data_loader.load(), self.conf)
+        self.process_logger.info('Loaded the data to the blackboard.')
+        self.data.log_table(self.process_logger)
 
     def run_tests(self):
         self.process_logger.info('Starting tests...')
