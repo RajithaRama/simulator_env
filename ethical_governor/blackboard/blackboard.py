@@ -36,20 +36,20 @@ class Blackboard:
         # Loading test modules
         self.test_modules = {}
         for key in self.conf["tests"].keys():
-            self.test_modules[key] = importlib.import_module("blackboard.ethicaltests." + self.conf["tests"][key]["module_name"])
+            self.test_modules[key] = importlib.import_module("ethical_governor.blackboard.ethicaltests." + self.conf["tests"][key]["module_name"])
 
         # Loading loader module
-        self.data_loader_module = importlib.import_module("blackboard.loader." + self.conf["loader"]["module_name"])
+        self.data_loader_module = importlib.import_module("ethical_governor.blackboard.loader." + self.conf["loader"]["module_name"])
         data_loader_class = getattr(self.data_loader_module, self.conf["loader"]["class_name"])
         self.data_loader = data_loader_class()
 
         # Loading scheduler
-        self.scheduler_module = importlib.import_module("blackboard.scheduler." + self.conf["scheduler"]["module_name"])
+        self.scheduler_module = importlib.import_module("ethical_governor.blackboard.scheduler." + self.conf["scheduler"]["module_name"])
         scheduler_class = getattr(self.scheduler_module, self.conf["scheduler"]["class_name"])
         self.scheduler = scheduler_class(self.conf)
 
         # Loading evaluator
-        self.evaluator_module = importlib.import_module("blackboard.evaluator." + self.conf["evaluator"]["module_name"])
+        self.evaluator_module = importlib.import_module("ethical_governor.blackboard.evaluator." + self.conf["evaluator"]["module_name"])
         evaluator_class = getattr(self.evaluator_module, self.conf["evaluator"]["class_name"])
         self.evaluator = evaluator_class()
 

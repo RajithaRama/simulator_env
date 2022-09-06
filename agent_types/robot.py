@@ -80,7 +80,9 @@ class Robot(HomeAgent):
 
     def make_final_decision(self, possible_actions, env):
 
-        env['Suggested_actions'] = possible_actions
+        env['suggested_actions'] = possible_actions
+        env['other_inputs'] = {'robot_model': self}
+
         recommendations = self.ethical_governor.recommend(env)
         print(recommendations)
 
@@ -180,6 +182,7 @@ class Robot(HomeAgent):
         possible_locations = [self.last_seen_location]
 
         while len(possible_locations):
+            possible_pos = None
             try:
                 possible_pos = possible_locations.pop(0)
                 self.go_to_pos(possible_pos, [self], act=act)
@@ -197,28 +200,35 @@ class Robot(HomeAgent):
 
         follower_in_data = False
 
-        stakeholders = []
+        stakeholders = {}
         for agent in visible_stakeholders:
             # print(agent.type)
             agent_data = {}
             if agent.type == 'wall':
                 continue
-            if agent.id == self.follower_name:
-                follower_in_data = True
+
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
             agent_data['last_seen'] = self.time
             agent_data['pos'] = agent.pos
 
-            stakeholders.append(agent_data)
+            if agent.id == self.follower_name:
+                follower_in_data = True
+                agent_data['follower'] = True
+                stakeholders['follower'] = agent_data
+            else:
+                agent_data['follower'] = False
+                stakeholders[agent.id] = agent_data
 
         if not follower_in_data:
             agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen': self.last_seen_time, 'follower':
                 True}
-            stakeholders.append(agent_data)
+            stakeholders['follower'] =agent_data
 
-        robot_data = {"id": "this", "type": "robot", 'pos': self.pos}
-        stakeholders.append(robot_data)
+        robot_data = {"id": "this", "type": "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
+                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery}
+
+        stakeholders['robot'] = robot_data
 
         env_data['stakeholders'] = stakeholders
         # env['']

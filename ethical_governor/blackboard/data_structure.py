@@ -13,11 +13,11 @@ def load_yaml(input_yaml):
 class Data:
 
     def __init__(self, data_input, conf):
-        self._environment = data_input['Environment']
-        self._actions = [Action(i) for i in data_input['Suggested_actions']]
-        self._stakeholders = data_input['Stakeholders']
+        self._environment = data_input['environment']
+        self._actions = [Action(i) for i in data_input['suggested_actions']]
+        self._stakeholders = data_input['stakeholders']
 
-        self._other_inputs = data_input['Other_inputs']
+        self._other_inputs = data_input['other_inputs']
 
         columns = []
         for key in conf["tests"].keys():
@@ -36,6 +36,9 @@ class Data:
 
     def get_stakeholders_data(self):
         return self._stakeholders
+
+    def get_stakeholder_data(self, stakeholder_id):
+        return self._stakeholders[stakeholder_id]
 
     def get_table_data(self, action, column):
         return self._table_df.loc[action, column]
