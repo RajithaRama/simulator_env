@@ -20,7 +20,8 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                       '>': lambda left, right: left > right,
                       'and': lambda left, right: left and right,
                       'or': lambda left, right: left or right,
-                      '==': lambda left, right: left == right}
+                      '==': lambda left, right: left == right,
+                      'in': lambda left, right: left in right}
 
         def read_formula(self, formula_str):
             formula = []
@@ -53,18 +54,18 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
         def get_condition(self):
             return self.condition
 
-        def get_permissibility(self, data):
-            if self.check_condition(data):
+        def get_permissibility(self, data, action):
+            if self.check_condition(data, action):
                 return self.permissibility
             return None
 
-        def check_condition(self, data):
-            if self.solve(data, self.condition):
+        def check_condition(self, data, action):
+            if self.solve(data, action, self.condition):
                 return True
             else:
                 return False
 
-        def solve(self, data, token_list):
+        def solve(self, data, action, token_list):
             left = None
             operation = None
             right = None
@@ -80,7 +81,8 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                 # if variable find it and assign
                 elif item in self.variables:
                     path = item.split('.')
-                    value = {'Environment': data.get_environment_data(), 'Stakeholders': data.get_stakeholders_data()}
+                    value = {'environment': data.get_environment_data(), 'stakeholders': data.get_stakeholders_data(),
+                             'action': action}
                     for i in path:
                         value = value[i]
 
@@ -131,6 +133,16 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             logger.info('Testing action: ' + str(action))
             permissible = True
             ids_of_broken_rules = []
+            # TODO: Fix action
+            for id, rule in self.rules.items():
+                if not rule.get_permissibility(data, action[0].__name__):
+                    permissible = False
+                    ids_of_broken_rules.append(id)
+
+            if permissible:
+                logger.info('Action ' + str(action) + ' : Permissible')
+            else:
+                logger.info('Action ' + str(action) + ' : Not permissible since it broke rules ' + str(ids_of_broken_rules))
             # if action.value == 'take_control':
             #     permissible = True
             #     # self.output[action] = {self.output_names[0]: False, self.output_names[1]: []}
