@@ -60,7 +60,7 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             return None
 
         def check_condition(self, data, action):
-            if self.solve(data, action, self.condition):
+            if self.solve(data=data, action=action, token_list=self.condition):
                 return True
             else:
                 return False
@@ -72,12 +72,12 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             for item in token_list:
                 # if list solve it and assign
                 if type(item) == list:
-                    if left and operation:
-                        right = self.solve(data, item)
+                    if (left is not None) and operation:
+                        right = self.solve(data=data, token_list=item, action=action)
                     elif operation and left is None:
                         raise ValueError("Error in rule input")
                     else:
-                        left = self.solve(data, item)
+                        left = self.solve(data=data, token_list=item, action=action)
                 # if variable find it and assign
                 elif item in self.variables:
                     path = item.split('.')
@@ -130,12 +130,12 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
     def run_test(self, data, logger):
         logger.info('Running ' + __name__ + '...')
         for action in data.get_actions():
-            logger.info('Testing action: ' + str(action))
+            logger.info('Testing action: ' + str(action.value[0]))
             permissible = True
             ids_of_broken_rules = []
-            # TODO: Fix action
+            # TODO: Check log
             for id, rule in self.rules.items():
-                if not rule.get_permissibility(data, action[0].__name__):
+                if not rule.get_permissibility(data, action.value[0].__name__):
                     permissible = False
                     ids_of_broken_rules.append(id)
 
