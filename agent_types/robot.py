@@ -209,7 +209,8 @@ class Robot(HomeAgent):
 
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
-            agent_data['last_seen'] = self.time
+            agent_data['last_seen_time'] = self.time
+            agent_data['last_seen_location'] = self.model.get_location(agent.pos)
             agent_data['pos'] = agent.pos
 
             if agent.id == self.follower_name:
@@ -222,7 +223,7 @@ class Robot(HomeAgent):
 
         if not follower_in_data:
             agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen': self.last_seen_time, 'follower':
-                True}
+                True, 'last_seen_location': self.last_seen_location}
             stakeholders['follower'] =agent_data
 
         robot_data = {"id": "this", "type": "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
