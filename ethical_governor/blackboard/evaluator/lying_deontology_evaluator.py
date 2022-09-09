@@ -8,6 +8,7 @@ class DeontologyEvaluator(evaluator.Evaluator):
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
+        self.score = {}
         for action in data.get_actions():
             if data.get_table_data(action, 'is_breaking_rule'):
                 self.score[action] = 0

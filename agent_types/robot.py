@@ -12,6 +12,7 @@ class Robot(HomeAgent):
         self.battery = 50
         self.time = 0
         self.last_seen_location = None
+        self.last_seen_pos = None
         self.last_seen_time = None
         self.follower_name = follower_name
         self.not_follow_request = False
@@ -57,7 +58,8 @@ class Robot(HomeAgent):
         for neighbor in visible_neighbors:
             if neighbor.id == self.follower_name:
                 follower = neighbor
-                self.last_seen_location = follower.pos
+                self.last_seen_pos = follower.pos
+                self.last_seen_location = self.model.get_location(follower.pos)
                 old_last_seen_time = self.last_seen_time
                 self.last_seen_time = self.time
 
@@ -70,7 +72,7 @@ class Robot(HomeAgent):
         # if follower in a restricted area stay
         if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
             possible_actions.append((self.stay,))
-        elif not follower and (self.model.get_location(self.last_seen_location) in self.not_follow_locations):
+        elif not follower and (self.model.get_location(self.last_seen_pos) in self.not_follow_locations):
             possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
@@ -179,7 +181,7 @@ class Robot(HomeAgent):
         self.go_to_pos(self.model.things['charge_station'][0], [self], act=act)
 
     def go_to_last_seen(self, act=True):
-        possible_locations = [self.last_seen_location]
+        possible_locations = [self.last_seen_pos]
 
         while len(possible_locations):
             possible_pos = None

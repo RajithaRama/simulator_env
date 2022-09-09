@@ -135,7 +135,7 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             ids_of_broken_rules = []
             # TODO: Check log
             for id, rule in self.rules.items():
-                if not rule.get_permissibility(data, action.value[0].__name__):
+                if rule.get_permissibility(data, action.value[0].__name__) == False:
                     permissible = False
                     ids_of_broken_rules.append(id)
 
