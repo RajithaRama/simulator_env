@@ -19,13 +19,7 @@ class Data:
 
         self._other_inputs = data_input['other_inputs']
 
-        columns = []
-        for key in conf["tests"].keys():
-            columns.append(conf["tests"][key]["output_names"])
-        columns = [item for sublist in columns for item in sublist]
-        columns.append('desirability_score')
-
-        self._table_df = pd.DataFrame(columns=columns, index=self._actions)
+        self._table_df = self.create_table(data_input=data_input, conf=conf)
         # print(self._table_df)
 
     def get_environment_data(self):
@@ -55,6 +49,20 @@ class Data:
 
     def log_table(self, logger):
         logger.info('\n' + str(self._table_df))
+
+    def create_table(self, data_input, conf):
+        columns = []
+        for key in conf["tests"].keys():
+            if conf["tests"][key]["per_user_cols"]:
+                for stakeholder in self.get_stakeholders_data().keys():
+                    for colname in conf["tests"][key]["output_names"]:
+                        columns.append(stakeholder + '_' + colname)
+            else:
+                columns.extend(conf["tests"][key]["output_names"])
+
+        columns.append('desirability_score')
+
+        return pd.DataFrame(columns=columns, index=self._actions)
 
 
 class Action:

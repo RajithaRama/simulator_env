@@ -1,0 +1,53 @@
+2022-09-12 23:43:31,979 - blackboard - Loaded the data to the blackboard.
+2022-09-12 23:43:31,981 - data_structure - 
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...              NaN   
+(<bound method Robot.go_to_charge_station of <a...              NaN   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...               NaN   
+(<bound method Robot.go_to_charge_station of <a...               NaN   
+
+                                                   desirability_score  
+(<bound method Robot.follow of <agent_types.rob...                NaN  
+(<bound method Robot.go_to_charge_station of <a...                NaN  
+2022-09-12 23:43:31,981 - blackboard - Starting tests...
+2022-09-12 23:43:31,984 - blackboard - Running Deontology test.
+2022-09-12 23:43:31,984 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-09-12 23:43:31,984 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>
+2022-09-12 23:43:31,984 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>) : Permissible
+2022-09-12 23:43:31,984 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>
+2022-09-12 23:43:31,984 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>,) : Not permissible since it broke rules [3]
+2022-09-12 23:43:31,984 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-09-12 23:43:31,985 - blackboard - Blackboard updated with Deontology test results.
+2022-09-12 23:43:31,986 - data_structure - 
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...                []   
+(<bound method Robot.go_to_charge_station of <a...               [3]   
+
+                                                   desirability_score  
+(<bound method Robot.follow of <agent_types.rob...                NaN  
+(<bound method Robot.go_to_charge_station of <a...                NaN  
+2022-09-12 23:43:31,986 - blackboard - Testing completed.
+2022-09-12 23:43:31,986 - blackboard - Calling the final evaluator.
+2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - ethical_governor.blackboard.evaluator.deontology_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>) : 1
+2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>,) : 0
+2022-09-12 23:43:31,987 - blackboard - Evaluation completed.
+2022-09-12 23:43:31,988 - data_structure - 
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...                []   
+(<bound method Robot.go_to_charge_station of <a...               [3]   
+
+                                                   desirability_score  
+(<bound method Robot.follow of <agent_types.rob...                  1  
+(<bound method Robot.go_to_charge_station of <a...                  0  
+2022-09-12 23:43:31,989 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>)]
