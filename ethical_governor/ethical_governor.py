@@ -1,10 +1,10 @@
 import ethical_governor.blackboard.blackboard as bb
 
 
-class DeontologyGovernor:
+class EthicalGovernor:
 
-    def __init__(self):
-        self.blackboard = bb.Blackboard(conf='ethical_governor/elder_care_sim_deontology.yaml')
+    def __init__(self, conf):
+        self.blackboard = bb.Blackboard(conf=conf)
 
     def recommend(self, env):
         self.blackboard.load_data(env)

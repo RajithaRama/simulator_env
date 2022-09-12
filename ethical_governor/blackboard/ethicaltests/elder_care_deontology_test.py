@@ -122,8 +122,9 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
 
     def __init__(self, test_data):
         super().__init__(test_data)
+        self.rule_file = test_data['other']['rule_file']
         self.rules = {}
-        for id, variables, condition, perm in load_yaml(os.path.join(dirname, "./conf/elder_care_rules.yaml")):
+        for id, variables, condition, perm in load_yaml(os.path.join(dirname, "./conf/" + self.rule_file)):
             # print(id, variables, condition, perm)
             self.rules[id] = self.rule(variables, condition, perm)
 

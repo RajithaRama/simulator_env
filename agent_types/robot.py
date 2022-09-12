@@ -1,5 +1,5 @@
 from agent_types.home_agent import HomeAgent
-from ethical_governor.deontology_governor import DeontologyGovernor
+from ethical_governor.ethical_governor import EthicalGovernor
 
 import numpy as np
 
@@ -7,7 +7,7 @@ SELF_CHARGING = True
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, follower_name):
+    def __init__(self, unique_id, name, model, follower_name, governor_conf):
         super().__init__(unique_id, name, model, "robot")
         self.battery = 50
         self.time = 0
@@ -17,7 +17,7 @@ class Robot(HomeAgent):
         self.follower_name = follower_name
         self.not_follow_request = False
         self.not_follow_locations = []
-        self.ethical_governor = DeontologyGovernor()
+        self.ethical_governor = EthicalGovernor(governor_conf)
 
     def step(self):
         if self.pos in self.model.things['charge_station']:

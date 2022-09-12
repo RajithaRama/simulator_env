@@ -85,7 +85,7 @@ for i in range(250):
 server = ModularVisualization.ModularServer(
     Home,
     [grid],
-    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5), "patient_paths": [patient_1_path, patient_2_path]}
+    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5), "patient_paths": [patient_1_path, patient_2_path], "governor_conf": 'ethical_governor/elder_care_sim_deontology.yaml'}
 )
 
 server.port = 8123
