@@ -3,8 +3,6 @@ from abc import ABC, abstractmethod
 
 class EthicalTest(ABC):
     def __init__(self, test_data):
-        self.number_of_outputs = test_data['number_of_outputs']
-        self.output_names = test_data['output_names']
         self.output = {}
 
     @abstractmethod

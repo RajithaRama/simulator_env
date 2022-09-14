@@ -1,4 +1,5 @@
 import pandas as pd
+
 import yaml
 
 pd.set_option("display.max_rows", None, "display.max_columns", None)
@@ -41,7 +42,7 @@ class Data:
         return self._other_inputs
 
     def put_table_data(self, action, column, value):
-        self._table_df.loc[action, column] = value
+        self._table_df.at[action, column] = value
 
     def get_max_index(self, column):
         column_value = self._table_df[column]
@@ -52,18 +53,23 @@ class Data:
 
     def create_table(self, data_input, conf):
         columns = []
-        for key in conf["tests"].keys():
-            if conf["tests"][key]["per_user_cols"]:
-                for stakeholder in self.get_stakeholders_data().keys():
-                    for colname in conf["tests"][key]["output_names"]:
-                        columns.append(stakeholder + '_' + colname)
-            else:
-                columns.extend(conf["tests"][key]["output_names"])
+        # for key in conf["tests"].keys():
+        #     if conf["tests"][key]["per_user_cols"]:
+        #         for stakeholder in self.get_stakeholders_data().keys():
+        #             for colname in conf["tests"][key]["output_names"]:
+        #                 columns.append(stakeholder + '_' + colname)
+        #     else:
+        #         columns.extend(conf["tests"][key]["output_names"])
 
         columns.append('desirability_score')
 
         return pd.DataFrame(columns=columns, index=self._actions)
 
+    def add_table_column(self, col_name, values=None):
+        self._table_df[col_name] = values
+
+    def get_table_col_names(self):
+        return self._table_df.columns
 
 class Action:
     def __init__(self, action):

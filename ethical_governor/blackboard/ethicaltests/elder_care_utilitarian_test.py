@@ -10,3 +10,10 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         logger.info('Running ' + __name__ + '...')
         for action in data.get_actions():
             logger.info('Testing action: ' + str(action.value))
+
+            logger.info('Calculating autonomy utility for stakeholders')
+            autonomy_utility = self.get_autonomy_utility(data, action, logger)
+            logger.info('Autonomy utilities for action ' + str(action.value) + ': ' + str(autonomy_utility))
+
+    def get_autonomy_utility(self, data, action, logger):
+        pass

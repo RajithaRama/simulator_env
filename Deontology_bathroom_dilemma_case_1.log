@@ -1,53 +1,145 @@
-2022-09-12 23:43:31,979 - blackboard - Loaded the data to the blackboard.
-2022-09-12 23:43:31,981 - data_structure - 
-                                                   is_breaking_rule  \
-(<bound method Robot.follow of <agent_types.rob...              NaN   
-(<bound method Robot.go_to_charge_station of <a...              NaN   
+2022-09-14 11:32:25,460 - blackboard - Loaded the data to the blackboard.
+2022-09-14 11:32:25,469 - data_structure - 
+                                                   desirability_score
+(<bound method Robot.follow of <agent_types.rob...                NaN
+(<bound method Robot.go_to_charge_station of <a...                NaN
+2022-09-14 11:32:25,474 - blackboard - Starting tests...
+2022-09-14 11:32:25,489 - blackboard - Running Deontology test.
+2022-09-14 11:32:25,492 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-09-14 11:32:25,492 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:32:25,492 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : Permissible
+2022-09-14 11:32:25,493 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:32:25,493 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : Not permissible since it broke rules [3]
+2022-09-14 11:32:25,494 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-09-14 11:39:59,588 - blackboard - Blackboard updated with Deontology test results.
+2022-09-14 11:39:59,599 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                NaN   
+(<bound method Robot.go_to_charge_station of <a...                NaN   
 
-                                                   breaking_rule_ids  \
-(<bound method Robot.follow of <agent_types.rob...               NaN   
-(<bound method Robot.go_to_charge_station of <a...               NaN   
-
-                                                   desirability_score  
-(<bound method Robot.follow of <agent_types.rob...                NaN  
-(<bound method Robot.go_to_charge_station of <a...                NaN  
-2022-09-12 23:43:31,981 - blackboard - Starting tests...
-2022-09-12 23:43:31,984 - blackboard - Running Deontology test.
-2022-09-12 23:43:31,984 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-09-12 23:43:31,984 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>
-2022-09-12 23:43:31,984 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>) : Permissible
-2022-09-12 23:43:31,984 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>
-2022-09-12 23:43:31,984 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>,) : Not permissible since it broke rules [3]
-2022-09-12 23:43:31,984 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-09-12 23:43:31,985 - blackboard - Blackboard updated with Deontology test results.
-2022-09-12 23:43:31,986 - data_structure - 
                                                    is_breaking_rule  \
 (<bound method Robot.follow of <agent_types.rob...            False   
 (<bound method Robot.go_to_charge_station of <a...             True   
 
-                                                   breaking_rule_ids  \
-(<bound method Robot.follow of <agent_types.rob...                []   
-(<bound method Robot.go_to_charge_station of <a...               [3]   
+                                                   breaking_rule_ids  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:39:59,604 - blackboard - Testing completed.
+2022-09-14 11:39:59,607 - blackboard - Calling the final evaluator.
+2022-09-14 11:39:59,608 - deontology_eldercare_evaluator - ethical_governor.blackboard.evaluator.deontology_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-09-14 11:39:59,610 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : 1
+2022-09-14 11:39:59,614 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : 0
+2022-09-14 11:40:01,261 - blackboard - Evaluation completed.
+2022-09-14 11:40:01,274 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                  1   
+(<bound method Robot.go_to_charge_station of <a...                  0   
 
-                                                   desirability_score  
-(<bound method Robot.follow of <agent_types.rob...                NaN  
-(<bound method Robot.go_to_charge_station of <a...                NaN  
-2022-09-12 23:43:31,986 - blackboard - Testing completed.
-2022-09-12 23:43:31,986 - blackboard - Calling the final evaluator.
-2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - ethical_governor.blackboard.evaluator.deontology_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>) : 1
-2022-09-12 23:43:31,987 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fc7623e0910>>,) : 0
-2022-09-12 23:43:31,987 - blackboard - Evaluation completed.
-2022-09-12 23:43:31,988 - data_structure - 
                                                    is_breaking_rule  \
 (<bound method Robot.follow of <agent_types.rob...            False   
 (<bound method Robot.go_to_charge_station of <a...             True   
 
-                                                   breaking_rule_ids  \
-(<bound method Robot.follow of <agent_types.rob...                []   
-(<bound method Robot.go_to_charge_station of <a...               [3]   
+                                                   breaking_rule_ids  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:40:01,277 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>)]
+2022-09-14 11:40:10,523 - blackboard - Loaded the data to the blackboard.
+2022-09-14 11:40:10,561 - data_structure - 
+                                                   desirability_score
+(<bound method Robot.move_away of <agent_types....                NaN
+(<bound method Robot.follow of <agent_types.rob...                NaN
+(<bound method Robot.go_to_charge_station of <a...                NaN
+2022-09-14 11:40:10,562 - blackboard - Starting tests...
+2022-09-14 11:40:10,602 - blackboard - Running Deontology test.
+2022-09-14 11:40:10,607 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-09-14 11:40:10,608 - elder_care_deontology_test - Testing action: <bound method Robot.move_away of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:40:10,608 - elder_care_deontology_test - Action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : Permissible
+2022-09-14 11:40:10,627 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:40:10,628 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : Permissible
+2022-09-14 11:40:10,628 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:40:10,629 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : Not permissible since it broke rules [3]
+2022-09-14 11:40:10,629 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-09-14 11:40:24,215 - blackboard - Blackboard updated with Deontology test results.
+2022-09-14 11:40:24,240 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.move_away of <agent_types....                NaN   
+(<bound method Robot.follow of <agent_types.rob...                NaN   
+(<bound method Robot.go_to_charge_station of <a...                NaN   
 
-                                                   desirability_score  
-(<bound method Robot.follow of <agent_types.rob...                  1  
-(<bound method Robot.go_to_charge_station of <a...                  0  
-2022-09-12 23:43:31,989 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fc7623e0910>>, <agent_types.patient.Patient object at 0x7fc7623e0b20>)]
+                                                   is_breaking_rule  \
+(<bound method Robot.move_away of <agent_types....            False   
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  
+(<bound method Robot.move_away of <agent_types....                []  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:40:24,250 - blackboard - Testing completed.
+2022-09-14 11:40:24,256 - blackboard - Calling the final evaluator.
+2022-09-14 11:40:24,256 - deontology_eldercare_evaluator - ethical_governor.blackboard.evaluator.deontology_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-09-14 11:40:24,257 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : 1
+2022-09-14 11:40:24,260 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : 1
+2022-09-14 11:40:24,261 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : 0
+2022-09-14 11:40:24,269 - blackboard - Evaluation completed.
+2022-09-14 11:40:24,277 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.move_away of <agent_types....                  1   
+(<bound method Robot.follow of <agent_types.rob...                  1   
+(<bound method Robot.go_to_charge_station of <a...                  0   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.move_away of <agent_types....            False   
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  
+(<bound method Robot.move_away of <agent_types....                []  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:40:24,279 - blackboard - Recommended actions: [(<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>), (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>)]
+2022-09-14 11:54:23,272 - blackboard - Loaded the data to the blackboard.
+2022-09-14 11:54:23,276 - data_structure - 
+                                                   desirability_score
+(<bound method Robot.follow of <agent_types.rob...                NaN
+(<bound method Robot.go_to_charge_station of <a...                NaN
+2022-09-14 11:54:23,278 - blackboard - Starting tests...
+2022-09-14 11:54:23,295 - blackboard - Running Deontology test.
+2022-09-14 11:54:23,300 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-09-14 11:54:23,303 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:54:23,303 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : Permissible
+2022-09-14 11:54:23,303 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>
+2022-09-14 11:54:23,304 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : Not permissible since it broke rules [3]
+2022-09-14 11:54:23,304 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-09-14 11:54:28,300 - blackboard - Blackboard updated with Deontology test results.
+2022-09-14 11:54:28,321 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                NaN   
+(<bound method Robot.go_to_charge_station of <a...                NaN   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:54:28,321 - blackboard - Testing completed.
+2022-09-14 11:54:28,332 - blackboard - Calling the final evaluator.
+2022-09-14 11:54:28,332 - deontology_eldercare_evaluator - ethical_governor.blackboard.evaluator.deontology_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-09-14 11:54:28,333 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>) : 1
+2022-09-14 11:54:28,344 - deontology_eldercare_evaluator - Desirability of action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7fddb1a70850>>,) : 0
+2022-09-14 11:54:28,353 - blackboard - Evaluation completed.
+2022-09-14 11:54:28,382 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                  1   
+(<bound method Robot.go_to_charge_station of <a...                  0   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  
+(<bound method Robot.follow of <agent_types.rob...                []  
+(<bound method Robot.go_to_charge_station of <a...               [3]  
+2022-09-14 11:54:28,384 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7fddb1a70850>>, <agent_types.patient.Patient object at 0x7fddb1a83250>)]

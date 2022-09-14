@@ -61,7 +61,8 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "governor_conf": 'ethical_governor/elder_care_sim_utilitarian.yaml'}
+                   "patient_paths": [patient_1_path], "governor_conf":
+                       'experiments/bathroom_dilemma_utilitarian/elder_care_sim_utilitarian.yaml'}
 )
 
 server.port = 8123

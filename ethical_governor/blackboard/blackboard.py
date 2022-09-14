@@ -69,6 +69,8 @@ class Blackboard:
             results = test_i.get_results()
             for action, values in results.items():
                 for column, value in values.items():
+                    if column not in self.data.get_table_col_names():
+                        self.data.add_table_column(column)
                     self.data.put_table_data(action, column, value)
             self.process_logger.info('Blackboard updated with ' + test + ' test results.')
             self.data.log_table(self.process_logger)

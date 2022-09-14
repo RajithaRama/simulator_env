@@ -144,20 +144,7 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                 logger.info('Action ' + str(action) + ' : Permissible')
             else:
                 logger.info('Action ' + str(action) + ' : Not permissible since it broke rules ' + str(ids_of_broken_rules))
-            # if action.value == 'take_control':
-            #     permissible = True
-            #     # self.output[action] = {self.output_names[0]: False, self.output_names[1]: []}
-            #     # logger.info('')
-            # else:
-            #     for id, rule in self.rules.items():
-            #         if not rule.get_permissibility(data):
-            #             permissible = False
-            #             ids_of_broken_rules.append(id)
-            # if permissible:
-            #     logger.info('Action "' + action.value + '" : Permissible')
-            # else:
-            #     logger.info('Action "' + action.value + '" : Not permissible since it broke rules ' + str(ids_of_broken_rules))
-            #
-            self.output[action] = {self.output_names[0]: not permissible, self.output_names[1]: ids_of_broken_rules}
+
+            self.output[action] = {'is_breaking_rule': not permissible, 'breaking_rule_ids': ids_of_broken_rules}
 
         logger.info(__name__ + ' finished.')
