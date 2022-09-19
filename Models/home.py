@@ -159,8 +159,8 @@ class Home(Model):
     def step(self):
         self.schedule.step()
 
-    def visible_stakeholders(self, center_agent, visibility_radius):
-        neighbors = self.grid.get_neighbors(center_agent.pos, moore=True, radius=visibility_radius)
+    def visible_stakeholders(self, center_agent_pos, visibility_radius):
+        neighbors = self.grid.get_neighbors(center_agent_pos, moore=True, radius=visibility_radius)
         # print("neigh: " + str(neighbors))
 
         coordinate_neighbors = {}

@@ -54,18 +54,18 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
         def get_condition(self):
             return self.condition
 
-        def get_permissibility(self, data, action):
-            if self.check_condition(data, action):
+        def get_permissibility(self, data, action, logger):
+            if self.check_condition(data, action, logger):
                 return self.permissibility
             return None
 
-        def check_condition(self, data, action):
-            if self.solve(data=data, action=action, token_list=self.condition):
+        def check_condition(self, data, action, logger):
+            if self.solve(data=data, action=action, token_list=self.condition, logger=logger):
                 return True
             else:
                 return False
 
-        def solve(self, data, action, token_list):
+        def solve(self, data, action, token_list, logger):
             left = None
             operation = None
             right = None
@@ -73,22 +73,29 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                 # if list solve it and assign
                 if type(item) == list:
                     if (left is not None) and operation:
-                        right = self.solve(data=data, token_list=item, action=action)
+                        right = self.solve(data=data, token_list=item, action=action, logger=logger)
                     elif operation and left is None:
                         raise ValueError("Error in rule input")
                     else:
-                        left = self.solve(data=data, token_list=item, action=action)
+                        left = self.solve(data=data, token_list=item, action=action, logger=logger)
                 # if variable find it and assign
                 elif item in self.variables:
                     path = item.split('.')
                     value = {'environment': data.get_environment_data(), 'stakeholders': data.get_stakeholders_data(),
                              'action': action}
                     for i in path:
-                        value = value[i]
+                        try:
+                            value = value[i]
+                        except KeyError:
+                            value = False
+                            logger.warning('Variable: ' + item + 'not found in env.')
+                            break
 
-                    if left and operation:
+                    value = False if value is None else value
+
+                    if left is not None and operation:
                         right = value
-                    elif operation and not left:
+                    elif operation and left is None:
                         raise ValueError("Error in rule input")
                     else:
                         left = value
@@ -136,14 +143,15 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             ids_of_broken_rules = []
             # TODO: Check log
             for id, rule in self.rules.items():
-                if rule.get_permissibility(data, action.value[0].__name__) == False:
+                if rule.get_permissibility(data, action.value[0].__name__, logger) == False:
                     permissible = False
                     ids_of_broken_rules.append(id)
 
             if permissible:
                 logger.info('Action ' + str(action) + ' : Permissible')
             else:
-                logger.info('Action ' + str(action) + ' : Not permissible since it broke rules ' + str(ids_of_broken_rules))
+                logger.info(
+                    'Action ' + str(action) + ' : Not permissible since it broke rules ' + str(ids_of_broken_rules))
 
             self.output[action] = {'is_breaking_rule': not permissible, 'breaking_rule_ids': ids_of_broken_rules}
 

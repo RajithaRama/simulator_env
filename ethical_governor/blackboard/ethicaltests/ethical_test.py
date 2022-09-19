@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-
+# TODO: Implement pre-requisite test method
 class EthicalTest(ABC):
     def __init__(self, test_data):
         self.output = {}

@@ -47,7 +47,7 @@ patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''), (
                        ((10, 9), '')])
 
 # Wait in Bathroom for 20 steps
-for i in range(20):
+for i in range(10):
     patient_1_path.append(((10, 10), ''))
 
 # Path to kitchen (with command 'continue')

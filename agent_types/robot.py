@@ -4,7 +4,7 @@ from ethical_governor.ethical_governor import EthicalGovernor
 import numpy as np
 
 SELF_CHARGING = True
-
+VISIBLE_DIST = 3
 
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, follower_name, governor_conf):
@@ -52,7 +52,7 @@ class Robot(HomeAgent):
                     self.remove_do_not_follow()
 
         # get visible neighbours and set follower
-        visible_neighbors = self.model.visible_stakeholders(self, 3)
+        visible_neighbors = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
 
         follower = None
         for neighbor in visible_neighbors:
@@ -132,8 +132,6 @@ class Robot(HomeAgent):
         else:
             return next_pos
 
-
-
     def do_not_follow_to(self, to_location, follower):
         self.not_follow_request = True
         self.not_follow_locations.append(to_location)
@@ -198,7 +196,7 @@ class Robot(HomeAgent):
 
     def get_env_data(self):
         env_data = {}
-        visible_stakeholders = self.model.visible_stakeholders(self, 3)
+        visible_stakeholders = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
 
         follower_in_data = False
 
@@ -211,12 +209,17 @@ class Robot(HomeAgent):
 
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
-            agent_data['last_seen_time'] = self.time
-            agent_data['last_seen_location'] = self.model.get_location(agent.pos)
+            agent_data['seen_time'] = self.time
+            agent_data['seen_pos'] = agent.pos
+            agent_data['seen_location'] = self.model.get_location(agent.pos)
             agent_data['pos'] = agent.pos
+            agent_data['seen'] = True
 
             if agent.id == self.follower_name:
                 follower_in_data = True
+                agent_data['last_seen_time'] = self.last_seen_time
+                agent_data['last_seen_pos'] = self.last_seen_pos
+                agent_data['last_seen_location'] = self.model.get_location(self.last_seen_pos) if self.last_seen_pos else None
                 agent_data['follower'] = True
                 stakeholders['follower'] = agent_data
             else:
@@ -224,12 +227,12 @@ class Robot(HomeAgent):
                 stakeholders[agent.id] = agent_data
 
         if not follower_in_data:
-            agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen': self.last_seen_time, 'follower':
-                True, 'last_seen_location': self.last_seen_location}
-            stakeholders['follower'] =agent_data
+            agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen_time': self.last_seen_time, 'follower':
+                True, 'last_seen_pos' : self.last_seen_pos,'last_seen_location': self.last_seen_location, 'seen': False}
+            stakeholders['follower'] = agent_data
 
-        robot_data = {"id": "this", "type": "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
-                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery}
+        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
+                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self}
 
         stakeholders['robot'] = robot_data
 
@@ -238,7 +241,6 @@ class Robot(HomeAgent):
 
         environment = {"time_of_day": "day"}
         env_data['environment'] = environment
-
 
         # print("robot env: " + str(env))
         return env_data

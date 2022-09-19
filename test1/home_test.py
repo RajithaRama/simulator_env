@@ -30,6 +30,6 @@ for i in range(15):
 
 model = Home(2, [patient_1_path[0], (9, 2)], (5, 7), [patient_1_path, patient_2_path])
 model.step()
-model.visible_stakeholders(model.robot, 3)
+model.visible_stakeholders(model.robot.pos, 3)
 print(model.get_location((5, 6)))
 print(model.get_location((5, 7)))

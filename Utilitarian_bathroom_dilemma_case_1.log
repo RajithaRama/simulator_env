@@ -1,9 +1,10 @@
-2022-09-14 12:00:07,234 - blackboard - Loaded the data to the blackboard.
-2022-09-14 12:00:07,246 - data_structure - 
+2022-09-20 00:02:11,006 - blackboard - Loaded the data to the blackboard.
+2022-09-20 00:02:11,009 - data_structure - 
                                                    desirability_score
 (<bound method Robot.follow of <agent_types.rob...                NaN
 (<bound method Robot.go_to_charge_station of <a...                NaN
-2022-09-14 12:00:07,250 - blackboard - Starting tests...
-2022-09-14 12:00:07,250 - blackboard - Running Utilitarian test.
-2022-09-14 12:00:07,251 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-09-14 12:00:23,286 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7e9667a520>>, <agent_types.patient.Patient object at 0x7f7e9667a640>)
+2022-09-20 00:02:11,009 - blackboard - Starting tests...
+2022-09-20 00:02:11,009 - blackboard - Running Utilitarian test.
+2022-09-20 00:02:11,010 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-09-20 00:02:12,749 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f4cdb16e2c0>>, <agent_types.patient.Patient object at 0x7f4cdb16e470>)
+2022-09-20 00:02:12,750 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
