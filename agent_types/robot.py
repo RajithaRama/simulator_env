@@ -42,7 +42,7 @@ class Robot(HomeAgent):
             for instruction in buffered_instructions:
                 # instruction = (command, giver)
                 # add make clear instruction to possible action list
-                if 'make_clear' == instruction[0]:
+                if 'move_away' == instruction[0]:
                     possible_actions.append((self.move_away, instruction[1]))
                 if 'do_not_follow_to' in instruction[0]:
                     ins_split = instruction[0].split('__')
@@ -63,6 +63,9 @@ class Robot(HomeAgent):
                 old_last_seen_time = self.last_seen_time
                 self.last_seen_time = self.time
 
+        # staying the same place
+        possible_actions.append((self.stay,))
+
         # Follow or go to last seen
         if follower:
             possible_actions.append((self.follow, follower))
@@ -70,10 +73,10 @@ class Robot(HomeAgent):
             possible_actions.append((self.go_to_last_seen,))
 
         # if follower in a restricted area stay
-        if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
-            possible_actions.append((self.stay,))
-        elif not follower and (self.model.get_location(self.last_seen_pos) in self.not_follow_locations):
-            possible_actions.append((self.stay,))
+        # if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
+        #     possible_actions.append((self.stay,))
+        # elif not follower and (self.model.get_location(self.last_seen_pos) in self.not_follow_locations):
+        #     possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
             possible_actions.append((self.go_to_charge_station,))

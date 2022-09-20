@@ -21,7 +21,8 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                       'and': lambda left, right: left and right,
                       'or': lambda left, right: left or right,
                       '==': lambda left, right: left == right,
-                      'in': lambda left, right: left in right}
+                      'in': lambda left, right: left in right,
+                      '!=': lambda left, right: left != right}
 
         def read_formula(self, formula_str):
             formula = []
@@ -141,7 +142,6 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
             logger.info('Testing action: ' + str(action.value[0]))
             permissible = True
             ids_of_broken_rules = []
-            # TODO: Check log
             for id, rule in self.rules.items():
                 if rule.get_permissibility(data, action.value[0].__name__, logger) == False:
                     permissible = False
