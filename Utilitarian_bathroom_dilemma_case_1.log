@@ -1,0 +1,24 @@
+2022-09-23 00:24:24,800 - blackboard - Loaded the data to the blackboard.
+2022-09-23 00:24:24,804 - data_structure - 
+                                                   desirability_score
+(<bound method Robot.stay of <agent_types.robot...                NaN
+(<bound method Robot.follow of <agent_types.rob...                NaN
+(<bound method Robot.go_to_charge_station of <a...                NaN
+2022-09-23 00:24:24,805 - blackboard - Starting tests...
+2022-09-23 00:24:24,805 - blackboard - Running Utilitarian test.
+2022-09-23 00:24:24,806 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-09-23 00:24:26,611 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7ff559e51f60>>,)
+2022-09-23 00:24:27,344 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-09-23 00:24:35,898 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7ff559e51f60>>,): [('follower', 0)]
+2022-09-23 00:24:53,167 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-09-23 00:25:08,882 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7ff559e51f60>>,): [('follower', 1)]
+2022-09-23 00:25:11,974 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7ff559e51f60>>, <agent_types.patient.Patient object at 0x7ff559e52110>)
+2022-09-23 00:25:19,333 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-09-23 00:25:26,704 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7ff559e51f60>>, <agent_types.patient.Patient object at 0x7ff559e52110>): [('follower', 0)]
+2022-09-23 00:25:28,021 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-09-23 00:25:31,039 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7ff559e51f60>>, <agent_types.patient.Patient object at 0x7ff559e52110>): [('follower', 1)]
+2022-09-23 00:25:39,516 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7ff559e51f60>>,)
+2022-09-23 00:25:40,020 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-09-23 00:25:42,297 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7ff559e51f60>>,): [('follower', 0)]
+2022-09-23 00:25:43,513 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-09-23 00:25:45,721 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7ff559e51f60>>,): [('follower', 1)]

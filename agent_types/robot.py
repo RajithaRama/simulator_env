@@ -6,6 +6,7 @@ import numpy as np
 SELF_CHARGING = True
 VISIBLE_DIST = 3
 
+
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, follower_name, governor_conf):
         super().__init__(unique_id, name, model, "robot")
@@ -222,7 +223,8 @@ class Robot(HomeAgent):
                 follower_in_data = True
                 agent_data['last_seen_time'] = self.last_seen_time
                 agent_data['last_seen_pos'] = self.last_seen_pos
-                agent_data['last_seen_location'] = self.model.get_location(self.last_seen_pos) if self.last_seen_pos else None
+                agent_data['last_seen_location'] = self.model.get_location(
+                    self.last_seen_pos) if self.last_seen_pos else None
                 agent_data['follower'] = True
                 stakeholders['follower'] = agent_data
             else:
@@ -230,8 +232,10 @@ class Robot(HomeAgent):
                 stakeholders[agent.id] = agent_data
 
         if not follower_in_data:
-            agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen_time': self.last_seen_time, 'follower':
-                True, 'last_seen_pos' : self.last_seen_pos,'last_seen_location': self.last_seen_location, 'seen': False}
+            agent_data = {'id': self.follower_name, 'type': 'patient', 'last_seen_time': self.last_seen_time,
+                          'follower':
+                              True, 'last_seen_pos': self.last_seen_pos, 'last_seen_location': self.last_seen_location,
+                          'seen': False}
             stakeholders['follower'] = agent_data
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
@@ -242,7 +246,11 @@ class Robot(HomeAgent):
         env_data['stakeholders'] = stakeholders
         # env['']
 
-        environment = {"time_of_day": "day"}
+        environment = {"time_of_day": 'day', "time": self.time,
+                       "follower_avg_time_and_std_in_rooms": {'bathroom': (30, 10), 'kitchen': (60, 10)},
+                       "no_of_follower_emergencies_in_past": 2,
+                       "follower_health_score": 1
+                       }
         env_data['environment'] = environment
 
         # print("robot env: " + str(env))

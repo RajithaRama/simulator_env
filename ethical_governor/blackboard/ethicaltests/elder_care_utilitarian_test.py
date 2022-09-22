@@ -25,13 +25,14 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             autonomy_utility = self.get_autonomy_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                          logger=logger)
             logger.info('Autonomy utilities for action ' + str(action.value) + ': ' + str(autonomy_utility))
+            utils.setdefault(action, dict())['autonomy'] = autonomy_utility
 
             logger.info('Calculating well-being utility for stakeholders')
             wellbeing_util = self.get_wellbeing_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                         logger=logger)
+            logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
 
-
-            utils.setdefault(action, {})['autonomy'] = autonomy_utility
+            utils.setdefault(action, dict())['wellbeing'] = wellbeing_util
 
     def get_autonomy_utility(self, env, stakeholder_data, action, logger):
         """
@@ -76,22 +77,57 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
         return stakholder_autonomy_values
 
-    def get_wellbeing_utility(self, env, stakeholder_data, action, logger):
+    @staticmethod
+    def get_wellbeing_utility(env, stakeholder_data, action, logger):
         """
         Calculating wellbeing utility values for stakeholders.
 
-        wellbeing = 2/(1+e^((x-(m+n))/2)) - 1
+        wellbeing = 2/(1+e^((x-(m+n))(h(1-t))/2)) - 1
 
         x = time from last seen
         m = average time stay in
         n = std time stay in
-        k = logistic growth rate
+        k = logistic growth rate = 1/2
+        h = health (0<h<=1)
+        t = history of emergencies = 1/(1+e^-kx) - x = number of emergencies of the past
         """
         # Simulating next pos and visible lines
-        next_pos = action.value[0](*action.value[1:], act=False)
+        # next_pos = action.value[0](*action.value[1:], act=False)
+        #
+        # visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
+        #     center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
+        # visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
 
-        visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
-                                        center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-        visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
+        stakholder_wellbeing_values = []
 
-        # for
+        for stakeholder, data in stakeholder_data.items():
+            if stakeholder == 'robot':
+                continue
+
+            wellbeing_util = 0
+
+            if stakeholder == 'follower':
+
+                if action.value[0].__name__ == 'go_to_last_seen':
+                    wellbeing_util = 0.5
+                else:
+                    if data['seen']:
+                        wellbeing_util = 1
+                    else:
+                        time = env['time']
+                        last_seen_time = data['last_seen_time']
+                        x = time - last_seen_time
+                        m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
+                        num_emer = env['no_of_follower_emergencies_in_past']
+                        t = 1 / (1 + e ** (num_emer - 2))
+                        h = env['follower_health_score']
+
+                        wellbeing_util = 2 / (1 + e ** ((h * (1 - t)) * (x - (m + n)) / 2)) - 1
+
+            else:
+                wellbeing_util = 0
+
+            stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
+
+        return stakholder_wellbeing_values
+
