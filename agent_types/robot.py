@@ -10,6 +10,7 @@ VISIBLE_DIST = 3
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, follower_name, governor_conf):
         super().__init__(unique_id, name, model, "robot")
+        self.buffered_instructions = []
         self.battery = 50
         self.time = 0
         self.last_seen_location = None
@@ -33,7 +34,7 @@ class Robot(HomeAgent):
 
     def next_action(self, env):
 
-        buffered_instructions = self.model.get_commands(self)
+        buffered_instructions = env['stakeholders']['robot']['instruction_list']
 
         possible_actions = []
 
@@ -64,14 +65,14 @@ class Robot(HomeAgent):
                 old_last_seen_time = self.last_seen_time
                 self.last_seen_time = self.time
 
-        # staying the same place
-        possible_actions.append((self.stay,))
-
         # Follow or go to last seen
         if follower:
             possible_actions.append((self.follow, follower))
         else:
             possible_actions.append((self.go_to_last_seen,))
+
+        # staying the same place
+        possible_actions.append((self.stay,))
 
         # if follower in a restricted area stay
         # if follower and (self.model.get_location(follower.pos) in self.not_follow_locations):
@@ -242,7 +243,8 @@ class Robot(HomeAgent):
             stakeholders['follower'] = agent_data
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
-                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self}
+                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
+                      'instruction_list': self.model.get_commands(self)}
 
         stakeholders['robot'] = robot_data
 
@@ -250,7 +252,8 @@ class Robot(HomeAgent):
         # env['']
 
         environment = {"time_of_day": 'day', "time": self.time,
-                       "follower_avg_time_and_std_in_rooms": {'bathroom': (30, 10), 'kitchen': (60, 10)},
+                       "follower_avg_time_and_std_in_rooms": {'bathroom': (30, 10), 'kitchen': (60, 10),
+                                                              'hall': (10, 5), 'bedroom': (200, 30)},
                        "no_of_follower_emergencies_in_past": 2,
                        "follower_health_score": 1,
                        "walls": self.model.wall_coordinates,

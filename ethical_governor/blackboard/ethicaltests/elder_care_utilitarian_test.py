@@ -9,9 +9,9 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
     def __init__(self, test_data):
         super().__init__(test_data)
         self.instruction_function_map = {
-            'do_not_follow_to': [False, ROBOT.Robot.follow],
-            'continue': [True, ROBOT.Robot.follow],
-            'move_away': [True, ROBOT.Robot.move_away]
+            'do_not_follow_to': [False, ROBOT.Robot.follow.__name__],
+            'continue': [True, ROBOT.Robot.follow.__name__],
+            'move_away': [True, ROBOT.Robot.move_away.__name__]
         }
 
     def run_test(self, data, logger):
@@ -52,12 +52,11 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         - return: list with (stakeholder_id, autonomy utility) tuples
         """
         # Simulating next pos and visible lines
-        next_pos = action.value[0](*action.value[1:], act=False)
+        # next_pos = action.value[0](*action.value[1:], act=False)
         # visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
         # center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
         # visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
-        robot_model = stakeholder_data['robot']['model']
-        instruction_list = robot_model.model.get_commands(self)
+        instruction_list = stakeholder_data['robot']['instruction_list']
 
         stakholder_autonomy_values = []
 
@@ -69,7 +68,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             autonomy_utility = 0
 
             for ins, giver in instruction_list:
-                if giver == stakeholder_data[stakeholder]['id']:
+                if giver.id == stakeholder_data[stakeholder]['id']:
                     ins, *args = ins.split('__')
                     cond, exp_action = self.instruction_function_map[ins]
                     if cond:
@@ -101,7 +100,6 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         t = history of emergencies = 1/(1+e^-kx) - x = number of emergencies of the past
         """
 
-
         # visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
         #     center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
         # visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
@@ -117,9 +115,13 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             if stakeholder == 'follower':
                 # Simulating next pos and visible lines
                 next_pos = action.value[0](*action.value[1:], act=False)
-                follower_approx_next_pos = self.follower_nex_pos_approx(env, stakeholder_data, stakeholder)
 
-                seen = stakeholder_data['robot']['model'].model.visibility_ab(next_pos, follower_approx_next_pos, ROBOT.VISIBLE_DIST)
+                seen = False
+                if data['seen']:
+                    follower_approx_next_pos = self.follower_nex_pos_approx(env, stakeholder_data, stakeholder)
+                    seen = stakeholder_data['robot']['model'].model.visibility_ab(next_pos, follower_approx_next_pos,
+                                                                              ROBOT.VISIBLE_DIST)
+
 
                 if action.value[0].__name__ == 'go_to_last_seen':
                     wellbeing_util = 0.5
@@ -147,9 +149,13 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
     def follower_nex_pos_approx(self, env, stakeholder_data, stakeholder):
         data = stakeholder_data[stakeholder]
-        next_pos = tuple(map(lambda i, j: i + (i - j), data['pos'], (data['last_seen_pos'] if data['last_seen_pos'] else data['pos'])))
+        if data['seen']:
+            next_pos = tuple(map(lambda i, j: i + (i - j), data['pos'],
+                                 (data['last_seen_pos'] if data['last_seen_pos'] else data['pos'])))
+        else:
+            next_pos = data['last_seen_pos']
 
         if next_pos in env['walls']:
             next_pos = data['pos']
 
-        return  next_pos
+        return next_pos

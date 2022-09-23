@@ -9,6 +9,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
+        self.score = {}
         for action in data.get_actions():
             desirability = 0
             follower_util = 0
@@ -38,4 +39,6 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
             logger.info('Desirability of action ' + str(action.value) + ' : ' + str(desirability))
             self.score[action] = desirability
+
+            # TODO: Check log
 
