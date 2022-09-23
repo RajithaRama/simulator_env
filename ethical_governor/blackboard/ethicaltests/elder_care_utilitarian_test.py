@@ -1,3 +1,5 @@
+import numpy as np
+
 import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import agent_types.robot as ROBOT
 
@@ -17,22 +19,30 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         env = data.get_environment_data()
         stakeholder_data = data.get_stakeholders_data()
 
-        utils = {}
         for action in data.get_actions():
+            utils = {}
+
             logger.info('Testing action: ' + str(action.value))
 
             logger.info('Calculating autonomy utility for stakeholders')
             autonomy_utility = self.get_autonomy_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                          logger=logger)
             logger.info('Autonomy utilities for action ' + str(action.value) + ': ' + str(autonomy_utility))
-            utils.setdefault(action, dict())['autonomy'] = autonomy_utility
+            utils['autonomy'] = autonomy_utility
 
             logger.info('Calculating well-being utility for stakeholders')
             wellbeing_util = self.get_wellbeing_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                         logger=logger)
             logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
 
-            utils.setdefault(action, dict())['wellbeing'] = wellbeing_util
+            utils['wellbeing'] = wellbeing_util
+
+            out = {}
+            for util_type, values in utils.items():
+                for stakeholder, util_value in values:
+                    col_name = stakeholder + '_' + util_type
+                    out[col_name] = util_value
+            self.output[action] = out
 
     def get_autonomy_utility(self, env, stakeholder_data, action, logger):
         """
@@ -77,8 +87,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
         return stakholder_autonomy_values
 
-    @staticmethod
-    def get_wellbeing_utility(env, stakeholder_data, action, logger):
+    def get_wellbeing_utility(self, env, stakeholder_data, action, logger):
         """
         Calculating wellbeing utility values for stakeholders.
 
@@ -91,9 +100,8 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         h = health (0<h<=1)
         t = history of emergencies = 1/(1+e^-kx) - x = number of emergencies of the past
         """
-        # Simulating next pos and visible lines
-        # next_pos = action.value[0](*action.value[1:], act=False)
-        #
+
+
         # visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
         #     center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
         # visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
@@ -107,14 +115,20 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             wellbeing_util = 0
 
             if stakeholder == 'follower':
+                # Simulating next pos and visible lines
+                next_pos = action.value[0](*action.value[1:], act=False)
+                follower_approx_next_pos = self.follower_nex_pos_approx(env, stakeholder_data, stakeholder)
+
+                seen = stakeholder_data['robot']['model'].model.visibility_ab(next_pos, follower_approx_next_pos, ROBOT.VISIBLE_DIST)
 
                 if action.value[0].__name__ == 'go_to_last_seen':
                     wellbeing_util = 0.5
                 else:
-                    if data['seen']:
+                    if seen:
                         wellbeing_util = 1
                     else:
                         time = env['time']
+                        e = np.finfo(float).eps
                         last_seen_time = data['last_seen_time']
                         x = time - last_seen_time
                         m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
@@ -131,3 +145,11 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
         return stakholder_wellbeing_values
 
+    def follower_nex_pos_approx(self, env, stakeholder_data, stakeholder):
+        data = stakeholder_data[stakeholder]
+        next_pos = tuple(map(lambda i, j: i + (i - j), data['pos'], (data['last_seen_pos'] if data['last_seen_pos'] else data['pos'])))
+
+        if next_pos in env['walls']:
+            next_pos = data['pos']
+
+        return  next_pos

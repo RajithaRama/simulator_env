@@ -11,11 +11,11 @@ from agent_types.wall import Wall
 
 from collections import deque
 
-
 PATIENT_2 = True
 
 GRID_WIDTH = 13
 GRID_HEIGHT = 13
+
 
 class Home(Model):
     def __init__(self, no_patients, patient_starts, robot_start, patient_paths, governor_conf):
@@ -36,7 +36,6 @@ class Home(Model):
         # Init_stakeholders
         self.stakeholders = []
         for i in range(no_patients):
-
             self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i]))
 
         self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
@@ -48,6 +47,8 @@ class Home(Model):
             self.schedule.add(stakeholder)
 
         self.schedule.add(self.robot)
+
+        self.wall_coordinates = []
 
         # adding walls
         # house
@@ -139,11 +140,13 @@ class Home(Model):
 
     def add_vertical_wall(self, x, ystart, yend, id_gen):
         coordinates = [(x, y) for y in range(ystart, yend + 1)]
+        self.wall_coordinates.append(coordinates)
         wall, id_gen = self.place_wall(coordinates, id_gen)
         return wall, id_gen
 
     def add_horizontal_wall(self, xstart, xend, y, id_gen):
         coordinates = [(x, y) for x in range(xstart, xend + 1)]
+        self.wall_coordinates.append(coordinates)
         wall, id_gen = self.place_wall(coordinates, id_gen)
         return wall, id_gen
 
@@ -158,6 +161,26 @@ class Home(Model):
 
     def step(self):
         self.schedule.step()
+
+    def visibility_ab(self, a, b, visibility_radius):
+        """Visibility of pos b from pos a"""
+        neighbors = self.grid.get_neighbors(a, moore=True, radius=visibility_radius)
+        # print("neigh: " + str(neighbors))
+
+        walls = {}
+        for neighbor in neighbors:
+            if neighbor.type == 'wall':
+                walls[neighbor.pos] = neighbor
+
+        visible_line = bresenhamline(np.array([np.array(a)]), np.array([np.array(b)]), -1)
+
+        # print(visible_line)
+        visible = True
+        for point in visible_line:
+            if tuple(point) in walls.keys():
+                visible = False
+
+        return visible
 
     def visible_stakeholders(self, center_agent_pos, visibility_radius):
         neighbors = self.grid.get_neighbors(center_agent_pos, moore=True, radius=visibility_radius)
@@ -213,7 +236,8 @@ class Home(Model):
             for agent in neighbours:
                 # Not possible if an agent is in the position. Ignore the agents in the ignore list.
                 if step == agent.pos and \
-                        (all([agent.unique_id != ignore_agent.unique_id for ignore_agent in ignore_agents]) if ignore_agents else 1):
+                        (all([agent.unique_id != ignore_agent.unique_id for ignore_agent in
+                              ignore_agents]) if ignore_agents else 1):
                     impossible = True
                     break
             for thing_id, thing_coordinates in self.things.items():
@@ -228,7 +252,7 @@ class Home(Model):
             possible_steps.append(step)
         return possible_steps
 
-    def get_shortest_distance(self, current, dest, ignore_agents = None):
+    def get_shortest_distance(self, current, dest, ignore_agents=None):
         """ from_agent: agent that is trying to move"""
 
         i, j = current
@@ -257,7 +281,7 @@ class Home(Model):
             for move in possible_moves:
                 if not visited[move[0]][move[1]]:
                     visited[move[0]][move[1]] = True
-                    q.append((move[0], move[1], dist+1))
+                    q.append((move[0], move[1], dist + 1))
 
         if min_dist != sys.maxsize:
             return min_dist

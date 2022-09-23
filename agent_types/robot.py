@@ -180,7 +180,10 @@ class Robot(HomeAgent):
             return next_pos
 
     def go_to_charge_station(self, act=True):
-        self.go_to_pos(self.model.things['charge_station'][0], [self], act=act)
+        if act:
+            self.go_to_pos(self.model.things['charge_station'][0], [self], act=act)
+        else:
+            return self.go_to_pos(self.model.things['charge_station'][0], [self], act=act)
 
     def go_to_last_seen(self, act=True):
         possible_locations = [self.last_seen_pos]
@@ -249,7 +252,10 @@ class Robot(HomeAgent):
         environment = {"time_of_day": 'day', "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (30, 10), 'kitchen': (60, 10)},
                        "no_of_follower_emergencies_in_past": 2,
-                       "follower_health_score": 1
+                       "follower_health_score": 1,
+                       "walls": self.model.wall_coordinates,
+                       "things": self.model.things,
+                       "things_robot_inaccessible": self.model.things_robot_inaccessible
                        }
         env_data['environment'] = environment
 
