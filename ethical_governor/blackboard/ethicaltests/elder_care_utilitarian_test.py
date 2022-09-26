@@ -67,6 +67,16 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
             autonomy_utility = 0
 
+            if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
+                action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
+                if self.instruction_function_map['do_not_follow_to'][0]:
+                    autonomy_utility = -1
+                else:
+                    autonomy_utility = 1
+
+                if stakeholder['data']['location'] in stakeholder_data['robot']['not_follow_location']:
+                    autonomy_utility = -1
+
             for ins, giver in instruction_list:
                 if giver.id == stakeholder_data[stakeholder]['id']:
                     ins, *args = ins.split('__')
@@ -81,6 +91,9 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                             autonomy_utility = 1
                         else:
                             autonomy_utility = -1
+            # if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
+            #         action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
+            #     autonomy_utility = 1
 
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
@@ -120,8 +133,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                 if data['seen']:
                     follower_approx_next_pos = self.follower_nex_pos_approx(env, stakeholder_data, stakeholder)
                     seen = stakeholder_data['robot']['model'].model.visibility_ab(next_pos, follower_approx_next_pos,
-                                                                              ROBOT.VISIBLE_DIST)
-
+                                                                                  ROBOT.VISIBLE_DIST)
 
                 if action.value[0].__name__ == 'go_to_last_seen':
                     wellbeing_util = 0.5
@@ -130,15 +142,14 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                         wellbeing_util = 1
                     else:
                         time = env['time']
-                        e = np.finfo(float).eps
                         last_seen_time = data['last_seen_time']
                         x = time - last_seen_time
                         m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
                         num_emer = env['no_of_follower_emergencies_in_past']
-                        t = 1 / (1 + e ** (num_emer - 2))
+                        t = 1 / (1 + np.exp(num_emer - 2))
                         h = env['follower_health_score']
 
-                        wellbeing_util = 2 / (1 + e ** ((h * (1 - t)) * (x - (m + n)) / 2)) - 1
+                        wellbeing_util = 2 / (1 + np.exp(((h * (1 - t)) * (x - (m + n)) / 2))) - 1
 
             else:
                 wellbeing_util = 0

@@ -242,7 +242,7 @@ class Robot(HomeAgent):
                           'seen': False}
             stakeholders['follower'] = agent_data
 
-        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'not_follow_request': self.not_follow_request,
+        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos), 'not_follow_request': self.not_follow_request,
                       'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
                       'instruction_list': self.model.get_commands(self)}
 

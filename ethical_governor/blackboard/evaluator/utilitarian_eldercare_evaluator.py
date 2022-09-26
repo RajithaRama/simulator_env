@@ -37,6 +37,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
             else:
                 desirability = other_util + follower_util
 
+            logger.info('Other util:' + str(other_util) + ' follower util:' + str(follower_util))
             logger.info('Desirability of action ' + str(action.value) + ' : ' + str(desirability))
             self.score[action] = desirability
 
