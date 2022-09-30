@@ -252,7 +252,7 @@ class Robot(HomeAgent):
         # env['']
 
         environment = {"time_of_day": 'day', "time": self.time,
-                       "follower_avg_time_and_std_in_rooms": {'bathroom': (30, 10), 'kitchen': (60, 10),
+                       "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
                                                               'hall': (10, 5), 'bedroom': (200, 30)},
                        "no_of_follower_emergencies_in_past": 2,
                        "follower_health_score": 1,

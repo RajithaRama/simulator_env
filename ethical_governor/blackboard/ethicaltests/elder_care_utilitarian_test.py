@@ -34,8 +34,13 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             wellbeing_util = self.get_wellbeing_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                         logger=logger)
             logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
-
             utils['wellbeing'] = wellbeing_util
+
+            logger.info('Calculating the availability for stakeholders')
+            availability_util = self.get_availability_util(env=env, stakeholder_data=stakeholder_data, action=action,
+                                                           logger=logger)
+            logger.info('Availability utils for action ' + str(action.value) + ': ' + str(availability_util))
+            utils['availability'] = availability_util
 
             out = {}
             for util_type, values in utils.items():
@@ -68,7 +73,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             autonomy_utility = 0
 
             if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
-                action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
+                    action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
                 if self.instruction_function_map['do_not_follow_to'][0]:
                     autonomy_utility = 1
                 else:
@@ -137,21 +142,26 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     seen = stakeholder_data['robot']['model'].model.visibility_ab(next_pos, follower_approx_next_pos,
                                                                                   ROBOT.VISIBLE_DIST)
 
-                if action.value[0].__name__ == 'go_to_last_seen':
-                    wellbeing_util = 0.5
+                if seen:
+                    wellbeing_util = 1
                 else:
-                    if seen:
-                        wellbeing_util = 1
-                    else:
-                        time = env['time']
-                        last_seen_time = data['last_seen_time']
-                        x = time - last_seen_time
-                        m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
-                        num_emer = env['no_of_follower_emergencies_in_past']
-                        t = 1 / (1 + np.exp(num_emer - 2))
-                        h = env['follower_health_score']
+                    time = env['time']
+                    last_seen_time = data['last_seen_time']
+                    x = time - last_seen_time
+                    m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
+                    num_emer = env['no_of_follower_emergencies_in_past']
+                    t = 1 / (1 + np.exp(num_emer - 2))
+                    h = env['follower_health_score']
 
-                        wellbeing_util = 2 / (1 + np.exp(((h * (1 - t)) * (x - (m + n)) / 2))) - 1
+                    wellbeing_util = 2 / (1 + np.exp(((h * (1 - t)) * (x - (m + n)) / 2))) - 1
+
+                if action.value[0].__name__ == 'go_to_last_seen':
+                    if wellbeing_util < 0:
+                        wellbeing_util = -wellbeing_util
+                    if wellbeing_util < 0.5:
+                        wellbeing_util = wellbeing_util * 1.5
+                    elif wellbeing_util < 0.8:
+                        wellbeing_util = wellbeing_util + 0.2
 
             else:
                 wellbeing_util = 0
@@ -175,4 +185,13 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
     def get_availability_util(self, env, stakeholder_data, action, logger):
         # TODO: implement
-        pass
+
+        battery_level = stakeholder_data['robot']['battery_level']
+        availability = (-2 / (battery_level + 1)) + 1.02
+
+        if action.value[0].__name__ == 'go_to_charge_station':
+            availability = availability * 2 if availability < 0.4 else availability
+
+        stakeholder_availability_values = [('robot', availability)]
+
+        return stakeholder_availability_values

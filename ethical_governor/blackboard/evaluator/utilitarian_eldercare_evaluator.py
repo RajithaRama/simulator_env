@@ -22,7 +22,8 @@ class UtilitarianEvaluator(evaluator.Evaluator):
                 if stakeholder == 'follower':
                     # Autonomy focused utilitarian agent
                     follower_util = (2 * data.get_table_data(action=action, column=stakeholder + '_autonomy') +
-                                     data.get_table_data(action=action, column=stakeholder + '_wellbeing'))/3
+                                     data.get_table_data(action=action, column=stakeholder + '_wellbeing') +
+                                     data.get_table_data(action=action, column='robot_availability'))/4
                 else:
                     i += 1
                     other_util += (data.get_table_data(action=action, column=stakeholder + '_autonomy') +
@@ -32,7 +33,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
             if other_util + follower_util > 0.5:
                 desirability = 1
-            elif other_util + follower_util < 0.2:
+            elif other_util + follower_util < 0:
                 desirability = 0
             else:
                 desirability = other_util + follower_util
@@ -40,6 +41,4 @@ class UtilitarianEvaluator(evaluator.Evaluator):
             logger.info('Other util:' + str(other_util) + ' follower util:' + str(follower_util))
             logger.info('Desirability of action ' + str(action.value) + ' : ' + str(desirability))
             self.score[action] = desirability
-
-            # TODO: Check log
 
