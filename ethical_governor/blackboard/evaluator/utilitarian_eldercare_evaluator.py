@@ -21,7 +21,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
                 if stakeholder == 'follower':
                     # Autonomy focused utilitarian agent
-                    follower_util = (2 * data.get_table_data(action=action, column=stakeholder + '_autonomy') +
+                    follower_util = (1.5 * data.get_table_data(action=action, column=stakeholder + '_autonomy') +
                                      data.get_table_data(action=action, column=stakeholder + '_wellbeing') +
                                      data.get_table_data(action=action, column='robot_availability'))/4
                 else:

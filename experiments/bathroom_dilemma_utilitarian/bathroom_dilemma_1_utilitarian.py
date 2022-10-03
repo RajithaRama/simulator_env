@@ -43,11 +43,11 @@ for i in range(20):
 # Path to bathroom (with command 'do_not_follow_to__bathroom')
 patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''), ((5, 4), ''), ((5, 5), ''), ((5, 6), ''),
                        ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''),
-                       ((9, 8), 'do_not_follow_to__bathroom'), ((10, 8), ''),
+                       ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
                        ((10, 9), '')])
 
 # Wait in Bathroom for 20 steps
-for i in range(30):
+for i in range(40):
     patient_1_path.append(((10, 10), ''))
 
 # Path to kitchen (with command 'continue')

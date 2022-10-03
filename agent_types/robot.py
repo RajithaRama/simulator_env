@@ -193,11 +193,14 @@ class Robot(HomeAgent):
             possible_pos = None
             try:
                 possible_pos = possible_locations.pop(0)
-                self.go_to_pos(possible_pos, [self], act=act)
+                next_pos = self.go_to_pos(possible_pos, [self], act=act)
             except EnvironmentError:
                 possible_locations.extend(self.model.get_moveable_area(possible_pos))
                 continue
             break
+
+        if next_pos:
+            return next_pos
 
     def move(self, pos):
         self.model.grid.move_agent(self, pos)
