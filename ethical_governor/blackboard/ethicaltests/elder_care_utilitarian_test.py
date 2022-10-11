@@ -164,10 +164,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     # elif wellbeing_util < 0.8:
                     #     wellbeing_util = wellbeing_util + 0.2
                     # else:
-                        wellbeing_util = 1
-
-            else:
-                wellbeing_util = 0
+                    wellbeing_util = 0.7
 
             stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
 

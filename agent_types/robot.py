@@ -1,3 +1,5 @@
+import random
+
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
 
@@ -56,18 +58,18 @@ class Robot(HomeAgent):
         # get visible neighbours and set follower
         visible_neighbors = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
 
-        follower = None
+        self.follower = None
         for neighbor in visible_neighbors:
             if neighbor.id == self.follower_name:
-                follower = neighbor
-                self.last_seen_pos = follower.pos
-                self.last_seen_location = self.model.get_location(follower.pos)
+                self.follower = neighbor
+                self.last_seen_pos = self.follower.pos
+                self.last_seen_location = self.model.get_location(self.follower.pos)
                 old_last_seen_time = self.last_seen_time
                 self.last_seen_time = self.time
 
         # Follow or go to last seen
-        if follower:
-            possible_actions.append((self.follow, follower))
+        if self.follower:
+            possible_actions.append((self.follow, self.follower))
         else:
             possible_actions.append((self.go_to_last_seen,))
 
@@ -91,25 +93,56 @@ class Robot(HomeAgent):
         env['other_inputs'] = {'robot_model': self}
 
         recommendations = self.ethical_governor.recommend(env)
-        print(recommendations)
+        print('Action executed at step ' + str(self.time) + ': ' + str(recommendations))
 
-        # Check for low battery
-        if self.battery < 20 or (self.battery < 80 and (self.pos in self.model.things['charge_station'])):
-            for action in possible_actions:
-                if self.go_to_charge_station == action[0]:
+        if len(recommendations) == 1:
+            recommendations[0][0](*recommendations[0][1:])
+            print('Action executed: ' + str(recommendations[0][0]))
+            return
+        else:
+            # Check for low battery
+            if self.battery < 5 or (self.battery < 80 and (self.pos in self.model.things['charge_station'])):
+                for action in recommendations:
+                    if self.go_to_charge_station == action[0]:
+                        action[0](*action[1:])
+                        print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+                        return
+
+            # Check for follow
+            for action in recommendations:
+                if self.follow == action[0]:
                     action[0](*action[1:])
+                    print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
                     return
+                # if self.move_away == action[0]:
+                #     action[0](*action[1:])
+                #     return
+                # if self.not_follow_request and (self.stay == action[0]):
+                #     action[0](*action[1:])
+                #     return
 
-        # Check for move away
-        for action in possible_actions:
-            if self.move_away == action[0]:
-                action[0](*action[1:])
-                return
-            if self.not_follow_request and (self.stay == action[0]):
-                action[0](*action[1:])
-                return
+            # Else select the move result closest to the follower
+            dist = []
+            for action in recommendations:
+                next_pos = action[0](*action[1:], act=False)
+                if env['stakeholders']['follower']['seen']:
+                    dist.append(self.model.get_shortest_distance(current=next_pos,
+                                                                 dest=env['stakeholders']['follower']['seen_pos'],
+                                                                 ignore_agents=[self, self.follower]))
+                else:
+                    dist.append(self.model.get_shortest_distance(current=next_pos,
+                                                                 dest=env['stakeholders']['follower']['last_seen_pos'],
+                                                                 ignore_agents=[self]))
+            min_dist = min(dist)
+            indices = [i for i in range(len(dist)) if dist[i] == min_dist]
+            if len(indices) == 1:
+                action = recommendations[indices[0]]
+            else:
+                action = random.choice([recommendations[j] for j in indices])
 
-        possible_actions[0][0](*possible_actions[0][1:])
+            action[0](*action[1:])
+            print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+            return
 
     def move_away(self, follower, act=True):
         """ pos - position to move away from"""
@@ -245,7 +278,8 @@ class Robot(HomeAgent):
                           'seen': False}
             stakeholders['follower'] = agent_data
 
-        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos), 'not_follow_request': self.not_follow_request,
+        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
+                      'not_follow_request': self.not_follow_request,
                       'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
                       'instruction_list': self.model.get_commands(self)}
 

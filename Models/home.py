@@ -253,7 +253,6 @@ class Home(Model):
         return possible_steps
 
     def get_shortest_distance(self, current, dest, ignore_agents=None):
-        """ from_agent: agent that is trying to move"""
 
         i, j = current
         x, y = dest
