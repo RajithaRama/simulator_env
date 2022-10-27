@@ -11,7 +11,11 @@ class CBR:
         self.data_original = pd.DataFrame()
         self.dist_feature_map = {}
         self.value_diff_mat = vdm.VDM()
-        self.categorical_data_cols = ['follower_seen_location', 'last_seen_location', 'robot_location', 'action']
+        self.categorical_data_cols = ['follower_seen_location', 'last_seen_location', 'robot_location', 'time', 'action']
+        self.numerical_data_cols = ['seen', 'follower_time_since_last_seen', 'not_follow_request', 'battery_level',
+                                    'instructions_given', 'follower_autonomy', 'follower_wellbeing',
+                                    'follower_availability']
+        self.list_data_cols = ['not_follow_locations', 'instructions_given']
         self.encoder = OrdinalEncoder()
 
     def add_data(self, data):
@@ -60,13 +64,19 @@ class CBR:
 
     def distance(self, a, b):
         col_names = a.index
-        distance = 0
+        distances = []
         for col in col_names:
             if col in ['case_id', 'acceptability']:
                 continue
-            if col in self.categorical_data_cols:
-                distance += self.vdm_distance(col, a[col], b[col])
-        return distance
+            elif col in self.categorical_data_cols:
+                distances.append(self.vdm_distance(col, a[col], b[col]))
+            elif col in self.numerical_data_cols:
+                distances.append(self.minkowski_distance(a[col], b[col], p=1))
+            elif col in self.list_data_cols:
+                distances.append(self.jaccard_distance(a, b))
+            else:
+                continue
+        return sum(distances)
 
     def encode_dataset(self, data):
         col_data = data[data.columns.intersection(self.categorical_data_cols)]
@@ -75,6 +85,36 @@ class CBR:
 
     def vdm_distance(self, feature, a, b):
         distance = self.value_diff_mat.item_distance(feature=feature, a=a, b=b)
+        return distance
+
+    def minkowski_distance(self, a, b, p):
+        if type(a) != type(b):
+            raise ValueError("a and b have different types.")
+
+        distance = 0
+        if (type(a) == list) or (type(a) == tuple):
+            if len(a) != len(b):
+                raise ValueError("a and b are different in sizes.")
+            for i in range(len(a)):
+                distance += abs(a[i]-b[i])**p
+            return distance**(1/p)
+        else:
+            return abs(a-b)
+
+    def jaccard_distance(self, a, b):
+        """
+        :param a: list
+        :param b: list
+        :return: distance
+        """
+        A = set(a)
+        B = set(b)
+
+        sym_dif = A.symmetric_difference(B)
+        union = A.union(B)
+
+        distance = len(sym_dif)/len(union)
+
         return distance
 
     def get_case(self, case_id):
