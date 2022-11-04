@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import ethical_governor.blackboard.commonutils.cbr.vdm as vdm
-from sklearn.preprocessing import OrdinalEncoder
+from sklearn.preprocessing import OrdinalEncoder, PowerTransformer
 
 
 class CBR:
@@ -68,8 +68,11 @@ class CBR:
         q_col_names = query.columns
         distances = {}
 
+        # preprocessing the query
         query[query.columns.intersection(self.categorical_data_cols)] = self.encoder.transform(
             query[query.columns.intersection(self.categorical_data_cols)])
+        query['battery_level'] = query['battery_level']/100
+        query['follower_time_since_last_seen'] = self.power_transformer.transform(query['follower_time_since_last_seen'].to_numpy().reshape(-1, 1))
 
         # get the subset of cases that have the features
         required_col_names = q_col_names.insert(0, 'case_id')
@@ -120,8 +123,18 @@ class CBR:
         return sum(distances)
 
     def encode_dataset(self, data):
+        # Encoding categorical variables
         col_data = data[data.columns.intersection(self.categorical_data_cols)]
         data[data.columns.intersection(self.categorical_data_cols)] = self.encoder.fit_transform(X=col_data)
+
+        # Scaling battery level
+        data['battery_level'] = data['battery_level']/100
+
+        # Transforming time since last seen
+        last_seen_data = data['follower_time_since_last_seen'].to_numpy().reshape(-1, 1)
+        self.power_transformer = PowerTransformer().fit(last_seen_data)
+        data['follower_time_since_last_seen'] = self.power_transformer.transform(last_seen_data)
+
         return data
 
     def vdm_distance(self, feature, a, b):
