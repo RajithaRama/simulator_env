@@ -36,7 +36,14 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             expert_opinion = self.get_expert_opinion(action, data)
+            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion))
             print(expert_opinion)
+
+            if expert_opinion and not data.get_table_data(action=action, column='is_breaking_rule'):
+                data.put_table_data(action=action, column='desirability_score', value=1)
+            elif not expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                data.put_table_data(action=action, column='desirability_score', value=0)
+
 
 
     def get_expert_opinion(self, action, data):
