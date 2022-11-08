@@ -13,7 +13,7 @@ class CBR:
         self.value_diff_mat = vdm.VDM()
         self.categorical_data_cols = ['follower_seen_location', 'last_seen_location', 'robot_location', 'time',
                                       'action']
-        self.numerical_data_cols = ['seen', 'follower_time_since_last_seen', 'not_follow_request', 'battery_level',
+        self.numerical_data_cols = ['follower_time_since_last_seen', 'battery_level',
                                     'instructions_given', 'follower_autonomy', 'follower_wellbeing',
                                     'follower_availability']
         self.list_data_cols = ['not_follow_locations', 'instructions_given']
@@ -25,6 +25,7 @@ class CBR:
         self.data_encoded = self.encode_dataset(data)
         self.data_encoded.index = self.data_encoded.case_id
         self.col_names = self.data_encoded.columns
+        return self.col_names
 
     def get_neighbours(self, query, k=3):
         q_col_names = query.columns
@@ -69,8 +70,14 @@ class CBR:
         distances = {}
 
         # preprocessing the query
-        query[query.columns.intersection(self.categorical_data_cols)] = self.encoder.transform(
-            query[query.columns.intersection(self.categorical_data_cols)])
+        for cat_col in self.categorical_data_cols:
+            try:
+                query[cat_col] = self.encoder.transform(query[cat_col])
+            except ValueError:
+                # For new labels in query time
+                query[cat_col] = -1
+        # query[query.columns.intersection(self.categorical_data_cols)] = self.encoder.transform(
+        #     query[query.columns.intersection(self.categorical_data_cols)])
         query['battery_level'] = query['battery_level']/100
         query['follower_time_since_last_seen'] = self.power_transformer.transform(query['follower_time_since_last_seen'].to_numpy().reshape(-1, 1))
 
@@ -109,6 +116,8 @@ class CBR:
     def pairwise_distance(self, a, b):
         col_names = a.index
         distances = []
+        print(a)
+        print(b)
         for col in col_names:
             if col in ['case_id', 'acceptability']:
                 continue
@@ -118,6 +127,8 @@ class CBR:
                 distances.append(self.minkowski_distance(a[col], b[col], p=1))
             elif col in self.list_data_cols:
                 distances.append(self.jaccard_distance(a[col], b[col]))
+            elif type(a[col]) == bool:
+                distances.append(1 if a[col] ^ b[col] else 0)
             else:
                 continue
         return sum(distances)
@@ -143,6 +154,7 @@ class CBR:
 
     def minkowski_distance(self, a, b, p):
         if type(a) != type(b):
+            print(type(a), type(b))
             raise ValueError("a and b have different types.")
 
         distance = 0

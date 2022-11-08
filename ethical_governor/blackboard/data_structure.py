@@ -71,6 +71,18 @@ class Data:
     def get_table_col_names(self):
         return self._table_df.columns
 
+    def get_data(self, path_to_data):
+        data = None
+        for step in path_to_data:
+            if step == 'environment':
+                data = self.get_environment_data()
+            elif step == 'stakeholders':
+                data = self.get_stakeholders_data()
+            else:
+                print(step, path_to_data)
+                data = data[step]
+        return data
+
 class Action:
     def __init__(self, action):
         self.value = action
