@@ -1,3 +1,4 @@
+import itertools
 import os
 import pandas as pd
 
@@ -30,27 +31,44 @@ class PSRBEvaluator(evaluator.Evaluator):
             data_df = pd.read_json(CASE_BASE, orient='records')
             self.feature_list = self.expert_db.add_data(data_df)
 
+        self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
+
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
         self.score = {}
 
         for action in data.get_actions():
-            expert_opinion = self.get_expert_opinion(action, data)
+            expert_opinion = self.get_expert_opinion(action, data, logger)
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion))
             print(expert_opinion)
+
+            wellbeing = data.get_table_data(action=action, column='follower_wellbeing')
+            autonomy = data.get_table_data(action=action, column='follower_autonomy')
+            availability = data.get_table_data(action=action, column='robot_autonomy')
+
+            diff_wellbeing_autonomy = wellbeing - autonomy
+            diff_wellbeing_availability = wellbeing - availability
+            diff_autonomy_availability = autonomy - availability
 
             if expert_opinion and not data.get_table_data(action=action, column='is_breaking_rule'):
                 data.put_table_data(action=action, column='desirability_score', value=1)
             elif not expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
                 data.put_table_data(action=action, column='desirability_score', value=0)
+            elif expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                values = self.charactor.keys()
+
+            for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
+                if (eval(item1)-eval(item2))/abs(eval(item1)-eval(item2)) == (self.charactor[item1] - self.charactor[
+                    item2]) / abs((self.charactor[item1] - self.charactor[item2])):
+                    # TODO: complete
 
 
-
-    def get_expert_opinion(self, action, data):
+    def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data)
         print(query)
 
         neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query)
+        logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
         vote = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3)
         return vote
 
@@ -60,7 +78,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             if feature in ['case_id', 'acceptability']:
                 continue
             if feature == 'action':
-                query[feature] = [action]
+                query[feature] = [action.value[0].__name__]
                 continue
             try:
                 path = cbr_context_data_feature_map[feature]

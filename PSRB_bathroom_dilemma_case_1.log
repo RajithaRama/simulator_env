@@ -1,21 +1,21 @@
-2022-11-08 23:47:51,242 - blackboard - Loaded the data to the blackboard.
-2022-11-08 23:47:51,243 - data_structure - 
+2022-11-09 11:15:47,847 - blackboard - Loaded the data to the blackboard.
+2022-11-09 11:15:47,859 - data_structure - 
                                                    desirability_score
 (<bound method Robot.follow of <agent_types.rob...                NaN
 (<bound method Robot.stay of <agent_types.robot...                NaN
 (<bound method Robot.go_to_charge_station of <a...                NaN
-2022-11-08 23:47:51,243 - blackboard - Starting tests...
-2022-11-08 23:47:51,246 - blackboard - Running Deontology test.
-2022-11-08 23:47:51,246 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>) : Permissible
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : Permissible
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:47:51,247 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : Not permissible since it broke rules [3]
-2022-11-08 23:47:51,247 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-08 23:47:51,249 - blackboard - Blackboard updated with Deontology test results.
-2022-11-08 23:47:51,251 - data_structure - 
+2022-11-09 11:15:47,865 - blackboard - Starting tests...
+2022-11-09 11:15:47,885 - blackboard - Running Deontology test.
+2022-11-09 11:15:47,887 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-09 11:15:47,888 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>
+2022-11-09 11:15:47,888 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>) : Permissible
+2022-11-09 11:15:47,891 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>
+2022-11-09 11:15:47,891 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,) : Permissible
+2022-11-09 11:15:47,894 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>
+2022-11-09 11:15:47,895 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,) : Not permissible since it broke rules [3]
+2022-11-09 11:15:47,897 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-09 11:15:47,902 - blackboard - Blackboard updated with Deontology test results.
+2022-11-09 11:15:47,921 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -30,31 +30,31 @@
 (<bound method Robot.follow of <agent_types.rob...                []  
 (<bound method Robot.stay of <agent_types.robot...                []  
 (<bound method Robot.go_to_charge_station of <a...               [3]  
-2022-11-08 23:47:51,252 - blackboard - Running Utilitarian test.
-2022-11-08 23:47:51,252 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-08 23:47:51,252 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>)
-2022-11-08 23:47:51,252 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:47:51,253 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('follower', 0)]
-2022-11-08 23:47:51,253 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('follower', 1)]
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('robot', 0.9807072691552063)]
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:47:51,255 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 0)]
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 1)]
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('robot', 0.9807072691552063)]
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)
-2022-11-08 23:47:51,256 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:47:51,263 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 0)]
-2022-11-08 23:47:51,264 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:47:51,271 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 1)]
-2022-11-08 23:47:51,271 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:47:51,271 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('robot', 0.9807072691552063)]
-2022-11-08 23:47:51,273 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-08 23:47:51,275 - data_structure - 
+2022-11-09 11:15:47,931 - blackboard - Running Utilitarian test.
+2022-11-09 11:15:47,931 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-09 11:15:47,932 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>)
+2022-11-09 11:15:47,932 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-11-09 11:15:47,943 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>): [('follower', 0)]
+2022-11-09 11:15:47,944 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-11-09 11:15:47,946 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>): [('follower', 1)]
+2022-11-09 11:15:47,954 - elder_care_utilitarian_test - Calculating the availability for stakeholders
+2022-11-09 11:15:47,955 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>): [('robot', 0.9807072691552063)]
+2022-11-09 11:15:47,955 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,)
+2022-11-09 11:15:47,955 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-11-09 11:15:47,956 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('follower', 0)]
+2022-11-09 11:15:47,956 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-11-09 11:15:47,958 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('follower', 1)]
+2022-11-09 11:15:47,959 - elder_care_utilitarian_test - Calculating the availability for stakeholders
+2022-11-09 11:15:47,969 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('robot', 0.9807072691552063)]
+2022-11-09 11:15:47,969 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,)
+2022-11-09 11:15:47,969 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
+2022-11-09 11:15:48,014 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('follower', 0)]
+2022-11-09 11:15:48,023 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
+2022-11-09 11:15:48,108 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('follower', 1)]
+2022-11-09 11:15:48,119 - elder_care_utilitarian_test - Calculating the availability for stakeholders
+2022-11-09 11:15:48,123 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,): [('robot', 0.9807072691552063)]
+2022-11-09 11:15:48,148 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-09 11:15:48,191 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -84,14 +84,14 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980707  
 (<bound method Robot.stay of <agent_types.robot...           0.980707  
 (<bound method Robot.go_to_charge_station of <a...           0.980707  
-2022-11-08 23:47:51,275 - blackboard - Testing completed.
-2022-11-08 23:47:51,275 - blackboard - Calling the final evaluator.
-2022-11-08 23:47:51,275 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-08 23:47:51,298 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>) : 0
-2022-11-08 23:47:51,320 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : 0
-2022-11-08 23:47:51,341 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : 0
-2022-11-08 23:47:51,341 - blackboard - Evaluation completed.
-2022-11-08 23:47:51,343 - data_structure - 
+2022-11-09 11:15:48,243 - blackboard - Testing completed.
+2022-11-09 11:15:48,243 - blackboard - Calling the final evaluator.
+2022-11-09 11:15:48,243 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-09 11:16:58,787 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f1660e79520>>, <agent_types.patient.Patient object at 0x7f1660e1bfa0>) : 0
+2022-11-09 11:17:49,934 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f1660e79520>>,) : 0
+2022-11-09 11:17:51,216 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,) : 0
+2022-11-09 11:17:51,217 - blackboard - Evaluation completed.
+2022-11-09 11:17:51,227 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -121,128 +121,4 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980707  
 (<bound method Robot.stay of <agent_types.robot...           0.980707  
 (<bound method Robot.go_to_charge_station of <a...           0.980707  
-2022-11-08 23:47:51,344 - blackboard - Recommended actions: [(<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)]
-2022-11-08 23:49:10,378 - blackboard - Loaded the data to the blackboard.
-2022-11-08 23:49:10,379 - data_structure - 
-                                                   desirability_score
-(<bound method Robot.follow of <agent_types.rob...                NaN
-(<bound method Robot.stay of <agent_types.robot...                NaN
-(<bound method Robot.go_to_charge_station of <a...                NaN
-2022-11-08 23:49:10,379 - blackboard - Starting tests...
-2022-11-08 23:49:10,381 - blackboard - Running Deontology test.
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>) : Permissible
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : Permissible
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>
-2022-11-08 23:49:10,382 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : Not permissible since it broke rules [3]
-2022-11-08 23:49:10,382 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-08 23:49:10,383 - blackboard - Blackboard updated with Deontology test results.
-2022-11-08 23:49:10,385 - data_structure - 
-                                                   desirability_score  \
-(<bound method Robot.follow of <agent_types.rob...                NaN   
-(<bound method Robot.stay of <agent_types.robot...                NaN   
-(<bound method Robot.go_to_charge_station of <a...                NaN   
-
-                                                   is_breaking_rule  \
-(<bound method Robot.follow of <agent_types.rob...            False   
-(<bound method Robot.stay of <agent_types.robot...            False   
-(<bound method Robot.go_to_charge_station of <a...             True   
-
-                                                   breaking_rule_ids  
-(<bound method Robot.follow of <agent_types.rob...                []  
-(<bound method Robot.stay of <agent_types.robot...                []  
-(<bound method Robot.go_to_charge_station of <a...               [3]  
-2022-11-08 23:49:10,385 - blackboard - Running Utilitarian test.
-2022-11-08 23:49:10,385 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-08 23:49:10,385 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>)
-2022-11-08 23:49:10,385 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:49:10,386 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('follower', 0)]
-2022-11-08 23:49:10,386 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('follower', 1)]
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>): [('robot', 0.9806299212598425)]
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:49:10,387 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 0)]
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 1)]
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('robot', 0.9806299212598425)]
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)
-2022-11-08 23:49:10,388 - elder_care_utilitarian_test - Calculating autonomy utility for stakeholders
-2022-11-08 23:49:10,394 - elder_care_utilitarian_test - Autonomy utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 0)]
-2022-11-08 23:49:10,394 - elder_care_utilitarian_test - Calculating well-being utility for stakeholders
-2022-11-08 23:49:10,400 - elder_care_utilitarian_test - Wellbeing utilities for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('follower', 1)]
-2022-11-08 23:49:10,400 - elder_care_utilitarian_test - Calculating the availability for stakeholders
-2022-11-08 23:49:10,400 - elder_care_utilitarian_test - Availability utils for action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,): [('robot', 0.9806299212598425)]
-2022-11-08 23:49:10,401 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-08 23:49:10,404 - data_structure - 
-                                                   desirability_score  \
-(<bound method Robot.follow of <agent_types.rob...                NaN   
-(<bound method Robot.stay of <agent_types.robot...                NaN   
-(<bound method Robot.go_to_charge_station of <a...                NaN   
-
-                                                   is_breaking_rule  \
-(<bound method Robot.follow of <agent_types.rob...            False   
-(<bound method Robot.stay of <agent_types.robot...            False   
-(<bound method Robot.go_to_charge_station of <a...             True   
-
-                                                   breaking_rule_ids  \
-(<bound method Robot.follow of <agent_types.rob...                []   
-(<bound method Robot.stay of <agent_types.robot...                []   
-(<bound method Robot.go_to_charge_station of <a...               [3]   
-
-                                                   follower_autonomy  \
-(<bound method Robot.follow of <agent_types.rob...                 0   
-(<bound method Robot.stay of <agent_types.robot...                 0   
-(<bound method Robot.go_to_charge_station of <a...                 0   
-
-                                                   follower_wellbeing  \
-(<bound method Robot.follow of <agent_types.rob...                  1   
-(<bound method Robot.stay of <agent_types.robot...                  1   
-(<bound method Robot.go_to_charge_station of <a...                  1   
-
-                                                   robot_availability  
-(<bound method Robot.follow of <agent_types.rob...            0.98063  
-(<bound method Robot.stay of <agent_types.robot...            0.98063  
-(<bound method Robot.go_to_charge_station of <a...            0.98063  
-2022-11-08 23:49:10,404 - blackboard - Testing completed.
-2022-11-08 23:49:10,404 - blackboard - Calling the final evaluator.
-2022-11-08 23:49:10,404 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-08 23:49:10,432 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f9302ae53f0>>, <agent_types.patient.Patient object at 0x7f9302ae5510>) : 0
-2022-11-08 23:49:10,452 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : 0
-2022-11-08 23:49:10,472 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,) : 0
-2022-11-08 23:49:10,472 - blackboard - Evaluation completed.
-2022-11-08 23:49:10,474 - data_structure - 
-                                                   desirability_score  \
-(<bound method Robot.follow of <agent_types.rob...                NaN   
-(<bound method Robot.stay of <agent_types.robot...                NaN   
-(<bound method Robot.go_to_charge_station of <a...                  0   
-
-                                                   is_breaking_rule  \
-(<bound method Robot.follow of <agent_types.rob...            False   
-(<bound method Robot.stay of <agent_types.robot...            False   
-(<bound method Robot.go_to_charge_station of <a...             True   
-
-                                                   breaking_rule_ids  \
-(<bound method Robot.follow of <agent_types.rob...                []   
-(<bound method Robot.stay of <agent_types.robot...                []   
-(<bound method Robot.go_to_charge_station of <a...               [3]   
-
-                                                   follower_autonomy  \
-(<bound method Robot.follow of <agent_types.rob...                 0   
-(<bound method Robot.stay of <agent_types.robot...                 0   
-(<bound method Robot.go_to_charge_station of <a...                 0   
-
-                                                   follower_wellbeing  \
-(<bound method Robot.follow of <agent_types.rob...                  1   
-(<bound method Robot.stay of <agent_types.robot...                  1   
-(<bound method Robot.go_to_charge_station of <a...                  1   
-
-                                                   robot_availability  
-(<bound method Robot.follow of <agent_types.rob...            0.98063  
-(<bound method Robot.stay of <agent_types.robot...            0.98063  
-(<bound method Robot.go_to_charge_station of <a...            0.98063  
-2022-11-08 23:49:10,475 - blackboard - Recommended actions: [(<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f9302ae53f0>>,)]
+2022-11-09 11:17:51,229 - blackboard - Recommended actions: [(<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f1660e79520>>,)]

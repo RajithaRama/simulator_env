@@ -1,5 +1,5 @@
 [
-{
+    {
     "case_id": 1,
     "seen": true,
     "follower_seen_location": "bedroom",
@@ -16,8 +16,8 @@
     "robot_availability": 0,
     "action": "follow",
     "acceptability": 1
-},
-{
+    },
+    {
     "case_id": 2,
     "seen": true,
     "follower_seen_location": "bedroom",
@@ -34,8 +34,8 @@
     "robot_availability": 0,
     "action": "stay",
     "acceptability": 0
-},
-{
+    },
+    {
     "case_id": 3,
     "seen": true,
     "follower_seen_location": "bedroom",
@@ -52,5 +52,59 @@
     "robot_availability": 0,
     "action": "go_to_charge_station",
     "acceptability": 0
-}
+    },
+    {
+    "case_id": 4,
+    "seen": true,
+    "follower_seen_location": "hall",
+    "follower_time_since_last_seen": 0,
+    "last_seen_location": "hall",
+    "robot_location": "hall",
+    "not_follow_request": false,
+    "not_follow_locations": [],
+    "battery_level": 40,
+    "instructions_given": [],
+    "time": "day",
+    "follower_autonomy": 0,
+    "follower_wellbeing": 1,
+    "robot_availability": 0.98,
+    "action": "go_to_charge_station",
+    "acceptability": 0
+    },
+    {
+    "case_id": 5,
+    "seen": true,
+    "follower_seen_location": "hall",
+    "follower_time_since_last_seen": 0,
+    "last_seen_location": "hall",
+    "robot_location": "hall",
+    "not_follow_request": false,
+    "not_follow_locations": [],
+    "battery_level": 40,
+    "instructions_given": [],
+    "time": "day",
+    "follower_autonomy": 0,
+    "follower_wellbeing": 1,
+    "robot_availability": 0.98,
+    "action": "stay",
+    "acceptability": 0
+    },
+    {
+    "case_id": 6,
+    "seen": true,
+    "follower_seen_location": "hall",
+    "follower_time_since_last_seen": 0,
+    "last_seen_location": "hall",
+    "robot_location": "hall",
+    "not_follow_request": false,
+    "not_follow_locations": [],
+    "battery_level": 40,
+    "instructions_given": [],
+    "time": "day",
+    "follower_autonomy": 0,
+    "follower_wellbeing": 1,
+    "robot_availability": 0.98,
+    "action": "follow",
+    "acceptability": 1
+    }
 ]
