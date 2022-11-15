@@ -56,11 +56,32 @@ class PSRBEvaluator(evaluator.Evaluator):
                 data.put_table_data(action=action, column='desirability_score', value=0)
             elif expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
                 values = self.charactor.keys()
+                utilities = [eval(x) for x in values]
+                max_util_value = values.index(utilities.index(max(utilities)))
+                acceptability = 1
+                for value in values:
+                    if value == max_util_value:
+                        threshold = (10 - self.charactor[value])/10
+                        if eval(value) < threshold:
+                            acceptability = 0
+                    else:
+                        threshold = (self.charactor[value] - 10)/10
+                        if eval(value) < threshold:
+                            acceptability = 0
+                data.put_table_data(action=action, column='desirability_score', value=acceptability)
+            else:
+                return #TODO: finish this case.
 
-            for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
-                if (eval(item1)-eval(item2))/abs(eval(item1)-eval(item2)) == (self.charactor[item1] - self.charactor[
-                    item2]) / abs((self.charactor[item1] - self.charactor[item2])):
-                    # TODO: complete
+
+
+
+
+
+                # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
+                #     if eval(item1) == eval(item2)
+                #     if item1(eval(item1)-eval(item2))/abs(eval(item1)-eval(item2)) == (self.charactor[item1] - self.charactor[
+                #         item2]) / abs((self.charactor[item1] - self.charactor[item2])):
+
 
 
     def get_expert_opinion(self, action, data, logger):
