@@ -38,7 +38,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.score = {}
 
         for action in data.get_actions():
-            expert_opinion = self.get_expert_opinion(action, data, logger)
+            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion))
             print(expert_opinion)
 
@@ -46,9 +46,9 @@ class PSRBEvaluator(evaluator.Evaluator):
             autonomy = data.get_table_data(action=action, column='follower_autonomy')
             availability = data.get_table_data(action=action, column='robot_autonomy')
 
-            diff_wellbeing_autonomy = wellbeing - autonomy
-            diff_wellbeing_availability = wellbeing - availability
-            diff_autonomy_availability = autonomy - availability
+            # diff_wellbeing_autonomy = wellbeing - autonomy
+            # diff_wellbeing_availability = wellbeing - availability
+            # diff_autonomy_availability = autonomy - availability
 
             if expert_opinion and not data.get_table_data(action=action, column='is_breaking_rule'):
                 data.put_table_data(action=action, column='desirability_score', value=1)
@@ -57,7 +57,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             elif expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
                 values = self.charactor.keys()
                 utilities = [eval(x) for x in values]
-                max_util_value = values.index(utilities.index(max(utilities)))
+                # complete with intention
                 acceptability = 1
                 for value in values:
                     if value == max_util_value:
@@ -90,8 +90,9 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query)
         logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
-        vote = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3)
-        return vote
+        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3)
+
+        return vote, intention
 
     def generate_query(self, action, data):
         query = pd.DataFrame()

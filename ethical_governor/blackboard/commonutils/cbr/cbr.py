@@ -191,14 +191,22 @@ class CBR:
     def distance_weighted_vote(self, neighbours_with_dist, threshold):
         """ Calculate the distance_weighted vote of k neighbours"""
         vote = 0
+        intentions = {}
         for neighbour, distance in neighbours_with_dist:
             # If the distance is 0, then give it weight of K (number of neighbours)
             if distance < 1/len(neighbours_with_dist):
                 vote += len(neighbours_with_dist)*self.get_case(neighbour)['acceptability']
+                intentions[self.get_case(neighbour)['intention']] += len(neighbours_with_dist)*self.get_case(neighbour)['acceptability']
             else:
                 vote += self.get_case(neighbour)['acceptability']/distance
-
+                intentions[self.get_case(neighbour)['intention']] += self.get_case(neighbour)['acceptability']/distance
         if vote > threshold:
-            return 1
+            # maximum voted intention should be the biggest reason for acceptability == 1
+            vote_max = max(intentions.values())
+            intention_max = [i for i in intentions.keys() if intentions[i]==vote_max]
+            return 1, intention_max
         else:
-            return 0
+            # minimum voted intention should be the biggest reason for acceptability == 0
+            vote_min = min(intentions.values())
+            intention_min = [i for i in intentions.keys() if intentions[i] == vote_min]
+            return 0, intention_min
