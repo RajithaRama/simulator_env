@@ -39,7 +39,8 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
-            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion))
+            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + 'with ' +
+                        expert_intention + ' intention')
             print(expert_opinion)
 
             wellbeing = data.get_table_data(action=action, column='follower_wellbeing')
@@ -51,16 +52,18 @@ class PSRBEvaluator(evaluator.Evaluator):
             # diff_autonomy_availability = autonomy - availability
 
             if expert_opinion and not data.get_table_data(action=action, column='is_breaking_rule'):
+                # When rules and expert both accept
                 data.put_table_data(action=action, column='desirability_score', value=1)
             elif not expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                # When rules and expert reject
                 data.put_table_data(action=action, column='desirability_score', value=0)
             elif expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                # when rules reject but experts accept
                 values = self.charactor.keys()
-                utilities = [eval(x) for x in values]
-                # complete with intention
+
                 acceptability = 1
                 for value in values:
-                    if value == max_util_value:
+                    if value == expert_intention:
                         threshold = (10 - self.charactor[value])/10
                         if eval(value) < threshold:
                             acceptability = 0
@@ -70,19 +73,15 @@ class PSRBEvaluator(evaluator.Evaluator):
                             acceptability = 0
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
             else:
-                return #TODO: finish this case.
-
-
-
-
-
+                # When rules accept and experts reject
+                lower_threshold = (self.charactor[expert_intention] - 10)/10
+                if eval(expert_intention) < lower_threshold:
+                    data.put_table_data(action=action, column='desirability_score', value=0)
 
                 # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
                 #     if eval(item1) == eval(item2)
                 #     if item1(eval(item1)-eval(item2))/abs(eval(item1)-eval(item2)) == (self.charactor[item1] - self.charactor[
                 #         item2]) / abs((self.charactor[item1] - self.charactor[item2])):
-
-
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data)
@@ -97,7 +96,7 @@ class PSRBEvaluator(evaluator.Evaluator):
     def generate_query(self, action, data):
         query = pd.DataFrame()
         for feature in self.feature_list:
-            if feature in ['case_id', 'acceptability']:
+            if feature in ['case_id', 'acceptability', 'intention']:
                 continue
             if feature == 'action':
                 query[feature] = [action.value[0].__name__]

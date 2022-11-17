@@ -16,7 +16,7 @@
     "robot_availability": 0,
     "action": "follow",
     "acceptability": 1,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     },
     {
     "case_id": 2,
@@ -35,7 +35,7 @@
     "robot_availability": 0,
     "action": "stay",
     "acceptability": 0,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     },
     {
     "case_id": 3,
@@ -54,7 +54,7 @@
     "robot_availability": 0,
     "action": "go_to_charge_station",
     "acceptability": 0,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     },
     {
     "case_id": 4,
@@ -73,7 +73,7 @@
     "robot_availability": 0.98,
     "action": "go_to_charge_station",
     "acceptability": 0,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     },
     {
     "case_id": 5,
@@ -92,7 +92,7 @@
     "robot_availability": 0.98,
     "action": "stay",
     "acceptability": 0,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     },
     {
     "case_id": 6,
@@ -111,6 +111,6 @@
     "robot_availability": 0.98,
     "action": "follow",
     "acceptability": 1,
-    "Intention": "wellbeing"
+    "intention": "wellbeing"
     }
 ]
