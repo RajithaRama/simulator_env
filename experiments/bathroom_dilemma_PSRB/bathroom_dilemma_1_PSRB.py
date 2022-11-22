@@ -31,17 +31,23 @@ def agent_portrayal(agent):
 # Patient 1 path
 # start
 patient_1_path = [((6, 5), '')]
-
-# move to Kitchen
-patient_1_path.extend(
-    [((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''), ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
-
-# wait in kitchen chair for 30 steps
-for i in range(20):
-    patient_1_path.append(((2, 2), ''))
+#
+# # move to Kitchen
+# patient_1_path.extend(
+#     [((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''), ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
+#
+# # wait in kitchen chair for 30 steps
+# for i in range(20):
+#     patient_1_path.append(((2, 2), ''))
 
 # Path to bathroom (with command 'do_not_follow_to__bathroom')
-patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''), ((5, 4), ''), ((5, 5), ''), ((5, 6), ''),
+# patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''), ((5, 4), ''), ((5, 5), ''), ((5, 6), ''),
+#                        ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''),
+#                        ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
+#                        ((10, 9), '')])
+
+# Path to bathroom (with command 'do_not_follow_to__bathroom')
+patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''),
                        ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
                        ((10, 9), '')])

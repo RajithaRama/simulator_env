@@ -71,17 +71,17 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             if stakeholder == 'robot':
                 continue
 
-            autonomy_utility = 0
+            autonomy_utility = 0.0
 
             if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request:
                 if action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
                     if self.instruction_function_map['do_not_follow_to'][0]:
-                        autonomy_utility = 1
+                        autonomy_utility = 1.0
                     else:
-                        autonomy_utility = -1
+                        autonomy_utility = -1.0
 
                 if next_loc in stakeholder_data['robot']['not_follow_locations']:
-                    autonomy_utility = -1
+                    autonomy_utility = -1.0
 
             for ins, giver in instruction_list:
                 if giver.id == stakeholder_data[stakeholder]['id']:
@@ -92,12 +92,12 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     # doing everything else is neutral (0).
                     if cond:
                         if action.value[0].__name__ == exp_action:
-                            autonomy_utility = 1
+                            autonomy_utility = 1.0
                         else:
-                            autonomy_utility = -1
+                            autonomy_utility = -1.0
                     else:
                         if action.value[0].__name__ == exp_action:
-                            autonomy_utility = -1
+                            autonomy_utility = -1.0
 
             # if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
             #         action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
@@ -131,7 +131,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             if stakeholder == 'robot':
                 continue
 
-            wellbeing_util = 0
+            wellbeing_util = 0.0
 
             if stakeholder == 'follower':
                 # Simulating next pos and visible lines
@@ -144,7 +144,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                                                                                   ROBOT.VISIBLE_DIST)
 
                 if seen:
-                    wellbeing_util = 1
+                    wellbeing_util = 1.0
                 else:
                     time = env['time']
                     last_seen_time = data['last_seen_time']
@@ -189,7 +189,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         availability = (-2 / (battery_level + 1)) + 1.02
 
         if action.value[0].__name__ == 'go_to_charge_station':
-            availability = availability * 2 if availability < 0.4 else availability
+            availability = float(availability * 2 if availability < 0.4 else availability)
 
         stakeholder_availability_values = [('robot', availability)]
 

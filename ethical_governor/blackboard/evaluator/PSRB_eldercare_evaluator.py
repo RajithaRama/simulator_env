@@ -28,7 +28,8 @@ class PSRBEvaluator(evaluator.Evaluator):
         super().__init__()
         self.expert_db = CBR()
         with open(CASE_BASE) as fp:
-            data_df = pd.read_json(CASE_BASE, orient='records')
+            data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
+            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 
         self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
@@ -109,7 +110,11 @@ class PSRBEvaluator(evaluator.Evaluator):
             except KeyError:
                 path = None
             if path:
-                value = data.get_data(path)
+                if feature == "follower_time_since_last_seen":
+                    last_seen_time = data.get_data(path) if data.get_data(path) is not None else 0
+                    value = last_seen_time - data.get_data(['environment', 'time'])
+                else:
+                    value = data.get_data(path)
             else:
                 value = data.get_table_data(action=action, column=feature)
 
