@@ -39,13 +39,13 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
-            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + 'with ' +
-                        expert_intention + ' intention')
-            print(expert_opinion)
+            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
+                        str(expert_intention) + ' intention')
+            # print(expert_opinion)
 
             wellbeing = data.get_table_data(action=action, column='follower_wellbeing')
             autonomy = data.get_table_data(action=action, column='follower_autonomy')
-            availability = data.get_table_data(action=action, column='robot_autonomy')
+            availability = data.get_table_data(action=action, column='robot_availability')
 
             # diff_wellbeing_autonomy = wellbeing - autonomy
             # diff_wellbeing_availability = wellbeing - availability
@@ -63,7 +63,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                 acceptability = 1
                 for value in values:
-                    if value == expert_intention:
+                    if value in expert_intention:
                         threshold = (10 - self.charactor[value])/10
                         if eval(value) < threshold:
                             acceptability = 0
@@ -74,9 +74,12 @@ class PSRBEvaluator(evaluator.Evaluator):
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
             else:
                 # When rules accept and experts reject
-                lower_threshold = (self.charactor[expert_intention] - 10)/10
-                if eval(expert_intention) < lower_threshold:
-                    data.put_table_data(action=action, column='desirability_score', value=0)
+                acceptability = 1
+                for value in expert_intention:
+                    lower_threshold = (self.charactor[value] - 10)/10
+                    if eval(value) < lower_threshold:
+                        acceptability = 0
+                data.put_table_data(action=action, column='desirability_score', value=acceptability)
 
                 # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
                 #     if eval(item1) == eval(item2)
@@ -85,11 +88,11 @@ class PSRBEvaluator(evaluator.Evaluator):
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data)
-        print(query)
+        # print(query)
 
-        neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query)
+        neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
         logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
-        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3)
+        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3, logger=logger)
 
         return vote, intention
 
@@ -110,6 +113,8 @@ class PSRBEvaluator(evaluator.Evaluator):
             else:
                 value = data.get_table_data(action=action, column=feature)
 
+            if value == None:
+                continue
             query[feature] = [value]
         return query
 
