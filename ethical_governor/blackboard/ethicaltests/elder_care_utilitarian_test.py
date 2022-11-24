@@ -82,6 +82,8 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
                 if next_loc in stakeholder_data['robot']['not_follow_locations']:
                     autonomy_utility = -1.0
+                else:
+                    autonomy_utility = 1.0
 
             for ins, giver in instruction_list:
                 if giver.id == stakeholder_data[stakeholder]['id']:
@@ -98,6 +100,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     else:
                         if action.value[0].__name__ == exp_action:
                             autonomy_utility = -1.0
+
 
             # if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
             #         action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:

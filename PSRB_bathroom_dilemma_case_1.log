@@ -1,23 +1,23 @@
-2022-11-24 01:06:05,084 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:05,084 - blackboard - Starting tests...
-2022-11-24 01:06:05,096 - blackboard - Running Deontology test.
-2022-11-24 01:06:05,096 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:05,097 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:05,098 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:05,098 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:05,098 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:05,099 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:05,099 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:05,099 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:05,104 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:05,104 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:05,104 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:05,105 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:05,115 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:05,116 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:05,184 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:05,185 - blackboard - Testing completed.
-2022-11-24 01:06:05,197 - data_structure - 
+2022-11-24 01:38:30,569 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:30,570 - blackboard - Starting tests...
+2022-11-24 01:38:30,582 - blackboard - Running Deontology test.
+2022-11-24 01:38:30,582 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:30,583 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:30,583 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:30,583 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:30,584 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:30,584 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:30,585 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:30,585 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:30,589 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:30,590 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:30,590 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:30,590 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:30,600 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:30,601 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:30,671 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:30,672 - blackboard - Testing completed.
+2022-11-24 01:38:30,682 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -47,22 +47,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980707  
 (<bound method Robot.stay of <agent_types.robot...           0.980707  
 (<bound method Robot.go_to_charge_station of <a...           0.980707  
-2022-11-24 01:06:05,197 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:05,198 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:05,198 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:05,271 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.09899999999999998), (6, 0.09899999999999998), (4, 2.099), (5, 2.099)]
-2022-11-24 01:06:05,300 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:09,052 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:09,053 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:09,114 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.09899999999999998), (5, 0.09899999999999998), (1, 2.099), (2, 2.099)]
-2022-11-24 01:06:09,133 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:09,135 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:09,135 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:09,197 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.09899999999999998), (5, 0.09899999999999998), (1, 2.099), (2, 2.099)]
-2022-11-24 01:06:09,216 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:09,219 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:09,220 - blackboard - Evaluation completed.
-2022-11-24 01:06:09,229 - data_structure - 
+2022-11-24 01:38:30,683 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:30,683 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:30,683 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:30,747 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.09899999999999998), (6, 0.09899999999999998), (5, 0.7656666666666666)]
+2022-11-24 01:38:30,763 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:30,766 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:30,766 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:30,838 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.09899999999999998), (1, 0.7656666666666666), (6, 0.7656666666666666)]
+2022-11-24 01:38:30,853 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:30,855 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:30,855 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:30,911 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.09899999999999998), (5, 0.7656666666666667), (1, 1.4323333333333335), (6, 1.4323333333333335)]
+2022-11-24 01:38:30,930 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:30,932 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:30,932 - blackboard - Evaluation completed.
+2022-11-24 01:38:30,941 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -92,30 +92,30 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980707  
 (<bound method Robot.stay of <agent_types.robot...           0.980707  
 (<bound method Robot.go_to_charge_station of <a...           0.980707  
-2022-11-24 01:06:09,230 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:12,358 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:12,358 - blackboard - Starting tests...
-2022-11-24 01:06:12,371 - blackboard - Running Deontology test.
-2022-11-24 01:06:12,371 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:12,371 - elder_care_deontology_test - Testing action: <bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:12,372 - elder_care_deontology_test - Action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:12,372 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:12,373 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Not permissible since it broke rules [3]
-2022-11-24 01:06:12,373 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:12,373 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [3]
-2022-11-24 01:06:12,374 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:12,374 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [3, 4]
-2022-11-24 01:06:12,374 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:12,378 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:12,378 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:12,379 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:12,379 - elder_care_utilitarian_test - Testing action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:12,389 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:12,398 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:12,399 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:12,465 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:12,465 - blackboard - Testing completed.
-2022-11-24 01:06:12,478 - data_structure - 
+2022-11-24 01:38:30,942 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:31,293 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:31,293 - blackboard - Starting tests...
+2022-11-24 01:38:31,304 - blackboard - Running Deontology test.
+2022-11-24 01:38:31,305 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:31,305 - elder_care_deontology_test - Testing action: <bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:31,306 - elder_care_deontology_test - Action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:31,306 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:31,306 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Not permissible since it broke rules [3]
+2022-11-24 01:38:31,307 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:31,307 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [3]
+2022-11-24 01:38:31,307 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:31,308 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [3, 4]
+2022-11-24 01:38:31,308 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:31,311 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:31,312 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:31,312 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:31,312 - elder_care_utilitarian_test - Testing action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:31,322 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:31,332 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:31,333 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:31,401 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:31,402 - blackboard - Testing completed.
+2022-11-24 01:38:31,411 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.move_away of <agent_types....                NaN   
 (<bound method Robot.follow of <agent_types.rob...                NaN   
@@ -151,26 +151,26 @@
 (<bound method Robot.follow of <agent_types.rob...            0.98063  
 (<bound method Robot.stay of <agent_types.robot...            0.98063  
 (<bound method Robot.go_to_charge_station of <a...            0.98063  
-2022-11-24 01:06:12,478 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:12,478 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:12,478 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:12,561 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.2507681154830883), (4, 2.2507681154830883), (5, 2.2507681154830883), (6, 2.2507681154830883)]
-2022-11-24 01:06:12,584 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:12,587 - PSRB_eldercare_evaluator - Action move_away desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:12,587 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:12,657 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.2507681154830883), (6, 2.2507681154830883), (7, 3.250768115483088)]
-2022-11-24 01:06:12,672 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 0 with ['autonomy'] intention
-2022-11-24 01:06:12,674 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [3] broken and not accepted by experts.
-2022-11-24 01:06:12,675 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:12,734 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.2507681154830883), (5, 2.2507681154830883), (1, 4.250768115483089), (2, 4.250768115483089)]
-2022-11-24 01:06:12,753 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:12,755 - PSRB_eldercare_evaluator - Action stay desirability: 0| Reason: rules [3] broken and not accepted by experts.
-2022-11-24 01:06:12,756 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:12,815 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.2507681154830883), (5, 2.2507681154830883), (1, 4.250768115483089), (2, 4.250768115483089)]
-2022-11-24 01:06:12,834 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:12,837 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [3, 4] broken and not accepted by experts.
-2022-11-24 01:06:12,837 - blackboard - Evaluation completed.
-2022-11-24 01:06:12,846 - data_structure - 
+2022-11-24 01:38:31,412 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:31,412 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:31,412 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:31,473 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.2507681154830883), (4, 2.2507681154830883), (5, 2.2507681154830883), (6, 2.2507681154830883)]
+2022-11-24 01:38:31,492 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:31,495 - PSRB_eldercare_evaluator - Action move_away desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:31,495 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:31,558 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.2507681154830883), (6, 2.2507681154830883), (5, 2.917434782149755)]
+2022-11-24 01:38:31,574 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:31,576 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [3] broken and not accepted by experts.
+2022-11-24 01:38:31,577 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:31,640 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 2.2507681154830883), (1, 2.917434782149755), (4, 2.917434782149755), (6, 2.917434782149755)]
+2022-11-24 01:38:31,660 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:31,662 - PSRB_eldercare_evaluator - Action stay desirability: 0| Reason: rules [3] broken and not accepted by experts.
+2022-11-24 01:38:31,663 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:31,726 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.2507681154830883), (5, 2.917434782149755), (1, 3.584101448816422), (6, 3.584101448816422)]
+2022-11-24 01:38:31,745 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:31,748 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [3, 4] broken and not accepted by experts.
+2022-11-24 01:38:31,748 - blackboard - Evaluation completed.
+2022-11-24 01:38:31,757 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.move_away of <agent_types....                  1   
 (<bound method Robot.follow of <agent_types.rob...                  0   
@@ -206,27 +206,27 @@
 (<bound method Robot.follow of <agent_types.rob...            0.98063  
 (<bound method Robot.stay of <agent_types.robot...            0.98063  
 (<bound method Robot.go_to_charge_station of <a...            0.98063  
-2022-11-24 01:06:12,847 - blackboard - Recommended actions: [(<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)]
-2022-11-24 01:06:13,201 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:13,201 - blackboard - Starting tests...
-2022-11-24 01:06:13,214 - blackboard - Running Deontology test.
-2022-11-24 01:06:13,214 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:13,215 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,215 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:13,215 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,216 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:13,216 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,216 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:13,217 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:13,219 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:13,220 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:13,220 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:13,220 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:13,227 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,228 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,282 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:13,283 - blackboard - Testing completed.
-2022-11-24 01:06:13,291 - data_structure - 
+2022-11-24 01:38:31,758 - blackboard - Recommended actions: [(<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)]
+2022-11-24 01:38:32,109 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:32,110 - blackboard - Starting tests...
+2022-11-24 01:38:32,122 - blackboard - Running Deontology test.
+2022-11-24 01:38:32,122 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:32,122 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,123 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:32,123 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,124 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:32,124 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,124 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:32,125 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:32,128 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:32,128 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:32,128 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:32,129 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:32,135 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,136 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,191 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:32,192 - blackboard - Testing completed.
+2022-11-24 01:38:32,201 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -256,22 +256,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980552  
 (<bound method Robot.stay of <agent_types.robot...           0.980552  
 (<bound method Robot.go_to_charge_station of <a...           0.980552  
-2022-11-24 01:06:13,291 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:13,291 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:13,292 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:13,353 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24976811548308814), (6, 0.24976811548308814), (4, 2.249768115483088), (5, 2.249768115483088)]
-2022-11-24 01:06:13,372 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:13,374 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:13,374 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,435 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24976811548308814), (5, 0.24976811548308814), (1, 2.249768115483088), (2, 2.249768115483088)]
-2022-11-24 01:06:13,454 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:13,457 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:13,457 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,518 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24976811548308814), (5, 0.24976811548308814), (1, 2.249768115483088), (2, 2.249768115483088)]
-2022-11-24 01:06:13,539 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:13,541 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:13,541 - blackboard - Evaluation completed.
-2022-11-24 01:06:13,550 - data_structure - 
+2022-11-24 01:38:32,202 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:32,202 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:32,202 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:32,270 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24976811548308814), (6, 0.24976811548308814), (5, 0.9164347821497547)]
+2022-11-24 01:38:32,290 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:32,292 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:32,293 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,366 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24976811548308814), (1, 0.9164347821497547), (6, 0.9164347821497547)]
+2022-11-24 01:38:32,384 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:32,386 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:32,387 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,462 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24976811548308814), (5, 0.9164347821497549), (1, 1.5831014488164217), (6, 1.5831014488164217)]
+2022-11-24 01:38:32,482 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:32,485 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:32,485 - blackboard - Evaluation completed.
+2022-11-24 01:38:32,494 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -301,30 +301,30 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980552  
 (<bound method Robot.stay of <agent_types.robot...           0.980552  
 (<bound method Robot.go_to_charge_station of <a...           0.980552  
-2022-11-24 01:06:13,551 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:13,902 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:13,903 - blackboard - Starting tests...
-2022-11-24 01:06:13,919 - blackboard - Running Deontology test.
-2022-11-24 01:06:13,920 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:13,920 - elder_care_deontology_test - Testing action: <bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,920 - elder_care_deontology_test - Action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:13,921 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,921 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Not permissible since it broke rules [3]
-2022-11-24 01:06:13,921 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,922 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [3]
-2022-11-24 01:06:13,922 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:13,923 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [3, 4]
-2022-11-24 01:06:13,923 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:13,927 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:13,927 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:13,927 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:13,927 - elder_care_utilitarian_test - Testing action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:13,934 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:13,942 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,943 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:13,999 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:13,999 - blackboard - Testing completed.
-2022-11-24 01:06:14,009 - data_structure - 
+2022-11-24 01:38:32,496 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:32,846 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:32,847 - blackboard - Starting tests...
+2022-11-24 01:38:32,859 - blackboard - Running Deontology test.
+2022-11-24 01:38:32,859 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:32,860 - elder_care_deontology_test - Testing action: <bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,860 - elder_care_deontology_test - Action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:32,861 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,861 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Not permissible since it broke rules [3]
+2022-11-24 01:38:32,862 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,862 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [3]
+2022-11-24 01:38:32,862 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:32,863 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [3, 4]
+2022-11-24 01:38:32,863 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:32,867 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:32,867 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:32,868 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:32,868 - elder_care_utilitarian_test - Testing action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:32,875 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:32,882 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,883 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:32,939 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:32,939 - blackboard - Testing completed.
+2022-11-24 01:38:32,948 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.move_away of <agent_types....                NaN   
 (<bound method Robot.follow of <agent_types.rob...                NaN   
@@ -360,26 +360,26 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980474  
 (<bound method Robot.stay of <agent_types.robot...           0.980474  
 (<bound method Robot.go_to_charge_station of <a...           0.980474  
-2022-11-24 01:06:14,009 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:14,010 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:14,010 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:14,080 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.248768115483088), (4, 2.248768115483088), (5, 2.248768115483088), (6, 2.248768115483088)]
-2022-11-24 01:06:14,105 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:14,107 - PSRB_eldercare_evaluator - Action move_away desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:14,107 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:14,186 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.248768115483088), (6, 2.248768115483088), (7, 3.248768115483088)]
-2022-11-24 01:06:14,201 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 0 with ['autonomy'] intention
-2022-11-24 01:06:14,204 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [3] broken and not accepted by experts.
-2022-11-24 01:06:14,204 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:14,264 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.248768115483088), (5, 2.248768115483088), (1, 4.248768115483088), (2, 4.248768115483088)]
-2022-11-24 01:06:14,283 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:14,286 - PSRB_eldercare_evaluator - Action stay desirability: 0| Reason: rules [3] broken and not accepted by experts.
-2022-11-24 01:06:14,286 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:14,352 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.248768115483088), (5, 2.248768115483088), (1, 4.248768115483088), (2, 4.248768115483088)]
-2022-11-24 01:06:14,371 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:14,374 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [3, 4] broken and not accepted by experts.
-2022-11-24 01:06:14,374 - blackboard - Evaluation completed.
-2022-11-24 01:06:14,385 - data_structure - 
+2022-11-24 01:38:32,948 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:32,949 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:32,949 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:33,009 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.248768115483088), (4, 2.248768115483088), (5, 2.248768115483088), (6, 2.248768115483088)]
+2022-11-24 01:38:33,028 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:33,030 - PSRB_eldercare_evaluator - Action move_away desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:33,031 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:33,099 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 2.248768115483088), (6, 2.248768115483088), (5, 2.9154347821497546)]
+2022-11-24 01:38:33,116 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:33,119 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [3] broken and not accepted by experts.
+2022-11-24 01:38:33,119 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,193 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 2.248768115483088), (1, 2.9154347821497546), (6, 2.9154347821497546)]
+2022-11-24 01:38:33,209 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:33,212 - PSRB_eldercare_evaluator - Action stay desirability: 0| Reason: rules [3] broken and not accepted by experts.
+2022-11-24 01:38:33,212 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,277 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 2.248768115483088), (5, 2.915434782149755), (1, 3.5821014488164216), (6, 3.5821014488164216)]
+2022-11-24 01:38:33,297 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:33,299 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [3, 4] broken and not accepted by experts.
+2022-11-24 01:38:33,300 - blackboard - Evaluation completed.
+2022-11-24 01:38:33,309 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.move_away of <agent_types....                  1   
 (<bound method Robot.follow of <agent_types.rob...                  0   
@@ -415,27 +415,27 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980474  
 (<bound method Robot.stay of <agent_types.robot...           0.980474  
 (<bound method Robot.go_to_charge_station of <a...           0.980474  
-2022-11-24 01:06:14,387 - blackboard - Recommended actions: [(<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)]
-2022-11-24 01:06:14,751 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:14,751 - blackboard - Starting tests...
-2022-11-24 01:06:14,763 - blackboard - Running Deontology test.
-2022-11-24 01:06:14,764 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:14,764 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:14,765 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:14,765 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:14,766 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:14,766 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:14,767 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:14,767 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:14,770 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:14,770 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:14,771 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:14,771 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:14,776 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:14,777 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:14,828 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:14,829 - blackboard - Testing completed.
-2022-11-24 01:06:14,837 - data_structure - 
+2022-11-24 01:38:33,310 - blackboard - Recommended actions: [(<bound method Robot.move_away of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)]
+2022-11-24 01:38:33,660 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:33,660 - blackboard - Starting tests...
+2022-11-24 01:38:33,673 - blackboard - Running Deontology test.
+2022-11-24 01:38:33,673 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:33,673 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:33,674 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:33,674 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:33,675 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:33,675 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:33,676 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:33,676 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:33,679 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:33,679 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:33,679 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:33,679 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:33,684 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,685 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,736 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:33,736 - blackboard - Testing completed.
+2022-11-24 01:38:33,745 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -465,22 +465,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980396  
 (<bound method Robot.stay of <agent_types.robot...           0.980396  
 (<bound method Robot.go_to_charge_station of <a...           0.980396  
-2022-11-24 01:06:14,837 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:14,838 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:14,838 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:14,904 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24776811548308814), (6, 0.24776811548308814), (4, 2.247768115483088), (5, 2.247768115483088)]
-2022-11-24 01:06:14,926 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:14,928 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:14,929 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,008 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24776811548308814), (5, 0.24776811548308814), (1, 2.247768115483088), (2, 2.247768115483088)]
-2022-11-24 01:06:15,027 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:15,029 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:15,029 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,090 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24776811548308814), (5, 0.24776811548308814), (1, 2.247768115483088), (2, 2.247768115483088)]
-2022-11-24 01:06:15,111 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:15,114 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:15,114 - blackboard - Evaluation completed.
-2022-11-24 01:06:15,123 - data_structure - 
+2022-11-24 01:38:33,745 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:33,745 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:33,745 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:33,816 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24776811548308814), (6, 0.24776811548308814), (5, 0.9144347821497547)]
+2022-11-24 01:38:33,831 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:33,834 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:33,834 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,911 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24776811548308814), (1, 0.9144347821497547), (6, 0.9144347821497547)]
+2022-11-24 01:38:33,925 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:33,928 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:33,928 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:33,988 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24776811548308814), (5, 0.9144347821497549), (1, 1.5811014488164217), (6, 1.5811014488164217)]
+2022-11-24 01:38:34,007 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:34,010 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:34,010 - blackboard - Evaluation completed.
+2022-11-24 01:38:34,018 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -510,27 +510,27 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980396  
 (<bound method Robot.stay of <agent_types.robot...           0.980396  
 (<bound method Robot.go_to_charge_station of <a...           0.980396  
-2022-11-24 01:06:15,124 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:15,475 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:15,475 - blackboard - Starting tests...
-2022-11-24 01:06:15,487 - blackboard - Running Deontology test.
-2022-11-24 01:06:15,488 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:15,488 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:15,488 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:15,489 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:15,489 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:15,489 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:15,490 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:15,490 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:15,493 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:15,493 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:15,493 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:15,493 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:15,504 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,505 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,566 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:15,566 - blackboard - Testing completed.
-2022-11-24 01:06:15,577 - data_structure - 
+2022-11-24 01:38:34,020 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:34,366 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:34,367 - blackboard - Starting tests...
+2022-11-24 01:38:34,378 - blackboard - Running Deontology test.
+2022-11-24 01:38:34,379 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:34,379 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:34,379 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:34,380 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:34,380 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:34,380 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:34,381 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:34,381 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:34,384 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:34,384 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:34,384 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:34,385 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:34,396 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:34,397 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:34,454 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:34,454 - blackboard - Testing completed.
+2022-11-24 01:38:34,463 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -560,22 +560,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980317  
 (<bound method Robot.stay of <agent_types.robot...           0.980317  
 (<bound method Robot.go_to_charge_station of <a...           0.980317  
-2022-11-24 01:06:15,578 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:15,578 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:15,578 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:15,638 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24676811548308814), (6, 0.24676811548308814), (4, 2.2467681154830883), (5, 2.2467681154830883)]
-2022-11-24 01:06:15,661 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:15,663 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:15,663 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,738 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.30539257698580086), (5, 0.30539257698580086), (2, 2.1881436539803754), (3, 2.1881436539803754)]
-2022-11-24 01:06:15,757 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:15,759 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:15,759 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:15,820 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24676811548308814), (5, 0.24676811548308814), (1, 2.2467681154830883), (2, 2.2467681154830883)]
-2022-11-24 01:06:15,840 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:15,843 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:15,843 - blackboard - Evaluation completed.
-2022-11-24 01:06:15,851 - data_structure - 
+2022-11-24 01:38:34,463 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:34,463 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:34,464 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:34,523 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24676811548308814), (6, 0.24676811548308814), (5, 0.9134347821497548)]
+2022-11-24 01:38:34,537 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:34,539 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:34,540 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:34,604 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.30539257698580086), (1, 0.9720592436524675), (4, 0.9720592436524675), (6, 0.9720592436524675)]
+2022-11-24 01:38:34,624 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:34,626 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:34,626 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:34,692 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24676811548308814), (5, 0.9134347821497548), (1, 1.5801014488164216), (6, 1.5801014488164216)]
+2022-11-24 01:38:34,712 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:34,714 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:34,715 - blackboard - Evaluation completed.
+2022-11-24 01:38:34,723 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -605,27 +605,27 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980317  
 (<bound method Robot.stay of <agent_types.robot...           0.980317  
 (<bound method Robot.go_to_charge_station of <a...           0.980317  
-2022-11-24 01:06:15,853 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:16,229 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:16,229 - blackboard - Starting tests...
-2022-11-24 01:06:16,242 - blackboard - Running Deontology test.
-2022-11-24 01:06:16,243 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:16,243 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,244 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:16,244 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,244 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:16,244 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,245 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:16,245 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:16,248 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:16,248 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:16,249 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:16,249 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:16,266 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:16,267 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:16,331 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:16,331 - blackboard - Testing completed.
-2022-11-24 01:06:16,340 - data_structure - 
+2022-11-24 01:38:34,724 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:35,085 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:35,086 - blackboard - Starting tests...
+2022-11-24 01:38:35,098 - blackboard - Running Deontology test.
+2022-11-24 01:38:35,098 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:35,098 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,099 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:35,099 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,100 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:35,100 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,100 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:35,101 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:35,104 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:35,104 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:35,104 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:35,105 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:35,122 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,123 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,188 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:35,188 - blackboard - Testing completed.
+2022-11-24 01:38:35,196 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -655,22 +655,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980239  
 (<bound method Robot.stay of <agent_types.robot...           0.980239  
 (<bound method Robot.go_to_charge_station of <a...           0.980239  
-2022-11-24 01:06:16,340 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:16,340 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:16,341 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:16,400 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24576811548308808), (6, 0.24576811548308808), (4, 2.245768115483088), (5, 2.245768115483088)]
-2022-11-24 01:06:16,419 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:16,421 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:16,421 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:16,484 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24576811548308808), (5, 0.24576811548308808), (1, 2.245768115483088), (2, 2.245768115483088)]
-2022-11-24 01:06:16,504 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:16,506 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:16,507 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:16,569 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24576811548308808), (5, 0.24576811548308808), (1, 2.245768115483088), (2, 2.245768115483088)]
-2022-11-24 01:06:16,590 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:16,592 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:16,593 - blackboard - Evaluation completed.
-2022-11-24 01:06:16,602 - data_structure - 
+2022-11-24 01:38:35,196 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:35,197 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:35,197 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:35,257 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24576811548308808), (6, 0.24576811548308808), (5, 0.9124347821497547)]
+2022-11-24 01:38:35,272 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:35,274 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:35,274 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,334 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24576811548308808), (1, 0.9124347821497547), (6, 0.9124347821497547)]
+2022-11-24 01:38:35,349 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:35,352 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:35,352 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,415 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24576811548308808), (5, 0.9124347821497548), (1, 1.5791014488164214), (6, 1.5791014488164214)]
+2022-11-24 01:38:35,434 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:35,437 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:35,437 - blackboard - Evaluation completed.
+2022-11-24 01:38:35,445 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -700,27 +700,27 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980239  
 (<bound method Robot.stay of <agent_types.robot...           0.980239  
 (<bound method Robot.go_to_charge_station of <a...           0.980239  
-2022-11-24 01:06:16,603 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:16,970 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:16,971 - blackboard - Starting tests...
-2022-11-24 01:06:16,984 - blackboard - Running Deontology test.
-2022-11-24 01:06:16,984 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:16,984 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,985 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:16,985 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,985 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:16,986 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:16,986 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:16,986 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:16,989 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:16,990 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:16,990 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:16,990 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:16,999 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,000 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,051 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:17,051 - blackboard - Testing completed.
-2022-11-24 01:06:17,060 - data_structure - 
+2022-11-24 01:38:35,447 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:35,811 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:35,811 - blackboard - Starting tests...
+2022-11-24 01:38:35,824 - blackboard - Running Deontology test.
+2022-11-24 01:38:35,824 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:35,825 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,825 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:35,825 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,826 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:35,826 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:35,827 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:35,827 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:35,830 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:35,830 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:35,830 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:35,830 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:35,840 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,841 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:35,892 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:35,893 - blackboard - Testing completed.
+2022-11-24 01:38:35,901 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -750,22 +750,22 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980159  
 (<bound method Robot.stay of <agent_types.robot...           0.980159  
 (<bound method Robot.go_to_charge_station of <a...           0.980159  
-2022-11-24 01:06:17,060 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:17,061 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:17,061 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:17,124 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24476811548308808), (6, 0.24476811548308808), (4, 2.244768115483088), (5, 2.244768115483088)]
-2022-11-24 01:06:17,144 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:17,146 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:17,147 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,209 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24476811548308808), (5, 0.24476811548308808), (1, 2.244768115483088), (2, 2.244768115483088)]
-2022-11-24 01:06:17,228 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:17,230 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:17,230 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,289 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24476811548308808), (5, 0.24476811548308808), (1, 2.244768115483088), (2, 2.244768115483088)]
-2022-11-24 01:06:17,309 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:17,311 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:17,312 - blackboard - Evaluation completed.
-2022-11-24 01:06:17,321 - data_structure - 
+2022-11-24 01:38:35,902 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:35,902 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:35,902 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:35,961 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24476811548308808), (6, 0.24476811548308808), (5, 0.9114347821497547)]
+2022-11-24 01:38:35,975 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:35,977 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:35,978 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,041 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24476811548308808), (1, 0.9114347821497547), (6, 0.9114347821497547)]
+2022-11-24 01:38:36,056 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:36,058 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:36,058 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,119 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24476811548308808), (5, 0.9114347821497548), (1, 1.5781014488164216), (6, 1.5781014488164216)]
+2022-11-24 01:38:36,137 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:36,140 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:36,140 - blackboard - Evaluation completed.
+2022-11-24 01:38:36,148 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -795,27 +795,27 @@
 (<bound method Robot.follow of <agent_types.rob...           0.980159  
 (<bound method Robot.stay of <agent_types.robot...           0.980159  
 (<bound method Robot.go_to_charge_station of <a...           0.980159  
-2022-11-24 01:06:17,322 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:17,704 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:17,704 - blackboard - Starting tests...
-2022-11-24 01:06:17,717 - blackboard - Running Deontology test.
-2022-11-24 01:06:17,717 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:17,717 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:17,718 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:17,718 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:17,718 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:17,719 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:17,719 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:17,719 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:17,722 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:17,723 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:17,723 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:17,723 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:17,735 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,736 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,811 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:17,812 - blackboard - Testing completed.
-2022-11-24 01:06:17,820 - data_structure - 
+2022-11-24 01:38:36,149 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:36,500 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:36,501 - blackboard - Starting tests...
+2022-11-24 01:38:36,512 - blackboard - Running Deontology test.
+2022-11-24 01:38:36,513 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:36,513 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:36,513 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:36,514 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:36,514 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:36,514 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:36,515 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:36,515 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:36,518 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:36,518 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:36,518 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:36,519 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:36,530 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,531 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,602 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:36,602 - blackboard - Testing completed.
+2022-11-24 01:38:36,611 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -845,22 +845,22 @@
 (<bound method Robot.follow of <agent_types.rob...            0.98008  
 (<bound method Robot.stay of <agent_types.robot...            0.98008  
 (<bound method Robot.go_to_charge_station of <a...            0.98008  
-2022-11-24 01:06:17,821 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:17,821 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:17,821 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:17,880 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24376811548308808), (6, 0.24376811548308808), (4, 2.243768115483088), (5, 2.243768115483088)]
-2022-11-24 01:06:17,899 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:17,901 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:17,902 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:17,964 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24376811548308808), (5, 0.24376811548308808), (1, 2.243768115483088), (2, 2.243768115483088)]
-2022-11-24 01:06:17,989 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:17,991 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:17,991 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:18,050 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24376811548308808), (5, 0.24376811548308808), (1, 2.243768115483088), (2, 2.243768115483088)]
-2022-11-24 01:06:18,070 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:18,073 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:18,073 - blackboard - Evaluation completed.
-2022-11-24 01:06:18,081 - data_structure - 
+2022-11-24 01:38:36,611 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:36,611 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:36,612 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:36,672 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24376811548308808), (6, 0.24376811548308808), (5, 0.9104347821497547)]
+2022-11-24 01:38:36,687 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:36,689 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:36,689 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,757 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24376811548308808), (1, 0.9104347821497547), (6, 0.9104347821497547)]
+2022-11-24 01:38:36,772 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:36,774 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:36,774 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:36,841 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24376811548308808), (5, 0.9104347821497548), (1, 1.5771014488164217), (6, 1.5771014488164217)]
+2022-11-24 01:38:36,860 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:36,863 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:36,864 - blackboard - Evaluation completed.
+2022-11-24 01:38:36,874 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -890,27 +890,27 @@
 (<bound method Robot.follow of <agent_types.rob...            0.98008  
 (<bound method Robot.stay of <agent_types.robot...            0.98008  
 (<bound method Robot.go_to_charge_station of <a...            0.98008  
-2022-11-24 01:06:18,082 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:18,437 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:18,438 - blackboard - Starting tests...
-2022-11-24 01:06:18,451 - blackboard - Running Deontology test.
-2022-11-24 01:06:18,451 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:18,451 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:18,452 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:18,452 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:18,453 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:18,453 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:18,453 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:18,454 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:18,457 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:18,457 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:18,457 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:18,457 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:18,470 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:18,470 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:18,536 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:18,536 - blackboard - Testing completed.
-2022-11-24 01:06:18,544 - data_structure - 
+2022-11-24 01:38:36,875 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:37,268 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:37,269 - blackboard - Starting tests...
+2022-11-24 01:38:37,280 - blackboard - Running Deontology test.
+2022-11-24 01:38:37,280 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:37,280 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:37,281 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:37,281 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:37,282 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:37,282 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:37,282 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:37,283 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:37,286 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:37,286 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:37,286 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:37,287 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:37,299 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:37,300 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:37,366 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:37,366 - blackboard - Testing completed.
+2022-11-24 01:38:37,375 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -940,22 +940,22 @@
 (<bound method Robot.follow of <agent_types.rob...               0.98  
 (<bound method Robot.stay of <agent_types.robot...               0.98  
 (<bound method Robot.go_to_charge_station of <a...               0.98  
-2022-11-24 01:06:18,544 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:18,545 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:18,545 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:18,605 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24276811548308808), (6, 0.24276811548308808), (4, 2.242768115483088), (5, 2.242768115483088)]
-2022-11-24 01:06:18,624 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:18,626 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:18,627 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:18,686 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24276811548308808), (5, 0.24276811548308808), (1, 2.242768115483088), (2, 2.242768115483088)]
-2022-11-24 01:06:18,705 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:18,707 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:18,707 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:18,767 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24276811548308808), (5, 0.24276811548308808), (1, 2.242768115483088), (2, 2.242768115483088)]
-2022-11-24 01:06:18,787 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:18,789 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:18,789 - blackboard - Evaluation completed.
-2022-11-24 01:06:18,798 - data_structure - 
+2022-11-24 01:38:37,376 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:37,376 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:37,376 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:37,436 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24276811548308808), (6, 0.24276811548308808), (5, 0.9094347821497547)]
+2022-11-24 01:38:37,450 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:37,452 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:37,452 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:37,513 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24276811548308808), (1, 0.9094347821497547), (6, 0.9094347821497547)]
+2022-11-24 01:38:37,528 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:37,530 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:37,530 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:37,595 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24276811548308808), (5, 0.9094347821497548), (1, 1.5761014488164216), (6, 1.5761014488164216)]
+2022-11-24 01:38:37,617 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:37,620 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:37,621 - blackboard - Evaluation completed.
+2022-11-24 01:38:37,630 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -985,27 +985,27 @@
 (<bound method Robot.follow of <agent_types.rob...               0.98  
 (<bound method Robot.stay of <agent_types.robot...               0.98  
 (<bound method Robot.go_to_charge_station of <a...               0.98  
-2022-11-24 01:06:18,799 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
-2022-11-24 01:06:19,151 - blackboard - Loaded the data to the blackboard.
-2022-11-24 01:06:19,151 - blackboard - Starting tests...
-2022-11-24 01:06:19,165 - blackboard - Running Deontology test.
-2022-11-24 01:06:19,165 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
-2022-11-24 01:06:19,165 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:19,166 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : Permissible
-2022-11-24 01:06:19,166 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:19,166 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Permissible
-2022-11-24 01:06:19,167 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>
-2022-11-24 01:06:19,167 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : Not permissible since it broke rules [4]
-2022-11-24 01:06:19,167 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
-2022-11-24 01:06:19,170 - blackboard - Blackboard updated with Deontology test results.
-2022-11-24 01:06:19,171 - blackboard - Running Utilitarian test.
-2022-11-24 01:06:19,171 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
-2022-11-24 01:06:19,171 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:19,184 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:19,184 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:19,255 - blackboard - Blackboard updated with Utilitarian test results.
-2022-11-24 01:06:19,255 - blackboard - Testing completed.
-2022-11-24 01:06:19,263 - data_structure - 
+2022-11-24 01:38:37,632 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:37,985 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:37,986 - blackboard - Starting tests...
+2022-11-24 01:38:38,000 - blackboard - Running Deontology test.
+2022-11-24 01:38:38,001 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:38,001 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,002 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Permissible
+2022-11-24 01:38:38,002 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,003 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:38,003 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,004 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:38,004 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:38,008 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:38,008 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:38,008 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:38,008 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:38,022 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:38,023 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:38,091 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:38:38,092 - blackboard - Testing completed.
+2022-11-24 01:38:38,100 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                NaN   
 (<bound method Robot.stay of <agent_types.robot...                NaN   
@@ -1035,22 +1035,22 @@
 (<bound method Robot.follow of <agent_types.rob...            0.97992  
 (<bound method Robot.stay of <agent_types.robot...            0.97992  
 (<bound method Robot.go_to_charge_station of <a...            0.97992  
-2022-11-24 01:06:19,264 - blackboard - Calling the final evaluator.
-2022-11-24 01:06:19,264 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
-2022-11-24 01:06:19,264 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>)
-2022-11-24 01:06:19,328 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24176811548308802), (6, 0.24176811548308802), (4, 2.241768115483088), (5, 2.241768115483088)]
-2022-11-24 01:06:19,348 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>) : 1 with ['wellbeing'] intention
-2022-11-24 01:06:19,350 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
-2022-11-24 01:06:19,350 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:19,416 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24176811548308802), (5, 0.24176811548308802), (1, 2.241768115483088), (2, 2.241768115483088)]
-2022-11-24 01:06:19,435 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:19,437 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
-2022-11-24 01:06:19,438 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)
-2022-11-24 01:06:19,496 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24176811548308802), (5, 0.24176811548308802), (1, 2.241768115483088), (2, 2.241768115483088)]
-2022-11-24 01:06:19,514 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,) : 0 with ['wellbeing'] intention
-2022-11-24 01:06:19,516 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
-2022-11-24 01:06:19,517 - blackboard - Evaluation completed.
-2022-11-24 01:06:19,525 - data_structure - 
+2022-11-24 01:38:38,100 - blackboard - Calling the final evaluator.
+2022-11-24 01:38:38,101 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:38:38,101 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:38:38,159 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(1, 0.24176811548308802), (6, 0.24176811548308802), (5, 0.9084347821497547)]
+2022-11-24 01:38:38,173 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 1 with ['wellbeing'] intention
+2022-11-24 01:38:38,176 - PSRB_eldercare_evaluator - Action follow desirability: 1| Reason: no rules broken and accepted by experts.
+2022-11-24 01:38:38,177 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:38,242 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(5, 0.24176811548308802), (1, 0.9084347821497547), (4, 0.9084347821497547), (6, 0.9084347821497547)]
+2022-11-24 01:38:38,262 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:38,264 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['wellbeing']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:38:38,265 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:38:38,327 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(4, 0.24176811548308802), (5, 0.9084347821497547), (1, 1.5751014488164214), (6, 1.5751014488164214)]
+2022-11-24 01:38:38,346 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:38:38,349 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:38:38,349 - blackboard - Evaluation completed.
+2022-11-24 01:38:38,357 - data_structure - 
                                                    desirability_score  \
 (<bound method Robot.follow of <agent_types.rob...                  1   
 (<bound method Robot.stay of <agent_types.robot...                  1   
@@ -1080,4 +1080,157 @@
 (<bound method Robot.follow of <agent_types.rob...            0.97992  
 (<bound method Robot.stay of <agent_types.robot...            0.97992  
 (<bound method Robot.go_to_charge_station of <a...            0.97992  
-2022-11-24 01:06:19,526 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f7264cdbd90>>, <agent_types.patient.Patient object at 0x7f7264cdbd60>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f7264cdbd90>>,)]
+2022-11-24 01:38:38,358 - blackboard - Recommended actions: [(<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>), (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:38:38,716 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:38:38,716 - blackboard - Starting tests...
+2022-11-24 01:38:38,729 - blackboard - Running Deontology test.
+2022-11-24 01:38:38,729 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:38:38,730 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,730 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Not permissible since it broke rules [1]
+2022-11-24 01:38:38,731 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,731 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:38:38,731 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:38:38,732 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:38:38,732 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:38:38,735 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:38:38,735 - blackboard - Running Utilitarian test.
+2022-11-24 01:38:38,735 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:38:38,736 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:39:37,376 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:27,473 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:30,780 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:40:30,780 - blackboard - Testing completed.
+2022-11-24 01:40:30,788 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                NaN   
+(<bound method Robot.stay of <agent_types.robot...                NaN   
+(<bound method Robot.go_to_charge_station of <a...                NaN   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...             True   
+(<bound method Robot.stay of <agent_types.robot...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...               [1]   
+(<bound method Robot.stay of <agent_types.robot...                []   
+(<bound method Robot.go_to_charge_station of <a...               [4]   
+
+                                                   follower_autonomy  \
+(<bound method Robot.follow of <agent_types.rob...              -1.0   
+(<bound method Robot.stay of <agent_types.robot...               1.0   
+(<bound method Robot.go_to_charge_station of <a...               1.0   
+
+                                                   follower_wellbeing  \
+(<bound method Robot.follow of <agent_types.rob...                1.0   
+(<bound method Robot.stay of <agent_types.robot...                1.0   
+(<bound method Robot.go_to_charge_station of <a...                1.0   
+
+                                                   robot_availability  
+(<bound method Robot.follow of <agent_types.rob...           0.979839  
+(<bound method Robot.stay of <agent_types.robot...           0.979839  
+(<bound method Robot.go_to_charge_station of <a...           0.979839  
+2022-11-24 01:40:30,789 - blackboard - Calling the final evaluator.
+2022-11-24 01:40:30,789 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:40:30,789 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:40:30,853 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(7, 1.240768115483088), (8, 3.9074347821497546), (1, 4.240768115483087), (6, 4.240768115483087)]
+2022-11-24 01:40:30,873 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['autonomy'] intention
+2022-11-24 01:40:30,876 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [1] broken and not accepted by experts.
+2022-11-24 01:40:30,876 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:30,937 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(8, 1.240768115483088), (7, 3.9074347821497546), (9, 3.907434782149755)]
+2022-11-24 01:40:30,951 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['autonomy'] intention
+2022-11-24 01:40:30,953 - PSRB_eldercare_evaluator - Action stay desirability: 1| Reason: no rules broken, but not accepted by experts. Since it decreases ['autonomy']values too much, deemed not accepted by PSRB system.
+2022-11-24 01:40:30,954 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:31,016 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(8, 1.9074347821497548), (9, 3.240768115483088), (4, 4.240768115483087)]
+2022-11-24 01:40:31,031 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['wellbeing'] intention
+2022-11-24 01:40:31,034 - PSRB_eldercare_evaluator - Action go_to_charge_station desirability: 0| Reason: rules [4] broken and not accepted by experts.
+2022-11-24 01:40:31,035 - blackboard - Evaluation completed.
+2022-11-24 01:40:31,045 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                  0   
+(<bound method Robot.stay of <agent_types.robot...                  1   
+(<bound method Robot.go_to_charge_station of <a...                  0   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...             True   
+(<bound method Robot.stay of <agent_types.robot...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...               [1]   
+(<bound method Robot.stay of <agent_types.robot...                []   
+(<bound method Robot.go_to_charge_station of <a...               [4]   
+
+                                                   follower_autonomy  \
+(<bound method Robot.follow of <agent_types.rob...              -1.0   
+(<bound method Robot.stay of <agent_types.robot...               1.0   
+(<bound method Robot.go_to_charge_station of <a...               1.0   
+
+                                                   follower_wellbeing  \
+(<bound method Robot.follow of <agent_types.rob...                1.0   
+(<bound method Robot.stay of <agent_types.robot...                1.0   
+(<bound method Robot.go_to_charge_station of <a...                1.0   
+
+                                                   robot_availability  
+(<bound method Robot.follow of <agent_types.rob...           0.979839  
+(<bound method Robot.stay of <agent_types.robot...           0.979839  
+(<bound method Robot.go_to_charge_station of <a...           0.979839  
+2022-11-24 01:40:31,046 - blackboard - Recommended actions: [(<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)]
+2022-11-24 01:40:31,396 - blackboard - Loaded the data to the blackboard.
+2022-11-24 01:40:31,396 - blackboard - Starting tests...
+2022-11-24 01:40:31,408 - blackboard - Running Deontology test.
+2022-11-24 01:40:31,408 - elder_care_deontology_test - Running ethical_governor.blackboard.ethicaltests.elder_care_deontology_test...
+2022-11-24 01:40:31,408 - elder_care_deontology_test - Testing action: <bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:40:31,409 - elder_care_deontology_test - Action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : Not permissible since it broke rules [1]
+2022-11-24 01:40:31,409 - elder_care_deontology_test - Testing action: <bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:40:31,409 - elder_care_deontology_test - Action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Permissible
+2022-11-24 01:40:31,409 - elder_care_deontology_test - Testing action: <bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>
+2022-11-24 01:40:31,410 - elder_care_deontology_test - Action (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : Not permissible since it broke rules [4]
+2022-11-24 01:40:31,410 - elder_care_deontology_test - ethical_governor.blackboard.ethicaltests.elder_care_deontology_test finished.
+2022-11-24 01:40:31,413 - blackboard - Blackboard updated with Deontology test results.
+2022-11-24 01:40:31,413 - blackboard - Running Utilitarian test.
+2022-11-24 01:40:31,413 - elder_care_utilitarian_test - Running ethical_governor.blackboard.ethicaltests.elder_care_utilitarian_test...
+2022-11-24 01:40:31,414 - elder_care_utilitarian_test - Testing action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:40:56,854 - elder_care_utilitarian_test - Testing action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:56,856 - elder_care_utilitarian_test - Testing action: (<bound method Robot.go_to_charge_station of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:40:56,930 - blackboard - Blackboard updated with Utilitarian test results.
+2022-11-24 01:40:56,931 - blackboard - Testing completed.
+2022-11-24 01:40:56,942 - data_structure - 
+                                                   desirability_score  \
+(<bound method Robot.follow of <agent_types.rob...                NaN   
+(<bound method Robot.stay of <agent_types.robot...                NaN   
+(<bound method Robot.go_to_charge_station of <a...                NaN   
+
+                                                   is_breaking_rule  \
+(<bound method Robot.follow of <agent_types.rob...             True   
+(<bound method Robot.stay of <agent_types.robot...            False   
+(<bound method Robot.go_to_charge_station of <a...             True   
+
+                                                   breaking_rule_ids  \
+(<bound method Robot.follow of <agent_types.rob...               [1]   
+(<bound method Robot.stay of <agent_types.robot...                []   
+(<bound method Robot.go_to_charge_station of <a...               [4]   
+
+                                                   follower_autonomy  \
+(<bound method Robot.follow of <agent_types.rob...              -1.0   
+(<bound method Robot.stay of <agent_types.robot...               1.0   
+(<bound method Robot.go_to_charge_station of <a...               1.0   
+
+                                                   follower_wellbeing  \
+(<bound method Robot.follow of <agent_types.rob...                1.0   
+(<bound method Robot.stay of <agent_types.robot...           0.998581   
+(<bound method Robot.go_to_charge_station of <a...           0.998581   
+
+                                                   robot_availability  
+(<bound method Robot.follow of <agent_types.rob...           0.979759  
+(<bound method Robot.stay of <agent_types.robot...           0.979759  
+(<bound method Robot.go_to_charge_station of <a...           0.979759  
+2022-11-24 01:40:56,942 - blackboard - Calling the final evaluator.
+2022-11-24 01:40:56,942 - PSRB_eldercare_evaluator - ethical_governor.blackboard.evaluator.PSRB_eldercare_evaluator started evaluation using the data in the blackboard.
+2022-11-24 01:40:56,943 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>)
+2022-11-24 01:40:57,006 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(7, 0.23976811548308802), (8, 2.9064347821497547), (1, 3.2397681154830877), (6, 3.2397681154830877)]
+2022-11-24 01:40:57,025 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.follow of <agent_types.robot.Robot object at 0x7f8356df3dc0>>, <agent_types.patient.Patient object at 0x7f8356df3d90>) : 0 with ['autonomy'] intention
+2022-11-24 01:41:26,614 - PSRB_eldercare_evaluator - Action follow desirability: 0| Reason: rules [1] broken and not accepted by experts.
+2022-11-24 01:41:28,155 - PSRB_eldercare_evaluator - Evaluating action: (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,)
+2022-11-24 01:41:28,733 - PSRB_eldercare_evaluator - closest neighbours to the case are: [(8, 0.24118745628128907), (9, 2.905015441351554), (7, 2.9078541229479558)]
+2022-11-24 01:41:31,025 - PSRB_eldercare_evaluator - expert opinion on action (<bound method Robot.stay of <agent_types.robot.Robot object at 0x7f8356df3dc0>>,) : 0 with ['autonomy'] intention

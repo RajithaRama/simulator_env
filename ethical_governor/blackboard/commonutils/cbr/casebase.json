@@ -129,7 +129,7 @@
     "follower_wellbeing": 1.0,
     "robot_availability": 0.98,
     "action": "follow",
-    "acceptability": 1,
+    "acceptability": 0,
     "intention": "autonomy"
     },
     {
@@ -148,7 +148,7 @@
     "follower_wellbeing": 1.0,
     "robot_availability": 0.98,
     "action": "stay",
-    "acceptability": 0,
+    "acceptability": 1,
     "intention": "autonomy"
     },
     {

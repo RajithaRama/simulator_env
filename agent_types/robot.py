@@ -52,6 +52,7 @@ class Robot(HomeAgent):
                     ins_split = instruction[0].split('__')
                     if ins_split[1] in self.model.locations.keys():
                         self.do_not_follow_to(to_location=ins_split[1], follower=instruction[1])
+                        env['stakeholders']['robot']['not_follow_request'] = self.not_follow_request
                 if 'continue' == instruction[0] and self.not_follow_request:
                     self.remove_do_not_follow()
 
