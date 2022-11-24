@@ -209,6 +209,7 @@ class CBR:
 
     def distance_weighted_vote(self, neighbours_with_dist, threshold, logger):
         """ Calculate the distance_weighted vote of k neighbours"""
+        # TODO: Check what happening with votes
         vote = 0
         intentions = {}
         for neighbour, distance in neighbours_with_dist:
