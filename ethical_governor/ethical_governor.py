@@ -10,5 +10,5 @@ class EthicalGovernor:
         self.blackboard.load_data(env)
         self.blackboard.run_tests()
         recommendations = self.blackboard.recommend()
-        print(recommendations)
+        # print(recommendations)
         return recommendations

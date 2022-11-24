@@ -24,22 +24,22 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
             logger.info('Testing action: ' + str(action.value))
 
-            logger.info('Calculating autonomy utility for stakeholders')
+            # logger.info('Calculating autonomy utility for stakeholders')
             autonomy_utility = self.get_autonomy_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                          logger=logger)
-            logger.info('Autonomy utilities for action ' + str(action.value) + ': ' + str(autonomy_utility))
+            # logger.info('Autonomy utilities for action ' + str(action.value) + ': ' + str(autonomy_utility))
             utils['autonomy'] = autonomy_utility
 
-            logger.info('Calculating well-being utility for stakeholders')
+            # logger.info('Calculating well-being utility for stakeholders')
             wellbeing_util = self.get_wellbeing_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                         logger=logger)
-            logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
+            # logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
             utils['wellbeing'] = wellbeing_util
 
-            logger.info('Calculating the availability for stakeholders')
+            # logger.info('Calculating the availability for stakeholders')
             availability_util = self.get_availability_util(env=env, stakeholder_data=stakeholder_data, action=action,
                                                            logger=logger)
-            logger.info('Availability utils for action ' + str(action.value) + ': ' + str(availability_util))
+            # logger.info('Availability utils for action ' + str(action.value) + ': ' + str(availability_util))
             utils['availability'] = availability_util
 
             out = {}

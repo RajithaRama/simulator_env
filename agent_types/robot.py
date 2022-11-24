@@ -28,7 +28,7 @@ class Robot(HomeAgent):
             self.battery += 3
         else:
             self.battery -= 0.1
-        print("battery_lvl: " + str(self.battery))
+        # print("battery_lvl: " + str(self.battery))
         env = self.get_env_data()
         # self.follow(env)
         self.next_action(env)

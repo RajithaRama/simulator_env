@@ -29,7 +29,8 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.expert_db = CBR()
         with open(CASE_BASE) as fp:
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
-            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
+            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[
+                ['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 
         self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
@@ -39,6 +40,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.score = {}
 
         for action in data.get_actions():
+            logger.info('Evaluating action: ' + str(action))
             expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
@@ -52,35 +54,60 @@ class PSRBEvaluator(evaluator.Evaluator):
             # diff_wellbeing_availability = wellbeing - availability
             # diff_autonomy_availability = autonomy - availability
 
-            if expert_opinion and not data.get_table_data(action=action, column='is_breaking_rule'):
+            rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
+            if expert_opinion and not rule_broken:
                 # When rules and expert both accept
                 data.put_table_data(action=action, column='desirability_score', value=1)
-            elif not expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken and '
+                                                                                       'accepted by experts.')
+            elif not expert_opinion and rule_broken:
                 # When rules and expert reject
                 data.put_table_data(action=action, column='desirability_score', value=0)
-            elif expert_opinion and data.get_table_data(action=action, column='is_breaking_rule'):
+                logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                    data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken and not '
+                                                                                      'accepted by experts.')
+            elif expert_opinion and rule_broken:
                 # when rules reject but experts accept
                 values = self.charactor.keys()
 
                 acceptability = 1
                 for value in values:
                     if value in expert_intention:
-                        threshold = (10 - self.charactor[value])/10
+                        threshold = (10 - self.charactor[value]) / 10
                         if eval(value) < threshold:
                             acceptability = 0
                     else:
-                        threshold = (self.charactor[value] - 10)/10
+                        threshold = (self.charactor[value] - 10) / 10
                         if eval(value) < threshold:
                             acceptability = 0
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                if acceptability:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                                                                                          'experts. Since it increases ' + str(expert_intention) + 'values greatly, deemed accepted by PSRB '
+                                                                                                                                              'system.')
+                else:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        'experts. However, the value tradeoff is not satisfactory to bend the rule.')
             else:
                 # When rules accept and experts reject
                 acceptability = 1
                 for value in expert_intention:
-                    lower_threshold = (self.charactor[value] - 10)/10
+                    lower_threshold = (self.charactor[value] - 10) / 10
                     if eval(value) < lower_threshold:
                         acceptability = 0
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                if acceptability:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
+                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
+                                                                                                                       'PSRB system.')
+
+                else:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
+                        'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
 
                 # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
                 #     if eval(item1) == eval(item2)
@@ -93,7 +120,8 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
         logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
-        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3, logger=logger)
+        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3,
+                                                                logger=logger)
 
         return vote, intention
 
@@ -132,7 +160,7 @@ if __name__ == '__main__':
                               'robot_location', 'not_follow_request', 'not_follow_locations', 'battery_level',
                               'instructions_given', 'time', 'follower_autonomy', 'follower_wellbeing',
                               'follower_availability', 'action']))
-    print(neighbours)
+    # print(neighbours)
 
     vote = ex1.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours, threshold=3)
-    print(vote)
+    # print(vote)

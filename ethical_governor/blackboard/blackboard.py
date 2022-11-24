@@ -57,7 +57,7 @@ class Blackboard:
         # Loading data
         self.data = data_structure.Data(self.data_loader.load(env), self.conf)
         self.process_logger.info('Loaded the data to the blackboard.')
-        self.data.log_table(self.process_logger)
+        # self.data.log_table(self.process_logger)
 
     def run_tests(self):
         self.process_logger.info('Starting tests...')
@@ -73,8 +73,9 @@ class Blackboard:
                         self.data.add_table_column(column)
                     self.data.put_table_data(action, column, value)
             self.process_logger.info('Blackboard updated with ' + test + ' test results.')
-            self.data.log_table(self.process_logger)
+
         self.process_logger.info('Testing completed.')
+        self.data.log_table(self.process_logger)
 
     def recommend(self):
         # print(self.data._table_df)

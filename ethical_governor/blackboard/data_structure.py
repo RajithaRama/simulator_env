@@ -79,7 +79,7 @@ class Data:
             elif step == 'stakeholders':
                 data = self.get_stakeholders_data()
             else:
-                print(step, path_to_data)
+                # print(step, path_to_data)
                 data = data[step]
         return data
 

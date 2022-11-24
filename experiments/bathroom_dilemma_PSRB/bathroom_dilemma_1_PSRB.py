@@ -11,13 +11,13 @@ def agent_portrayal(agent):
     # portrayal["Color"] = "red"
     # portrayal["Shape"] = "circle"
     if agent.type == 'robot':
-        portrayal["Color"] = "red"
-        portrayal["Shape"] = "circle"
-        portrayal["r"] = 0.5
+        # portrayal["Color"] = "red"
+        portrayal["Shape"] = "robot.png"
+        # portrayal["r"] = 0.5
     elif agent.type == 'patient':
-        portrayal["Color"] = "blue"
-        portrayal["Shape"] = "circle"
-        portrayal["r"] = 0.5
+        # portrayal["Color"] = "blue"
+        portrayal["Shape"] = "elder.png"
+        # portrayal["r"] = 0.5
     elif agent.type == 'wall':
         portrayal["Color"] = "black"
         portrayal["Shape"] = "rect"
