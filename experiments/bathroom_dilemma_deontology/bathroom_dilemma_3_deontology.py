@@ -2,7 +2,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home import Home
 
-# The patient go to the bathroom and stay 40 steps (too long)
+# The patient go to the bathroom and getting injured never comes back
 
 def agent_portrayal(agent):
     portrayal = {
@@ -53,14 +53,10 @@ patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
                        ((10, 9), '')])
 
-# Wait in Bathroom for 40 steps
-for i in range(40):
+# Wait in Bathroom for 20 steps
+for i in range(20):
     patient_1_path.append(((10, 10), ''))
 
-# Path to kitchen (with command 'continue')
-patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), ''), ((8, 8), 'continue'), ((7, 8), ''), ((6, 8), ''),
-                       ((5, 8), ''), ((5, 7), ''), ((5, 6), ''), ((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''),
-                       ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
@@ -68,8 +64,8 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "governor_conf":
-                       'experiments/bathroom_dilemma_utilitarian/elder_care_sim_utilitarian.yaml', "robo_battery": 100}
+                   "patient_paths": [patient_1_path], "governor_conf": 'experiments/bathroom_dilemma_deontology'
+                                                                       '/elder_care_sim_deontology.yaml', "robo_battery": 100}
 )
 
 server.port = 8123

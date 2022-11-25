@@ -102,12 +102,12 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                 if acceptability:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
-                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
-                                                                                                                       'PSRB system.')
+                        'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
 
                 else:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
-                        'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
+                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
+                                                                                                                       'PSRB system.')
 
                 # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
                 #     if eval(item1) == eval(item2)

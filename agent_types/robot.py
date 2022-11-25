@@ -10,10 +10,10 @@ VISIBLE_DIST = 3
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, follower_name, governor_conf):
+    def __init__(self, unique_id, name, model, follower_name, governor_conf, start_battery):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
-        self.battery = 50
+        self.battery = start_battery
         self.time = 0
         self.last_seen_location = None
         self.last_seen_pos = None

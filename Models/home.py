@@ -18,7 +18,7 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, governor_conf):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, governor_conf, robo_battery):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -31,7 +31,7 @@ class Home(Model):
 
         id_gen = GenId(1)
         # Init robot
-        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, robo_battery)
 
         # Init_stakeholders
         self.stakeholders = []

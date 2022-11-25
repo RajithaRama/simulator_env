@@ -54,7 +54,7 @@
     "robot_availability": 0.98,
     "action": "go_to_charge_station",
     "acceptability": 0,
-    "intention": "wellbeing"
+    "intention": "availability"
     },
     {
     "case_id": 4,
@@ -73,7 +73,7 @@
     "robot_availability": 0.98,
     "action": "go_to_charge_station",
     "acceptability": 0,
-    "intention": "wellbeing"
+    "intention": "availability"
     },
     {
     "case_id": 5,
@@ -168,6 +168,6 @@
     "robot_availability": 0.98,
     "action": "go_to_charge_station",
     "acceptability": 0,
-    "intention": "autonomy"
+    "intention": "availability"
     }
 ]

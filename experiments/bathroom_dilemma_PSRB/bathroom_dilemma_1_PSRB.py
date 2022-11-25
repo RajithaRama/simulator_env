@@ -2,6 +2,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home import Home
 
+# The patient go to the bathroom and stay 20 steps (too long)
 
 def agent_portrayal(agent):
     portrayal = {
@@ -68,7 +69,7 @@ server = ModularVisualization.ModularServer(
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
                    "patient_paths": [patient_1_path], "governor_conf":
-                       'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml'}
+                       'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robo_battery": 100}
 )
 
 server.port = 8123

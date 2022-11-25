@@ -80,7 +80,10 @@ class Data:
                 data = self.get_stakeholders_data()
             else:
                 # print(step, path_to_data)
-                data = data[step]
+                try:
+                    data = data[step]
+                except KeyError:
+                    data = None
         return data
 
 class Action:

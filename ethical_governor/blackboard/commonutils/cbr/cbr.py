@@ -86,7 +86,8 @@ class CBR:
         query['battery_level'] = query['battery_level'] / 100
 
         try:
-            query['follower_time_since_last_seen'] = self.power_transformer.transform(query['follower_time_since_last_seen'].to_numpy().reshape(-1, 1))
+            query['follower_time_since_last_seen'] = self.power_transformer.transform(
+                query['follower_time_since_last_seen'].to_numpy().reshape(-1, 1))
         except KeyError:
             logger.warn('feature "follower_time_since_last_seen" not found in query.')
 
@@ -148,7 +149,7 @@ class CBR:
         data[data.columns.intersection(self.categorical_data_cols)] = self.encoder.fit_transform(X=col_data)
 
         # Scaling battery level
-        data['battery_level'] = data['battery_level']/100
+        data['battery_level'] = data['battery_level'] / 100
 
         # Transforming time since last seen
         last_seen_data = data['follower_time_since_last_seen'].to_numpy().reshape(-1, 1)
@@ -183,8 +184,9 @@ class CBR:
         :param b: list
         :return: distance
         """
+
         def setify(lst):
-            s =set()
+            s = set()
             for item in lst:
                 if isinstance(item, collections.abc.Hashable):
                     s.add(item)
@@ -210,23 +212,34 @@ class CBR:
     def distance_weighted_vote(self, neighbours_with_dist, threshold, logger):
         """ Calculate the distance_weighted vote of k neighbours"""
         # TODO: Check what happening with votes
-        vote = 0
+        vote = {0: 0, 1: 0}
         intentions = {}
         for neighbour, distance in neighbours_with_dist:
             # If the distance is 0, then give it weight of K (number of neighbours)
-            if distance < 1/len(neighbours_with_dist):
-                vote += len(neighbours_with_dist)*self.get_case(neighbour)['acceptability']
-                intentions[self.get_case(neighbour)['intention']] = intentions.setdefault(self.get_case(neighbour)['intention'], 0) + len(neighbours_with_dist)*self.get_case(neighbour)['acceptability']
+            if distance < 1 / len(neighbours_with_dist):
+                vote[self.get_case(neighbour)['acceptability']] += len(neighbours_with_dist)
+                # intentions[self.get_case(neighbour)['acceptability']] = intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(self.get_case(neighbour)['intention'])
             else:
-                vote += self.get_case(neighbour)['acceptability']/distance
-                intentions[self.get_case(neighbour)['intention']] = intentions.setdefault(self.get_case(neighbour)['intention'], 0) + self.get_case(neighbour)['acceptability']/distance
-        if vote > threshold:
-            # maximum voted intention should be the biggest reason for acceptability == 1
-            vote_max = max(intentions.values())
-            intention_max = [i for i in intentions.keys() if intentions[i]==vote_max]
-            return 1, intention_max
-        else:
-            # minimum voted intention should be the biggest reason for acceptability == 0
-            vote_min = min(intentions.values())
-            intention_min = [i for i in intentions.keys() if intentions[i] == vote_min]
-            return 0, intention_min
+                vote[self.get_case(neighbour)['acceptability']] += 1 / distance
+                # intentions[self.get_case(neighbour)['acceptability']] = intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(self.get_case(neighbour)['intention'])
+
+            intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(
+                self.get_case(neighbour)['intention'])
+        max_vote = max(vote.values())
+
+        # out 1 if there is a tie.
+        class_won = 1 if vote[1] == max_vote else 0
+        intention = set(intentions[class_won])
+
+        return class_won, list(intention)
+
+        # if vote > threshold:
+        #     # maximum voted intention should be the biggest reason for acceptability == 1
+        #     vote_max = max(intentions.values())
+        #     intention_max = [i for i in intentions.keys() if intentions[i]==vote_max]
+        #     return 1, intention_max
+        # else:
+        #     # minimum voted intention should be the biggest reason for acceptability == 0
+        #     vote_min = min(intentions.values())
+        #     intention_min = [i for i in intentions.keys() if intentions[i] == vote_min]
+        #     return 0, intention_min
