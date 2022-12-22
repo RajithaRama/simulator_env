@@ -22,13 +22,14 @@ class Robot(HomeAgent):
         self.not_follow_request = False
         self.not_follow_locations = []
         self.ethical_governor = EthicalGovernor(governor_conf)
+        self.roles = {follower_name: 'follower'}
 
     def step(self):
         if self.pos in self.model.things['charge_station']:
             self.battery += 3
         else:
-            self.battery -= 0.1
-        # print("battery_lvl: " + str(self.battery))
+            self.battery -= 0.2
+        print("battery_lvl: " + str(self.battery))
         env = self.get_env_data()
         # self.follow(env)
         self.next_action(env)
@@ -46,6 +47,8 @@ class Robot(HomeAgent):
             for instruction in buffered_instructions:
                 # instruction = (command, giver)
                 # add make clear instruction to possible action list
+                if not env['stakeholders'][self.roles.setdefault(instruction[1].id, instruction[1].id)]['seen']:
+                    continue
                 if 'move_away' == instruction[0]:
                     possible_actions.append((self.move_away, instruction[1]))
                 if 'do_not_follow_to' in instruction[0]:
@@ -143,6 +146,7 @@ class Robot(HomeAgent):
 
             action[0](*action[1:])
             print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+
             return
 
     def move_away(self, follower, act=True):

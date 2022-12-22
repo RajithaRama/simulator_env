@@ -13,6 +13,8 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
             'continue': [True, ROBOT.Robot.follow.__name__],
             'move_away': [True, ROBOT.Robot.move_away.__name__]
         }
+        # in this environment, the only action that constrain user is not moving away
+        self.actions_related_constrained_user = ['move_away']
 
     def run_test(self, data, logger):
         logger.info('Running ' + __name__ + '...')
@@ -78,10 +80,9 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     if self.instruction_function_map['do_not_follow_to'][0]:
                         autonomy_utility = 1.0
                     else:
-                        autonomy_utility = -1.0
-
-                if next_loc in stakeholder_data['robot']['not_follow_locations']:
-                    autonomy_utility = -1.0
+                        autonomy_utility = -0.7
+                elif next_loc in stakeholder_data['robot']['not_follow_locations']:
+                    autonomy_utility = -0.7
                 else:
                     autonomy_utility = 1.0
 
@@ -89,18 +90,31 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                 if giver.id == stakeholder_data[stakeholder]['id']:
                     ins, *args = ins.split('__')
                     cond, exp_action = self.instruction_function_map[ins]
-                    # if it is a positive request (i.e. asking to do something) then not doing it is -1 and doing it is
-                    # 1. But if it is a negative request (i.e. asking not to do something), thn doing that is -1, but
-                    # doing everything else is neutral (0).
-                    if cond:
+                    # If the robot is blocking the user doing something, the autonomy is -1. If the robot disobeying
+                    # the user but that does not affect what user does autonomy is -.7.
+
+                    if (ins in self.actions_related_constrained_user):
+                        if action.value[0].__name__ == exp_action:
+                            if cond:
+                                autonomy_utility = 1.0
+                            else:
+                                autonomy_utility = -1.0
+                        else:
+                            if cond:
+                                autonomy_utility = -1.0
+
+                    # if it is a positive request (
+                    # i.e. asking to do something) then not doing it is (-) values and doing it is 1. But if it is a negative
+                    # request (i.e. asking not to do something), thn doing that is (-), but doing everything else is
+                    # neutral (0).
+                    elif cond:
                         if action.value[0].__name__ == exp_action:
                             autonomy_utility = 1.0
                         else:
-                            autonomy_utility = -1.0
+                            autonomy_utility = -0.7
                     else:
                         if action.value[0].__name__ == exp_action:
-                            autonomy_utility = -1.0
-
+                            autonomy_utility = -0.7
 
             # if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request and \
             #         action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
@@ -189,7 +203,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
     def get_availability_util(self, env, stakeholder_data, action, logger):
 
         battery_level = stakeholder_data['robot']['battery_level']
-        availability = (-2 / (battery_level + 1)) + 1.02
+        availability = (-28.125 / (battery_level + 12.5)) + 1.25
 
         if action.value[0].__name__ == 'go_to_charge_station':
             availability = float(availability * 2 if availability < 0.4 else availability)

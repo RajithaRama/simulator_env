@@ -5,7 +5,7 @@ import pandas as pd
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
 from ethical_governor.blackboard.commonutils.cbr.cbr import CBR
 
-CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'casebase.json')
+CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen.json')
 
 cbr_context_data_feature_map = {
     'seen': ['stakeholders', 'follower', 'seen'],

@@ -1,3 +1,5 @@
+import numpy as np
+
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
 
 
@@ -18,16 +20,15 @@ class UtilitarianEvaluator(evaluator.Evaluator):
             for stakeholder in data.get_stakeholders_data().keys():
                 if stakeholder == 'robot':
                     continue
-
+                autonomy = data.get_table_data(action=action, column=stakeholder + '_autonomy')
+                wellbeing = data.get_table_data(action=action, column=stakeholder + '_wellbeing')
+                availability = data.get_table_data(action=action, column='robot_availability')
                 if stakeholder == 'follower':
                     # Autonomy focused utilitarian agent
-                    follower_util = (1.5 * data.get_table_data(action=action, column=stakeholder + '_autonomy') +
-                                     data.get_table_data(action=action, column=stakeholder + '_wellbeing') +
-                                     data.get_table_data(action=action, column='robot_availability'))/4
+                    follower_util = (autonomy + wellbeing + (np.exp(-2*availability)*availability))/3
                 else:
                     i += 1
-                    other_util += (data.get_table_data(action=action, column=stakeholder + '_autonomy') +
-                                     data.get_table_data(action=action, column=stakeholder + '_wellbeing'))/2
+                    other_util += (autonomy + wellbeing)/2
             if other_util:
                 other_util = other_util/i
 
@@ -36,7 +37,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
             elif other_util + follower_util < 0:
                 desirability = 0
             else:
-                desirability = other_util + follower_util
+                desirability = round((other_util + follower_util), 6)
 
             logger.info('Other util:' + str(other_util) + ' follower util:' + str(follower_util))
             logger.info('Desirability of action ' + str(action.value) + ' : ' + str(desirability))
