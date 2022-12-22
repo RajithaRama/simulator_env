@@ -108,17 +108,26 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                 # if it is a constant numeral, assign as a float
                 elif item.isnumeric():
                     value = float(item)
-                    if left and operation:
+                    if left is not None and operation:
                         right = value
-                    elif operation and not left:
+                    elif operation and left is None:
+                        raise ValueError("Error in rule input")
+                    else:
+                        left = value
+                # assign boolean value
+                elif item in ["True", "False"]:
+                    value = item == 'True'
+                    if left is not None and operation:
+                        right = value
+                    elif operation and left is None:
                         raise ValueError("Error in rule input")
                     else:
                         left = value
                 # else treat is as a string
                 else:
-                    if left and operation:
+                    if left is not None and operation:
                         right = item
-                    elif operation and not left:
+                    elif operation and left is None:
                         raise ValueError("Error in rule input")
                     else:
                         left = item
