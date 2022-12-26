@@ -162,6 +162,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
                 if seen:
                     wellbeing_util = 1.0
+
                 else:
                     time = env['time']
                     last_seen_time = data['last_seen_time']
@@ -173,7 +174,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
 
                     wellbeing_util = 2 / (1 + np.exp(((h * (1 - t)) * (x - (m + n)) / 2))) - 1
 
-                if action.value[0].__name__ == 'go_to_last_seen':
+                if action.value[0].__name__ == 'go_to_last_seen' and wellbeing_util < 0.7:
                     # if wellbeing_util < 0:
                     #     wellbeing_util = -wellbeing_util
                     # if wellbeing_util < 0.4:
@@ -206,7 +207,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         availability = (-28.125 / (battery_level + 12.5)) + 1.25
 
         if action.value[0].__name__ == 'go_to_charge_station':
-            availability = float(availability * 2 if availability < 0.4 else availability)
+            availability = float(availability + abs(availability) if availability < 0.4 else availability)
 
         stakeholder_availability_values = [('robot', availability)]
 

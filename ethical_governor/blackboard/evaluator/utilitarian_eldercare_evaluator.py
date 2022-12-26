@@ -26,6 +26,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
                 if stakeholder == 'follower':
                     # Autonomy focused utilitarian agent
                     follower_util = (autonomy + wellbeing + (np.exp(-2*availability)*availability))/3
+                    # todo: better weigh function for availability
                 else:
                     i += 1
                     other_util += (autonomy + wellbeing)/2

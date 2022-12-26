@@ -26,7 +26,9 @@ class Robot(HomeAgent):
 
     def step(self):
         if self.pos in self.model.things['charge_station']:
-            self.battery += 3
+
+            if self.battery/100 < 1:
+                self.battery += 3 if (100 - self.battery) >= 3 else (100 - self.battery)
         else:
             self.battery -= 0.2
         print("battery_lvl: " + str(self.battery))
@@ -199,7 +201,10 @@ class Robot(HomeAgent):
 
     def go_to_pos(self, pos, ignore_agents=None, act=True):
         if pos == self.pos:
-            return
+            if act:
+                return
+            else:
+                return pos
 
         for thing in self.model.things_robot_inaccessible:
             if (pos in self.model.things[thing]) or not (self.model.grid.is_cell_empty(pos)):
