@@ -56,18 +56,18 @@ class PSRBEvaluator(evaluator.Evaluator):
 
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
             if expert_opinion and not rule_broken:
-                # When rules and expert both accept
+                # When rules and expert both accept, accept
                 data.put_table_data(action=action, column='desirability_score', value=1)
                 logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken and '
                                                                                        'accepted by experts.')
             elif not expert_opinion and rule_broken:
-                # When rules and expert reject
+                # When rules and expert reject, reject
                 data.put_table_data(action=action, column='desirability_score', value=0)
                 logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
                     data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken and not '
                                                                                       'accepted by experts.')
             elif expert_opinion and rule_broken:
-                # when rules reject but experts accept
+                # when rules reject but experts accept, if
                 values = self.charactor.keys()
 
                 acceptability = 1
@@ -140,7 +140,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             if path:
                 if feature == "follower_time_since_last_seen":
                     last_seen_time = data.get_data(path) if data.get_data(path) is not None else 0
-                    value = last_seen_time - data.get_data(['environment', 'time'])
+                    value = data.get_data(['environment', 'time']) - last_seen_time
                 else:
                     value = data.get_data(path)
             else:

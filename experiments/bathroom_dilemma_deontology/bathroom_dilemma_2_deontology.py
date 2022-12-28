@@ -68,7 +68,7 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "governor_conf": 'experiments/bathroom_dilemma_deontology'
+                   "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf": 'experiments/bathroom_dilemma_deontology'
                                                                        '/elder_care_sim_deontology.yaml', "robo_battery": 100}
 )
 

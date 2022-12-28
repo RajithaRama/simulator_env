@@ -96,6 +96,9 @@ class CBR:
         required_col_names = required_col_names.insert(len(required_col_names), 'acceptability')
         subset_df = self.data_encoded[required_col_names].dropna()
 
+        # Selecting the cases that evaluate the action in query
+        subset_df = subset_df.loc[subset_df['action'] == query['action'][0]]
+
         # Tune value difference Metric for query
         self.value_diff_mat = vdm.VDM().fit(X=subset_df[q_col_names.intersection(self.categorical_data_cols)],
                                             y=subset_df['acceptability'])
@@ -129,7 +132,7 @@ class CBR:
         # print(a)
         # print(b)
         for col in col_names:
-            if col in ['case_id', 'acceptability']:
+            if col in ['case_id', 'acceptability', 'action']:
                 continue
             elif col in self.categorical_data_cols:
                 distances.append(self.vdm_distance(col, a[col], b[col]))

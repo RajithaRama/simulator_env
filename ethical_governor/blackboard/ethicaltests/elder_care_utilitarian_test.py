@@ -193,11 +193,14 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         if data['seen']:
             next_pos = tuple(map(lambda i, j: i + (i - j), data['pos'],
                                  (data['last_seen_pos'] if data['last_seen_pos'] else data['pos'])))
+
         else:
             next_pos = data['last_seen_pos']
 
-        if next_pos in env['walls']:
-            next_pos = data['pos']
+        for wall in env['walls']:
+            if next_pos in wall:
+                next_pos = data['last_seen_pos'] if data['last_seen_pos'] else data['pos']
+                break
 
         return next_pos
 
