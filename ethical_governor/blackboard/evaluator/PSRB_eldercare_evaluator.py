@@ -17,7 +17,9 @@ cbr_context_data_feature_map = {
     'not_follow_locations': ['stakeholders', 'robot', 'not_follow_locations'],
     'battery_level': ['stakeholders', 'robot', 'battery_level'],
     'instructions_given': ['stakeholders', 'robot', 'instruction_list'],
-    "time": ['environment', 'time_of_day']
+    "time": ['environment', 'time_of_day'],
+    "follower_health": ['environment', 'follower_health_score'],
+    "follower_history": ['environment', 'no_of_follower_emergencies_in_past']
 }
 
 cbr_table_data_features = ["follower_autonomy", "follower_wellbeing", "follower_availability", "action"]

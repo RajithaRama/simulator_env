@@ -15,7 +15,7 @@ class CBR:
         self.value_diff_mat = vdm.VDM()
         self.categorical_data_cols = ['follower_seen_location', 'last_seen_location', 'robot_location', 'time',
                                       'action']
-        self.numerical_data_cols = ['follower_time_since_last_seen', 'battery_level',
+        self.numerical_data_cols = ['follower_time_since_last_seen', 'follower_health', 'follower_history', 'battery_level',
                                     'follower_autonomy', 'follower_wellbeing',
                                     'follower_availability']
         self.list_data_cols = ['not_follow_locations', 'instructions_given']
@@ -86,10 +86,16 @@ class CBR:
         query['battery_level'] = query['battery_level'] / 100
 
         try:
-            query['follower_time_since_last_seen'] = self.power_transformer.transform(
+            query['follower_time_since_last_seen'] = self.power_transformer_last_seen.transform(
                 query['follower_time_since_last_seen'].to_numpy().reshape(-1, 1))
         except KeyError:
             logger.warn('feature "follower_time_since_last_seen" not found in query.')
+
+        try:
+            query['follower_history'] = self.power_transformer_history.transform(
+                query['follower_history'].to_numpy().reshape(-1, 1))
+        except KeyError:
+            logger.warn('feature "follower_history" not found in query.')
 
         # get the subset of cases that have the features
         required_col_names = q_col_names.insert(0, 'case_id')
@@ -156,8 +162,13 @@ class CBR:
 
         # Transforming time since last seen
         last_seen_data = data['follower_time_since_last_seen'].to_numpy().reshape(-1, 1)
-        self.power_transformer = PowerTransformer().fit(last_seen_data)
-        data['follower_time_since_last_seen'] = self.power_transformer.transform(last_seen_data)
+        self.power_transformer_last_seen = PowerTransformer().fit(last_seen_data)
+        data['follower_time_since_last_seen'] = self.power_transformer_last_seen.transform(last_seen_data)
+
+        # Transform history
+        history_data = data['follower_history'].to_numpy().reshape(-1, 1)
+        self.power_transformer_history = PowerTransformer().fit(history_data)
+        data['follower_history'] = self.power_transformer_history.transform(history_data)
 
         return data
 
