@@ -31,8 +31,8 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.expert_db = CBR()
         with open(CASE_BASE) as fp:
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
-            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[
-                ['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
+            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
+                ['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 
         self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}

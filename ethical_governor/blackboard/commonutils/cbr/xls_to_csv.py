@@ -7,7 +7,7 @@ import os
 # df.to_excel('data.xlsx')
 
 CASE_BASE = 'data.xlsx'
-df = pd.read_excel(CASE_BASE, header=0, index_col=None)
+df = pd.read_excel(CASE_BASE, header=0, index_col=None, dtype={"seen": bool, "not_follow_request": bool})
 print(df)
 
 df.to_json('case_base_gen.json', orient='records', indent=4)
