@@ -225,13 +225,12 @@ class CBR:
 
     def distance_weighted_vote(self, neighbours_with_dist, threshold, logger):
         """ Calculate the distance_weighted vote of k neighbours"""
-        # TODO: Check what happening with votes
         vote = {0: 0, 1: 0}
         intentions = {}
         for neighbour, distance in neighbours_with_dist:
-            # If the distance is 0, then give it weight of K (number of neighbours)
-            if distance < 1 / len(neighbours_with_dist):
-                vote[self.get_case(neighbour)['acceptability']] += len(neighbours_with_dist)
+            # Correction for smaller values
+            if distance < 1 / 5:
+                vote[self.get_case(neighbour)['acceptability']] += 5
                 # intentions[self.get_case(neighbour)['acceptability']] = intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(self.get_case(neighbour)['intention'])
             else:
                 vote[self.get_case(neighbour)['acceptability']] += 1 / distance

@@ -1,6 +1,8 @@
 import itertools
 import os
 import pandas as pd
+import json
+import ast
 
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
 from ethical_governor.blackboard.commonutils.cbr.cbr import CBR
@@ -33,9 +35,18 @@ class PSRBEvaluator(evaluator.Evaluator):
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
             data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
                 ['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']].astype(float)
+            data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))
+            data_df['instructions_given'] = data_df['instructions_given'].apply(lambda x: self.convert_lists(x))
             self.feature_list = self.expert_db.add_data(data_df)
 
         self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
+
+
+    def convert_lists(self, str):
+        # print(str, type(str))
+        x = ast.literal_eval(str)
+        # print(x, type(x))
+        return x
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
