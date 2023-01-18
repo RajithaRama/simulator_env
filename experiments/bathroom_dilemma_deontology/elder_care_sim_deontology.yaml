@@ -5,4 +5,4 @@ test_order:
   - Deontology
 evaluator: {module_name: deontology_eldercare_evaluator, class_name: DeontologyEvaluator}
 scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
-log_file: Deontology_bathroom_dilemma_case_1.log
+log_file: Deontology_bathroom_dilemma.log

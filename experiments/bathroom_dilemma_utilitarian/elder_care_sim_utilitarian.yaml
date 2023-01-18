@@ -5,4 +5,4 @@ test_order:
   - Utilitarian
 evaluator: {module_name: utilitarian_eldercare_evaluator, class_name: UtilitarianEvaluator}
 scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
-log_file: Utilitarian_bathroom_dilemma_case_1.log
+log_file: Utilitarian_bathroom_dilemma.log
