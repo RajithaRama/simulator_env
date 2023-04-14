@@ -25,8 +25,8 @@ from collections import OrderedDict
 
 # mypy
 from typing import Dict, Iterator, List, Optional, Union
-from mesa.agent import Agent
-from mesa.model import Model
+from mesa_updated.agent import Agent
+from mesa_updated.model import Model
 
 
 # BaseScheduler has a self.time of int, while

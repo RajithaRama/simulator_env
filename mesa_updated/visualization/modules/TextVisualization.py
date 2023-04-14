@@ -5,7 +5,7 @@ Text Module
 Module for drawing live-updating text.
 
 """
-from mesa.visualization.ModularVisualization import VisualizationElement
+from mesa_updated.visualization.ModularVisualization import VisualizationElement
 
 
 class TextElement(VisualizationElement):
