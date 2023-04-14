@@ -6,7 +6,7 @@ Module for drawing live-updating pie charts using d3.js
 
 """
 import json
-from mesa.visualization.ModularVisualization import VisualizationElement
+from mesa_updated.visualization.ModularVisualization import VisualizationElement
 
 
 class PieChartModule(VisualizationElement):
