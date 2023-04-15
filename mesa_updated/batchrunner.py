@@ -29,7 +29,7 @@ from typing import (
 import pandas as pd
 from tqdm import tqdm
 
-from mesa.model import Model
+from mesa_updated.model import Model
 
 
 def batch_run(
