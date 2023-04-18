@@ -89,7 +89,7 @@ class Robot(HomeAgent):
         #     possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
-            possible_actions.append((self.go_to_charge_station,))
+            possible_actions.append((self.go_to_charge_station, ))
 
         self.make_final_decision(possible_actions, env)
 
@@ -300,7 +300,7 @@ class Robot(HomeAgent):
 
         environment = {"time_of_day": 'day', "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
-                                                              'hall': (10, 5), 'bedroom': (200, 30)},
+                                                              'hall': (10, 5), 'bedroom': (200, 30), 'bedroom_close_bed': (600, 120)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),
                        "follower_health_score": float(self.model.follower_health),
                        "walls": self.model.wall_coordinates,

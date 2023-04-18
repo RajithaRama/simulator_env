@@ -101,21 +101,22 @@ class Home(Model):
         self.locations["living"] = [[(7, 1), (11, 3)], [(7, 4), (7, 4)]]
         self.locations["hall"] = [[(1, 5), (11, 6)]]
         self.locations["utility"] = [[(1, 8), (3, 11)], [(3, 7), (3, 7)]]
-        self.locations["bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
+        self.locations["bedroom_close_bed"] = [[(7, 10), (8, 11)]]
+        self.locations["bedroom"] = [[(5, 8), (8, 9)], [(5, 10), (6, 11)], [(5, 7), (5, 7)]]
         self.locations["bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
 
     def init_things(self):
         self.things = {}
 
         # add all the coordinate a thing should cover
-        self.things['Couch'] = [(8, 2), (9, 2), (10, 2)]
-        self.things['Chair'] = [(2, 2)]
+        self.things['couch'] = [(8, 2), (9, 2), (10, 2)]
+        self.things['chair'] = [(2, 2)]
         self.things['table'] = [(3, 2)]
         self.things['bed'] = [(8, 10), (8, 11)]
         self.things['charge_station'] = [(1, 9)]
         self.things['tub'] = [(11, 10), (11, 11)]
 
-        self.things_robot_inaccessible = ['Couch', 'Chair', 'table', 'bed', 'tub']
+        self.things_robot_inaccessible = ['couch', 'chair', 'table', 'bed', 'tub']
 
     def get_location(self, pos):
         location_name = None
