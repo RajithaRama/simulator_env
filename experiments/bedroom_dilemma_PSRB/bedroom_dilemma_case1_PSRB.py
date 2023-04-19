@@ -36,7 +36,7 @@ patient_1_path = [((6, 5), '')]
 # Path to bed (with command 'do_not_follow_to__bathroom')
 patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((5, 7), ''), ((5, 8), ''), ((5, 9), ''), ((5, 10), ''), ((5, 11), ''), ((6, 11), ''),
-                       ((7, 11), 'do_not_follow_to__bedroom_close_bed'), ((8, 11), '')])
+                       ((7, 11), 'do_not_follow_to__bedroom_close_bed'), ((8, 11), 'turn_off_lights')])
 
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
@@ -46,7 +46,7 @@ server = ModularVisualization.ModularServer(
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
                    "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf":
-                       'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robo_battery": 50}
+                       'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robo_battery": 50, "time_of_day": "day"}
 )
 
 server.port = 8123

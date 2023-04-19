@@ -24,7 +24,10 @@ class Robot(HomeAgent):
         self.ethical_governor = EthicalGovernor(governor_conf)
         self.roles = {follower_name: 'follower'}
 
+
     def step(self):
+        self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
+
         if self.pos in self.model.things['charge_station']:
 
             if self.battery/100 < 1:
@@ -36,6 +39,7 @@ class Robot(HomeAgent):
         # self.follow(env)
         self.next_action(env)
         self.time += 1
+
 
     def next_action(self, env):
 
@@ -62,7 +66,7 @@ class Robot(HomeAgent):
                     self.remove_do_not_follow()
 
         # get visible neighbours and set follower
-        visible_neighbors = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
+        visible_neighbors = self.model.visible_stakeholders(self.pos, self.visible_dist)
 
         self.follower = None
         for neighbor in visible_neighbors:
@@ -78,6 +82,10 @@ class Robot(HomeAgent):
             possible_actions.append((self.follow, self.follower))
         else:
             possible_actions.append((self.go_to_last_seen,))
+
+        # if robot in a restricted area and can see the follower move away
+        if self.follower and self.not_follow_request and env['stakeholders']['robot']['location'] in self.not_follow_locations:
+            possible_actions.append((self.move_away, self.follower))
 
         # staying the same place
         possible_actions.append((self.stay,))
@@ -250,7 +258,7 @@ class Robot(HomeAgent):
 
     def get_env_data(self):
         env_data = {}
-        visible_stakeholders = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
+        visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
 
         follower_in_data = False
 
@@ -291,14 +299,14 @@ class Robot(HomeAgent):
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'not_follow_request': self.not_follow_request,
                       'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
-                      'instruction_list': self.model.get_commands(self)}
+                      'visible_dist': self.visible_dist, 'instruction_list': self.model.get_commands(self)}
 
         stakeholders['robot'] = robot_data
 
         env_data['stakeholders'] = stakeholders
         # env['']
 
-        environment = {"time_of_day": 'day', "time": self.time,
+        environment = {"time_of_day": self.model.time_of_day, "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
                                                               'hall': (10, 5), 'bedroom': (200, 30), 'bedroom_close_bed': (600, 120)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),

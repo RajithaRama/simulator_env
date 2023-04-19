@@ -18,7 +18,7 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_histories, governor_conf, robo_battery):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_histories, governor_conf, robo_battery, time_of_day):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -26,7 +26,7 @@ class Home(Model):
 
         self.init_locations()
         self.init_things()
-        self.time_of_day = 'Day'
+        self.time_of_day = time_of_day
         self.instructions = {}
         self.follower_health = patient_healths[0]
         self.follower_history = patient_histories[0]
@@ -291,6 +291,9 @@ class Home(Model):
             return -1
 
         # return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
+
+    def turn_off_lights(self):
+        self.time_of_day = 'night'
 
     def give_command(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])
