@@ -168,7 +168,7 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     time = env['time']
                     last_seen_time = data['last_seen_time']
                     x = time - last_seen_time
-                    m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]
+                    m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]  # avg time not visible to robot
                     num_emer = env['no_of_follower_emergencies_in_past']
                     t = 1 / (1 + np.exp(num_emer - 2))
                     h = env['follower_health_score']

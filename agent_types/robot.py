@@ -308,7 +308,7 @@ class Robot(HomeAgent):
 
         environment = {"time_of_day": self.model.time_of_day, "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
-                                                              'hall': (10, 5), 'bedroom': (200, 30), 'bedroom_close_bed': (600, 120)},
+                                                              'hall': (10, 5), 'bedroom': (20, 10), 'bedroom_close_bed': (60, 15)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),
                        "follower_health_score": float(self.model.follower_health),
                        "walls": self.model.wall_coordinates,
