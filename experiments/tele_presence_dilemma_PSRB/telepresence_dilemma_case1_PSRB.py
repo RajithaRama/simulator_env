@@ -1,7 +1,7 @@
 from mesa_updated.visualization import ModularVisualization, modules
 
 
-from Models.home import Home
+from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
 
 def agent_portrayal(agent):
@@ -31,11 +31,13 @@ def agent_portrayal(agent):
 
 # Patient 1 path
 # start
-patient_1_path = [((6, 5), '')]
+patient_1_path = [((8, 2), '')]
+patient_2_path = [((10, 2), '')]
 
-caller_instructions = []
+caller_instructions = ['go_forward', 'go_left', 'go_left', 'go_backward', 'go_backward']
 
-patient_preferences = {}
+patient_1_preference = {}
+patient_2_preference = {}
 
 caller_data = {
     'commands': caller_instructions,
@@ -48,9 +50,9 @@ grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 server = ModularVisualization.ModularServer(
     Home,
     [grid],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": patient_preferences, "governor_conf":
-                       'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robo_battery": 50, "time_of_day": "day"}
+    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5),
+                   "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "governor_conf":
+                       'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
 
 server.port = 8123

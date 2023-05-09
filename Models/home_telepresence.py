@@ -40,8 +40,8 @@ class Home(Model):
             self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_preferences[i]))
 
         # Init caller
-        self.caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'])
-        self.stakeholders.append(self.caller)
+        caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'])
+        self.stakeholders.append(caller)
 
         self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
 
@@ -143,6 +143,11 @@ class Home(Model):
                 things.append(thing)
 
         return things
+
+    def get_stakeholder(self, name):
+        for stakeholder in self.stakeholders:
+            if stakeholder.name == name:
+                return stakeholder
 
     def add_vertical_wall(self, x, ystart, yend, id_gen):
         coordinates = [(x, y) for y in range(ystart, yend + 1)]
@@ -302,6 +307,8 @@ class Home(Model):
         self.instructions.setdefault(receiver, []).append([command, giver])
 
     def get_message(self, receiver):
-        instructions = self.instructions[receiver] if receiver in self.instructions.keys() else []
-        self.instructions[receiver] = []
+        instructions = None
+        if receiver in self.instructions.keys():
+            instructions = self.instructions[receiver]
+            self.instructions.pop(receiver)
         return instructions

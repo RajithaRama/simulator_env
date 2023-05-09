@@ -17,14 +17,20 @@ class Caller(HomeAgent):
 
 
     def step(self):
-        message, code = self.receive_message(self)
-        self.call()
+        message = self.receive_message(self)
+        if message:
+            reason, code = message
+            if code == -1:
+                self.steps -= 0
 
-    def receive_message(self, sender):
-        return self.model.get_message()
+        self.send_message()
+
+    def receive_message(self, receiver):
+        return self.model.get_message(receiver)
+
     def send_message(self):
         try:
-            next_command = self.path[self.steps]
+            next_command = self.robot_commands[self.steps]
         except IndexError:
             return
 
@@ -33,7 +39,6 @@ class Caller(HomeAgent):
                 self.model.pass_message(next_command, self, self.model.robot)
         except Exception as e:
             print(e)
-            self.model.give_command('move_away', self, self.model.robot)
             return
 
         self.steps += 1

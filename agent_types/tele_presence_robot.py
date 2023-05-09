@@ -45,10 +45,11 @@ class Robot(HomeAgent):
         # get and apply buffered_instructions
         if len(buffered_instructions):
             for instruction in buffered_instructions:
-                possible_actions.append(self.instruction_func_map[instruction])
+                action = self.instruction_func_map[instruction[0]]
+                possible_actions.append(action)
             possible_actions.append(self.decline_instruction)
-        else:
-            possible_actions.append(self.stay)
+
+        possible_actions.append(self.stay)
 
         self.make_final_decision(possible_actions, env)
 
@@ -56,7 +57,7 @@ class Robot(HomeAgent):
 
         env['suggested_actions'] = possible_actions
 
-        recommendations = self.ethical_governor.make_recommendations(env)
+        recommendations = self.ethical_governor.recommend(env)
         print('Action recommended at step ' + str(self.time) + ': ' + str(recommendations))
 
         if len(recommendations) == 1:
@@ -101,15 +102,58 @@ class Robot(HomeAgent):
         if self.is_possible_move(next_pos):
             self.move(next_pos)
         else:
-            self.decline_instruction("move_left", "I can't move left from the current position", "caller")
+            self.decline_instruction("I can't move left from the current position", "caller")
             self.stay()
 
     def stay(self):
         pass
 
-    def decline_instruction(self, instruction, reason, caller_name):
-        # TODO: implement a way to decline instructions
-        pass
-        
-    
+    def decline_instruction(self, reason, caller_name):
+        code = -1
+        msg = reason
+        reciever = self.model.get_stakeholder(caller_name)
+        self.model.pass_message((msg, code), self, reciever)
 
+    
+    def get_env_data(self):
+        env_data = {}
+        visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
+
+        stakeholders = {}
+        for agent in visible_stakeholders:
+            # print(agent.type)
+            agent_data = {}
+            if agent.type == 'wall':
+                continue
+
+            agent_data['id'] = agent.id
+            agent_data['type'] = agent.type
+            # agent_data['seen_time'] = self.time
+            # agent_data['seen_pos'] = agent.pos
+            agent_data['seen_location'] = self.model.get_location(agent.pos)
+            agent_data['pos'] = agent.pos
+            agent_data['seen'] = True
+            stakeholders[agent.id] = agent_data
+
+        caller = {'id': 'caller', 'type': 'caller'}
+        stakeholders['follower'] = caller
+
+        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
+                      'battery_level': self.battery, 'model': self,
+                      'visible_dist': self.visible_dist, 'instruction_list': self.model.get_message(self)}
+
+        stakeholders['robot'] = robot_data
+
+        env_data['stakeholders'] = stakeholders
+        # env['']
+
+        environment = {"time_of_day": self.model.time_of_day, "time": self.time,
+                       "walls": self.model.wall_coordinates,
+                       "things": self.model.things,
+                       "things_robot_inaccessible": self.model.things_robot_inaccessible
+                       }
+        env_data['environment'] = environment
+        env_data['other_inputs'] = {}
+
+        # print("robot env: " + str(env))
+        return env_data
