@@ -125,6 +125,8 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                         left = value
                 # else treat is as a string
                 else:
+                    if item == "None":
+                        item = None
                     if left is not None and operation:
                         right = item
                     elif operation and left is None:

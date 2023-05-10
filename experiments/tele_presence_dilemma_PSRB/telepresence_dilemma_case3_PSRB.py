@@ -37,7 +37,7 @@ patient_2_path = [((10, 2), '')]
 caller_instructions = ['go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
 patient_1_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
-patient_2_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
+patient_2_preference = {'bedroom': {'with_company': False, 'Alone': True}, 'kitchen': {'with_company': False, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': False, 'Alone': True}}
 
 caller_data = {
     'commands': caller_instructions,

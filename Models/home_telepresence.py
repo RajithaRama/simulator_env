@@ -7,6 +7,7 @@ from common_functions.visibilty import *
 
 from agent_types.tele_patient import Patient
 from agent_types.caller import Caller
+from agent_types.care_worker import CareWorker
 from agent_types.tele_presence_robot import Robot
 from agent_types.wall import Wall
 
@@ -19,7 +20,7 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, caller_data, time_of_day):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, caller_data, time_of_day, worker_data=None):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -38,6 +39,10 @@ class Home(Model):
         self.stakeholders = []
         for i in range(no_patients):
             self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_preferences[i]))
+
+        # init care worker
+        if worker_data is not None:
+            self.stakeholders.append(CareWorker(id_gen.get_id(), 'care_worker', self, worker_data['path'], worker_data['preferences']))
 
         # Init caller
         caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'])
@@ -94,6 +99,9 @@ class Home(Model):
         for i in range(no_patients):
             self.grid.place_agent(self.stakeholders[i], patient_starts[i])
 
+        if worker_data is not None:
+            self.grid.place_agent(self.stakeholders[-2], worker_data['path'][0][0])
+
         self.grid.place_agent(self.robot, robot_start)
 
     def init_locations(self):
@@ -146,7 +154,7 @@ class Home(Model):
 
     def get_stakeholder(self, name):
         for stakeholder in self.stakeholders:
-            if stakeholder.name == name:
+            if stakeholder.id == name:
                 return stakeholder
 
     def add_vertical_wall(self, x, ystart, yend, id_gen):

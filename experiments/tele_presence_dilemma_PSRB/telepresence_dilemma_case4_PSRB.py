@@ -19,6 +19,9 @@ def agent_portrayal(agent):
         # portrayal["Color"] = "blue"
         portrayal["Shape"] = "elder.png"
         # portrayal["r"] = 0.5
+    elif agent.type == 'care_worker':
+        portrayal["Shape"] = "careworker.png"
+        # portrayal["Color"] = "blue"
     elif agent.type == 'wall':
         portrayal["Color"] = "black"
         portrayal["Shape"] = "rect"
@@ -31,27 +34,31 @@ def agent_portrayal(agent):
 
 # Patient 1 path
 # start
-patient_1_path = [((8, 2), '')]
-patient_2_path = [((10, 2), '')]
+patient_1_path = [((8, 11), '')]
+care_worker_path = [((7, 11), '')]
 
-caller_instructions = ['go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
+caller_instructions = ['go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
-patient_2_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
+care_worker_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
 
 caller_data = {
     'commands': caller_instructions,
     'type': CALLER_TYPE.FAMILY
 }
 
+worker_data = {
+    'path': care_worker_path,
+    'preferences': care_worker_preference
+}
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
 server = ModularVisualization.ModularServer(
     Home,
     [grid],
-    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "governor_conf":
+    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
+                   "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "worker_data": worker_data, "governor_conf":
                        'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
 

@@ -18,10 +18,10 @@ class Caller(HomeAgent):
 
     def step(self):
         message = self.receive_message(self)
-        if message:
-            reason, code = message
+        if message is not None:
+            reason, code = message[0][0]
             if code == -1:
-                self.steps -= 0
+                self.steps -= 1
 
         self.send_message()
 
@@ -37,6 +37,7 @@ class Caller(HomeAgent):
         try:
             if next_command[0] != '':
                 self.model.pass_message(next_command, self, self.model.robot)
+                print("Caller: " + str(next_command))
         except Exception as e:
             print(e)
             return

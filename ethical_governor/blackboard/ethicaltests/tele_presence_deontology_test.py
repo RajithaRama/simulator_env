@@ -150,16 +150,16 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
     def run_test(self, data, logger):
         logger.info('Running ' + __name__ + '...')
         str_instructions = []
-        for instruction in data._stakeholders['robot']['instruction_list']:
-            str_instructions.append(instruction[0]+':'+str(instruction[1].id))
-
+        if data._stakeholders['robot']['instruction_list']:
+            for instruction in data._stakeholders['robot']['instruction_list']:
+                str_instructions.append(instruction[0]+':'+str(instruction[1].id))
 
         for action in data.get_actions():
             logger.info('Testing action: ' + str(action.value))
             permissible = True
             ids_of_broken_rules = []
             for id, rule in self.rules.items():
-                if rule.get_permissibility(data, action.value.__name__, str_instructions, logger) == False:
+                if rule.get_permissibility(data, action.value[0].__name__, str_instructions, logger) == False:
                     permissible = False
                     ids_of_broken_rules.append(id)
 

@@ -19,7 +19,6 @@ class Robot(HomeAgent):
         self.roles = {caller_name: 'caller'}
         self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right}
 
-
     def step(self):
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
 
@@ -43,13 +42,13 @@ class Robot(HomeAgent):
         possible_actions = []
 
         # get and apply buffered_instructions
-        if len(buffered_instructions):
+        if buffered_instructions:
             for instruction in buffered_instructions:
                 action = self.instruction_func_map[instruction[0]]
-                possible_actions.append(action)
-            possible_actions.append(self.decline_instruction)
-
-        possible_actions.append(self.stay)
+                possible_actions.append((action, ))
+            possible_actions.append((self.decline_instruction, "Declined the calller instructions considering recommendations of the ethical governor.", "caller"))
+        else:
+            possible_actions.append((self.stay, ))
 
         self.make_final_decision(possible_actions, env)
 
@@ -66,10 +65,19 @@ class Robot(HomeAgent):
             return
         else:
             #TODO: implement a way to choose between multiple recommendations
-            pass
+            user_commands = {value for key, value in self.instruction_func_map.items()}
+            for recommendation in recommendations:
+                if recommendation[0] in user_commands:
+                    recommendation[0](*recommendation[1:])
+                    print('Action executed: ' + str(recommendation[0]))
+                    return
+
+            # if no user command is found, execute the first recommendation
+            recommendations[0][0](*recommendations[0][1:])
+            return
 
     def is_possible_move(self, move):
-        return move in self.mode.get_moveable_area()
+        return move in self.model.get_moveable_area(self.pos)
 
     def move(self, pos):
         self.model.grid.move_agent(self, pos)
@@ -79,7 +87,7 @@ class Robot(HomeAgent):
         if self.is_possible_move(next_pos):
             self.move(next_pos)
         else:
-            self.decline_instruction("move_forward", "I can't move forward from the current position", "caller")
+            self.decline_instruction("Robot can't move forward from the current position", "caller")
             self.stay()
 
     def move_backward(self):
@@ -87,14 +95,14 @@ class Robot(HomeAgent):
         if self.is_possible_move(next_pos):
             self.move(next_pos)
         else:
-            self.decline_instruction("move_backward", "I can't move backward from the current position", "caller")
+            self.decline_instruction("Robot can't move backward from the current position", "caller")
             self.stay()
     def move_right(self):
         next_pos = (self.pos[0] + 1, self.pos[1])
         if self.is_possible_move(next_pos):
             self.move(next_pos)
         else:
-            self.decline_instruction("move_right", "I can't move right from the current position", "caller")
+            self.decline_instruction("Robot can't move right from the current position", "caller")
             self.stay()
 
     def move_left(self):
@@ -102,7 +110,7 @@ class Robot(HomeAgent):
         if self.is_possible_move(next_pos):
             self.move(next_pos)
         else:
-            self.decline_instruction("I can't move left from the current position", "caller")
+            self.decline_instruction("Robot can't move left from the current position", "caller")
             self.stay()
 
     def stay(self):
@@ -113,6 +121,7 @@ class Robot(HomeAgent):
         msg = reason
         reciever = self.model.get_stakeholder(caller_name)
         self.model.pass_message((msg, code), self, reciever)
+        print("Robot: Declined " + caller_name + " command. Reason: " + reason)
 
     
     def get_env_data(self):
