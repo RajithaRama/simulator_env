@@ -2,6 +2,7 @@ import random
 from enum import Enum
 
 from agent_types.home_agent import HomeAgent
+from Models.home_medication import Home
 from ethical_governor.ethical_governor import EthicalGovernor
 
 import numpy as np
@@ -13,6 +14,8 @@ class ReminderState(Enum):
     ISSUED = 1
     SNOOZED = 2
     ACKNOWLEDGED = 3
+    FOLLOW_UP = 4
+    COMPLETED = 5
 
 class MessageCode(Enum):
     REMIND = 1
@@ -29,14 +32,15 @@ class Robot(HomeAgent):
         # self.roles = {responsible_resident_name: 'caring_resident'}
         self.medication_timers = [MedicationCounter(2, 30, 'med_a', responsible_resident_name)] #(start time, reminder interval, medication name, recipient name)
 
+        self.instruction_func_map = {"SNOOZE": self.snooze, "ACKNOWLEDGE": self.acknowledge}
+
         # memory of reminders
-        self.reminders = []
+        self.reminders = {} # a reminder is a tuple of (time, med_name, state, timer, no_of_followups, No_of_snoozes)
 
 
     def step(self):
 
         if self.pos in self.model.things['charge_station']:
-
             if self.battery / 100 < 1:
                 self.battery += 3 if (100 - self.battery) >= 3 else (100 - self.battery)
         else:
@@ -57,9 +61,34 @@ class Robot(HomeAgent):
         for timer in self.medication_timers:
             hit = timer.step()
             if hit:
-                self.remind_medication(timer.name, timer.recipient)
+                self.remind_medication(timer)
 
         # TODO: add next conversions from robot and patient's perspective
+
+        if buffered_instructions:
+            for instruction in buffered_instructions:
+                # instructions = instruction.split('__')
+                func = self.instruction_func_map[instruction[0]]
+                if func == self.snooze:
+                    possible_actions.append((func, instruction[1]))
+                if func == self.acknowledge:
+                    possible_actions.append((func, instruction[1]))
+            buffered_instructions.clear()
+
+            for patient, reminder in self.reminders.items():
+                if reminder[2] == ReminderState.ACKNOWLEDGED:
+                    if self.model.get_stakeholder(patient).took_meds:
+                        reminder[2] = ReminderState.COMPLETED
+                        reminder[3].reset()
+                    else:
+                        time_spent_since_ack = self.time - reminder[0]
+                        if time_spent_since_ack > 2:
+                            possible_actions.append((self.followup, patient))
+                            possible_actions.append((self.record, patient))
+                            possible_actions.append((self.record_and_call_careworker, patient))
+
+                    #TODO: Implement number of missed doses later as an input to the program.
+
 
 
         if len(possible_actions):
@@ -88,19 +117,32 @@ class Robot(HomeAgent):
             recommendations[0][0](*recommendations[0][1:])
             return
 
-    def remind_medication(self, medication_name, recipient):
-        self.model.give_command(('It is time take the medication: ' + medication_name + '. Please acknowledge or snooze the reminder.', MessageCode.REMIND), self, self.model.get_stakeholder(recipient))
-        self.reminders.append((recipient, self.time, medication_name, ReminderState.ISSUED))
+    def remind_medication(self, timer):
+        self.model.give_command(('It is time take the medication: ' + timer.med_name + '. Please acknowledge or snooze the reminder.', MessageCode.REMIND), self, self.model.get_stakeholder(timer.recipient))
+        self.reminders[timer.recipient] = (self.time, timer.med_name, ReminderState.ISSUED, timer, 0, 0)
 
-    def stay(self):
-        pass
+    def snooze(self, recipient):
+        reminder = self.reminders[recipient]
 
-    def decline_instruction(self, reason, caller_name):
-        code = -1
-        msg = reason
-        reciever = self.model.get_stakeholder(caller_name)
-        self.model.pass_message((msg, code), self, reciever)
-        print("Robot: Declined " + caller_name + " command. Reason: " + reason)
+        # set snooze time
+        reminder[3].set_time(MedicationCounter.SNOOZE_TIME)
+        reminder[2] = ReminderState.SNOOZED
+        reminder[0] = self.time
+        reminder[5] += 1
+        print("Reminder snoozed for " + str(MedicationCounter.SNOOZE_TIME) + " steps")
+
+    def acknowledge(self, recipient):
+        reminder = self.reminders[recipient]
+        reminder[2] = ReminderState.ACKNOWLEDGED
+        reminder[0] = self.time
+
+    def followup(self, recipient):
+        reminder = self.reminders[recipient]
+        time_passed = self.time - reminder[0]
+        self.model.pass_message(('I could not detect you taking the medicine ' + reminder[1] + '. It is ' + time_passed * self.model.MINS_PER_STEP + ' mins since your acknowledgement. Please take the medication. It is important for your wellbeing.'))
+        reminder[4] += 1
+        reminder[0] = self.time
+        reminder[2] = ReminderState.FOLLOW_UP
 
     def get_env_data(self):
         env_data = {}
@@ -120,10 +162,8 @@ class Robot(HomeAgent):
             agent_data['seen_location'] = self.model.get_location(agent.pos)
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
+            agent_data['took_medicine'] = agent.took_meds
             stakeholders[agent.id] = agent_data
-
-        caller = {'id': 'caller', 'type': 'caller'}
-        stakeholders['follower'] = caller
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'battery_level': self.battery, 'model': self,
@@ -147,10 +187,13 @@ class Robot(HomeAgent):
 
 
 class MedicationCounter:
+
+    SNOOZE_TIME = 5
+
     def __init__(self, start_time, reminder_interval, medication_name, recipient):
         self.start_time = start_time
         self.reminder_interval = reminder_interval
-        self.name = medication_name
+        self.med_name = medication_name
         self.recipient = recipient
         self.time_to_reminder = start_time
 

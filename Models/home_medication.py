@@ -5,10 +5,9 @@ from mesa_updated import Model, space, time
 from common_functions.gen_id import GenId
 from common_functions.visibilty import *
 
-from agent_types.tele_patient import Patient
-from agent_types.caller import Caller
-from agent_types.care_worker import CareWorker
-from agent_types.tele_presence_robot import Robot
+from agent_types.medication_patient import Patient
+# from agent_types.care_worker import CareWorker
+from agent_types.medication_robot import Robot
 from agent_types.wall import Wall
 
 from collections import deque
@@ -20,7 +19,9 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, caller_data, time_of_day, worker_data=None):
+
+    MINS_PER_STEP = 1
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, time_of_day, worker_data=None):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -33,7 +34,7 @@ class Home(Model):
 
         id_gen = GenId(1)
         # Init robot
-        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'caller', governor_conf, 100)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, 100)
 
         # Init_stakeholders
         self.stakeholders = []
@@ -41,12 +42,8 @@ class Home(Model):
             self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_preferences[i]))
 
         # init care worker
-        if worker_data is not None:
-            self.stakeholders.append(CareWorker(id_gen.get_id(), 'care_worker', self, worker_data['path'], worker_data['preferences']))
-
-        # Init caller
-        caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'])
-        self.stakeholders.append(caller)
+        # if worker_data is not None:
+        #     self.stakeholders.append(CareWorker(id_gen.get_id(), 'care_worker', self, worker_data['path'], worker_data['preferences']))
 
         self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
 
@@ -306,7 +303,7 @@ class Home(Model):
         else:
             return -1
 
-        # return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
+
 
     def turn_off_lights(self):
         self.time_of_day = 'night'
