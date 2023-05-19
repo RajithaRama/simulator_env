@@ -21,7 +21,7 @@ GRID_HEIGHT = 13
 class Home(Model):
 
     MINS_PER_STEP = 1
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, time_of_day, worker_data=None):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, time_of_day, worker_data=None, timer_data=[]):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -34,12 +34,12 @@ class Home(Model):
 
         id_gen = GenId(1)
         # Init robot
-        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, 100)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, 100, timer_data=timer_data)
 
         # Init_stakeholders
         self.stakeholders = []
         for i in range(no_patients):
-            self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_preferences[i]))
+            self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_preferences[i]))
 
         # init care worker
         # if worker_data is not None:

@@ -2,7 +2,6 @@ import random
 from enum import Enum
 
 from agent_types.home_agent import HomeAgent
-from Models.home_medication import Home
 from ethical_governor.ethical_governor import EthicalGovernor
 
 import numpy as np
@@ -23,14 +22,17 @@ class MessageCode(Enum):
     NOT_DETECTED = 3
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, responsible_resident_name, governor_conf, start_battery):
+    def __init__(self, unique_id, name, model, responsible_resident_name, governor_conf, start_battery, timer_data):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
         self.time = 0
         self.ethical_governor = EthicalGovernor(governor_conf)
         # self.roles = {responsible_resident_name: 'caring_resident'}
-        self.medication_timers = [MedicationCounter(2, 30, 'med_a', responsible_resident_name)] #(start time, reminder interval, medication name, recipient name)
+        self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
+        self.medication_timers = []
+        for timer in timer_data:
+            self.medication_timers.append(MedicationCounter(timer[0], timer[1], timer[2], timer[3], timer[4])) #(start time, reminder interval, medication name, recipient name, continuously_missed_doses)
 
         self.instruction_func_map = {"SNOOZE": self.snooze, "ACKNOWLEDGE": self.acknowledge}
 
@@ -87,8 +89,6 @@ class Robot(HomeAgent):
                             possible_actions.append((self.record, patient))
                             possible_actions.append((self.record_and_call_careworker, patient))
 
-                    #TODO: Implement number of missed doses later as an input to the program.
-
 
 
         if len(possible_actions):
@@ -144,6 +144,20 @@ class Robot(HomeAgent):
         reminder[0] = self.time
         reminder[2] = ReminderState.FOLLOW_UP
 
+    def record(self, recipient):
+        reminder = self.reminders[recipient]
+        self.model.pass_message(('I could not detect you taking the medicine ' + reminder[1] + '. I am recording this incident.'))
+        self.record_incident(recipient, 'Medication '+ reminder[3].med_name +' not taken. This is the ' + str(reminder[3].no_of_missed_doses) + 'missing dose.')
+        reminder[3].add_missed_dose()
+        reminder[0] = self.time
+        reminder[2] = ReminderState.COMPLETED
+        reminder[3].reset()
+
+    def record_incident(self, recipient, description):
+        print('Record[step:' + self.time + '] :: {Resident: ' + recipient.name + '} :: ' + description)
+
+
+
     def get_env_data(self):
         env_data = {}
         visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
@@ -190,12 +204,13 @@ class MedicationCounter:
 
     SNOOZE_TIME = 5
 
-    def __init__(self, start_time, reminder_interval, medication_name, recipient):
+    def __init__(self, start_time, reminder_interval, medication_name, recipient, number_of_missed_doses=0):
         self.start_time = start_time
         self.reminder_interval = reminder_interval
         self.med_name = medication_name
         self.recipient = recipient
         self.time_to_reminder = start_time
+        self.no_of_missed_doses = number_of_missed_doses         # No of continuously missed doses
 
     def step(self):
         self.time_to_reminder -= 1
@@ -204,6 +219,13 @@ class MedicationCounter:
             return True
         else:
             return False
+
+
+    def add_missed_dose(self):
+        self.no_of_missed_doses += 1
+
+    def reset_missed_doses(self):
+        self.no_of_missed_doses = 0
 
     def reset(self):
         self.time_to_reminder = self.reminder_interval
