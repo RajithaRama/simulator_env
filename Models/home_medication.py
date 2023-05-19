@@ -317,3 +317,6 @@ class Home(Model):
             instructions = self.instructions[receiver]
             self.instructions.pop(receiver)
         return instructions
+
+    def alert_careworker(self, message):
+        print('Alerting care-worker: ' + message)

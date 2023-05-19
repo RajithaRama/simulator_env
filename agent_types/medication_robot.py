@@ -147,11 +147,33 @@ class Robot(HomeAgent):
     def record(self, recipient):
         reminder = self.reminders[recipient]
         self.model.pass_message(('I could not detect you taking the medicine ' + reminder[1] + '. I am recording this incident.'))
-        self.record_incident(recipient, 'Medication '+ reminder[3].med_name +' not taken. This is the ' + str(reminder[3].no_of_missed_doses) + 'missing dose.')
         reminder[3].add_missed_dose()
+
+        self.record_incident(recipient, 'Medication ' + reminder[3].med_name + ' not taken. This is the ' + str(
+            reminder[3].no_of_missed_doses) + 'missing dose.')
+
         reminder[0] = self.time
         reminder[2] = ReminderState.COMPLETED
         reminder[3].reset()
+
+    def record_and_call_careworker(self, recipient):
+        reminder = self.reminders[recipient]
+
+        self.model.pass_message(('I could not detect you taking the medicine ' + reminder[1] + '. I am recording this incident and calling your careworker.'))
+        reminder[3].add_missed_dose()
+
+        self.record_incident(recipient, 'Medication ' + reminder[3].med_name + ' not taken. This is the ' + str(
+            reminder[3].no_of_missed_doses) + 'missing dose.')
+
+        self.model.alert_careworker(
+            "Patient " + recipient.name + " did not take the medication " + reminder[3].med_name + " at " + str(
+                self.time) + " steps. This is their " + str(
+                reminder[3].no_of_missed_doses) + "  consecutively missing dose.")
+
+        reminder[0] = self.time
+        reminder[2] = ReminderState.COMPLETED
+        reminder[3].reset()
+
 
     def record_incident(self, recipient, description):
         print('Record[step:' + self.time + '] :: {Resident: ' + recipient.name + '} :: ' + description)
