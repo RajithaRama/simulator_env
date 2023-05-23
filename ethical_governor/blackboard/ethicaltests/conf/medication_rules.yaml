@@ -1,0 +1,1 @@
+- [1, [instructions, action], ( SNOOZE:patient_0 in instructions ) and ( action != snooze ), False]
