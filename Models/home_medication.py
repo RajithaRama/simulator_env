@@ -1,4 +1,5 @@
 import sys
+from enum import Enum
 
 from mesa_updated import Model, space, time
 
@@ -21,7 +22,7 @@ GRID_HEIGHT = 13
 class Home(Model):
 
     MINS_PER_STEP = 1
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_preferences, governor_conf, time_of_day, worker_data=None, timer_data=[]):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_preferences, governor_conf, time_of_day, med_info, worker_data=None, timer_data=[]):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -31,8 +32,11 @@ class Home(Model):
         self.init_things()
         self.time_of_day = time_of_day
         self.instructions = {}
+        self.patient_healths = patient_healths
+        self.medication_info = med_info
 
         id_gen = GenId(1)
+
         # Init robot
         self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, 100, timer_data=timer_data)
 
@@ -321,3 +325,10 @@ class Home(Model):
 
     def alert_careworker(self, message):
         print('Alerting care-worker: ' + message)
+
+
+class MedImpact(Enum):
+    NONE = 0
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3

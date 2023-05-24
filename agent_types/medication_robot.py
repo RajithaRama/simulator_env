@@ -78,8 +78,8 @@ class Robot(HomeAgent):
                         reminder = None
 
                     if reminder and reminder[5] > 3:
-                        possible_actions.append((self.record_and_call_careworker, instruction[1]))
                         possible_actions.append((self.record, instruction[1]))
+                        possible_actions.append((self.record_and_call_careworker, instruction[1]))
                     else:
                         possible_actions.append((func, instruction[1]))
                 if func == self.acknowledge:
@@ -97,10 +97,6 @@ class Robot(HomeAgent):
                         possible_actions.append((self.followup, patient))
                         possible_actions.append((self.record, patient))
                         possible_actions.append((self.record_and_call_careworker, patient))
-
-
-
-
 
         if len(possible_actions):
             self.make_final_decision(possible_actions, env)
@@ -194,28 +190,25 @@ class Robot(HomeAgent):
 
     def get_env_data(self):
         env_data = {}
-        visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
+        timed_patients = [self.model.get_stakeholder(timer.recipient) for timer in self.medication_timers]
 
         stakeholders = {}
-        for agent in visible_stakeholders:
+        for agent in timed_patients:
             # print(agent.type)
             agent_data = {}
-            if agent.type == 'wall':
-                continue
 
             agent_data['id'] = agent.id
             agent_data['type'] = agent.type
-            # agent_data['seen_time'] = self.time
+            agent_data['seen_time'] = self.time
             # agent_data['seen_pos'] = agent.pos
-            agent_data['seen_location'] = self.model.get_location(agent.pos)
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
-            agent_data['took_medicine'] = agent.took_meds
+            agent_data['attached_reminders'] = self.reminders.get(agent, [])
+            agent_data['took_meds'] = agent.did_take_meds()
             stakeholders[agent.id] = agent_data
 
-        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
-                      'battery_level': self.battery, 'model': self,
-                      'visible_dist': self.visible_dist, 'instruction_list': self.model.get_message(self)}
+        robot_data = {'id': "this", 'type': "robot", 'battery_level': self.battery, 'model': self,
+                      'instruction_list': self.model.get_message(self)}
 
         stakeholders['robot'] = robot_data
 
@@ -225,7 +218,9 @@ class Robot(HomeAgent):
         environment = {"time_of_day": self.model.time_of_day, "time": self.time,
                        "walls": self.model.wall_coordinates,
                        "things": self.model.things,
-                       "things_robot_inaccessible": self.model.things_robot_inaccessible
+                       "things_robot_inaccessible": self.model.things_robot_inaccessible,
+                       "follower_health_score": float(self.model.patient_healths[0]),
+                       "Medication_info": self.model.medication_info
                        }
         env_data['environment'] = environment
         env_data['other_inputs'] = {}

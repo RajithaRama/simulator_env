@@ -18,6 +18,9 @@ class Patient(HomeAgent):
     def receive_message(self, receiver):
         return self.model.get_message(receiver)
 
+    def did_take_meds(self):
+        return self.took_meds
+
     def respond(self, request, code):
         if code == MessageCode.REMIND or code == MessageCode.FOLLOW_UP:
             self.model.pass_message(self.preferences["responses"][self.reminders], self, self.model.robot)
