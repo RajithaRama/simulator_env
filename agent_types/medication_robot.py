@@ -37,7 +37,7 @@ class Robot(HomeAgent):
         self.instruction_func_map = {"SNOOZE": self.snooze, "ACKNOWLEDGE": self.acknowledge}
 
         # memory of reminders
-        self.reminders = {} # a reminder is a list of (time, med_name, state, timer, no_of_followups, No_of_snoozes)
+        self.reminders = {} # a reminder is a list of (time, med_name, state, timer, no_of_followups, No_of_snoozes) and it's mapped to the recipient
 
 
     def step(self):
@@ -80,8 +80,8 @@ class Robot(HomeAgent):
                     if reminder and reminder[5] > 3:
                         possible_actions.append((self.record, instruction[1]))
                         possible_actions.append((self.record_and_call_careworker, instruction[1]))
-                    else:
-                        possible_actions.append((func, instruction[1]))
+
+                    possible_actions.append((func, instruction[1]))
                 if func == self.acknowledge:
                     possible_actions.append((func, instruction[1]))
             buffered_instructions.clear()
@@ -203,7 +203,7 @@ class Robot(HomeAgent):
             # agent_data['seen_pos'] = agent.pos
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
-            agent_data['attached_reminders'] = self.reminders.get(agent, [])
+            agent_data['attached_reminders'] = self.reminders.get(agent, None)
             agent_data['took_meds'] = agent.did_take_meds()
             stakeholders[agent.id] = agent_data
 

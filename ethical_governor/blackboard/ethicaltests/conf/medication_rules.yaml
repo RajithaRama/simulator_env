@@ -1,1 +1,3 @@
 - [1, [instructions, action], ( SNOOZE:patient_0 in instructions ) and ( action != snooze ), False]
+- [2, [instructions, action], ( ACKNOWLEDGED:patient_0 in instructions ) and ( action != acknowledge ), True]
+#- [3, [stakeholders.follower.attached_reminders.patient_0, action], ( action == remind ) and ( stakeholders.follower.attached_reminders.patient_0 == False ), False]

@@ -7,4 +7,4 @@ test_order:
  # - Utilitarian
 evaluator: {module_name: PSRB_medication_evaluator, class_name: PSRBEvaluator}
 scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
-log_file: PSRB_bedroom_dilemma.log
+log_file: PSRB_medication_dilemma.log
