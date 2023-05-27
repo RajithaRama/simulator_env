@@ -1,5 +1,5 @@
 import random
-from enum import Enum
+from enum import IntEnum
 
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
@@ -10,7 +10,7 @@ SELF_CHARGING = True
 VISIBLE_DIST = 3
 
 
-class ReminderState(Enum):
+class ReminderState(IntEnum):
     ISSUED = 1
     SNOOZED = 2
     ACKNOWLEDGED = 3
@@ -18,7 +18,7 @@ class ReminderState(Enum):
     COMPLETED = 5
 
 
-class MessageCode(Enum):
+class MessageCode(IntEnum):
     REMIND = 1
     FOLLOW_UP = 2
     NOT_DETECTED = 3
@@ -200,7 +200,7 @@ class Robot(HomeAgent):
         reminder['timer'].reset()
 
     def record_incident(self, recipient, description):
-        print('Record[step:' + self.time + '] :: {Resident: ' + recipient.name + '} :: ' + description)
+        print('Record[step:' + str(self.time) + '] :: {Resident: ' + recipient.name + '} :: ' + description)
 
     def get_env_data(self):
         env_data = {}

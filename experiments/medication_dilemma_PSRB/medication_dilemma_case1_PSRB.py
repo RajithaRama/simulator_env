@@ -1,3 +1,11 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+print(sys.path)
+
+
+
 from mesa_updated.visualization import ModularVisualization, modules
 
 
@@ -47,7 +55,7 @@ server = ModularVisualization.ModularServer(
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5), "patient_healths": [0], "med_info": med_info,
                    "patient_paths": [patient_1_path], "patient_preferences": [patient_1_medication_preference], "governor_conf":
-                       'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day", "timer_data": timer_data}
+                       'experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day", "timer_data": timer_data}
 )
 
 server.port = 8123
