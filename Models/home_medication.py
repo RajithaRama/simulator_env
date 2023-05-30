@@ -32,6 +32,7 @@ class Home(Model):
         self.init_things()
         self.time_of_day = time_of_day
         self.instructions = {}
+        self.message_history = []
         self.patient_healths = patient_healths
         self.medication_info = med_info
 
@@ -314,6 +315,13 @@ class Home(Model):
 
     def pass_message(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])
+        if giver.type == 'robot':
+            self.message_history.append([command[0], giver.id, receiver.id, self.schedule.steps])
+            print('Passing message: "' + command[0] + '" from ' + giver.id + ' to ' + receiver.id)
+        else:
+            self.message_history.append([command, giver.id, receiver.id, self.schedule.steps])
+            print('Passing message: "' + command + '" from ' + giver.id + ' to ' + receiver.id)
+
 
     def get_message(self, receiver):
         instructions = None
@@ -324,6 +332,7 @@ class Home(Model):
 
 
     def alert_careworker(self, message):
+        self.message_history.append([message, 'robot1', "Care-worker", self.schedule.steps])
         print('Alerting care-worker: ' + message)
 
 

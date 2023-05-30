@@ -191,8 +191,8 @@ class Robot(HomeAgent):
             reminder['timer'].no_of_missed_doses) + 'missing dose.')
 
         self.model.alert_careworker(
-            "Patient " + recipient.name + " did not take the medication " + reminder['med_name'] + " at " + str(
-                self.time) + " steps. This is their " + str(
+            "Patient " + recipient.id + " did not take the medication " + reminder['med_name'] + " at step " + str(
+                self.time) + " . This is their " + str(
                 reminder['timer'].no_of_missed_doses) + "  consecutively missing dose.")
 
         reminder['time'] = self.time
@@ -200,7 +200,7 @@ class Robot(HomeAgent):
         reminder['timer'].reset()
 
     def record_incident(self, recipient, description):
-        print('Record[step:' + str(self.time) + '] :: {Resident: ' + recipient.name + '} :: ' + description)
+        print('Record[step:' + str(self.time) + '] :: {Resident: ' + recipient.id + '} :: ' + description)
 
     def get_env_data(self):
         env_data = {}

@@ -9,3 +9,4 @@ from mesa_updated.visualization.modules.BarChartVisualization import BarChartMod
 from mesa_updated.visualization.modules.TextVisualization import TextElement  # noqa
 from mesa_updated.visualization.modules.HexGridVisualization import CanvasHexGrid  # noqa
 from mesa_updated.visualization.modules.NetworkVisualization import NetworkModule  # noqa
+from mesa_updated.visualization.modules.ConversationVisualization import ConversationBox  # noqa
