@@ -10,7 +10,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
         super().__init__(test_data)
         self.instruction_function_map = {
             'SNOOZE': [True, ROBOT.Robot.snooze.__name__],
-            'ACKNOWLEDGE': [True, ROBOT.Robot.acknowledge.__nam//.e__]
+            'ACKNOWLEDGE': [True, ROBOT.Robot.acknowledge.__name__]
         }
         
 

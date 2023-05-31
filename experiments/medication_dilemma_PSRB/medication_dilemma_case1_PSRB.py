@@ -38,7 +38,7 @@ def agent_portrayal(agent):
 
 # Patient 1 path
 # start
-patient_1_path = [((5, 6), '')]
+patient_1_path = [((2, 2), '')]
 
 
 med_info = {"med_a": {"type": "painkiller", "impact": MedImpact.LOW}}
@@ -53,7 +53,7 @@ conversations = modules.ConversationBox()
 server = ModularVisualization.ModularServer(
     Home,
     [grid, conversations],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5), "patient_healths": [0], "med_info": med_info,
+    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (2, 1), "patient_healths": [0], "med_info": med_info,
                    "patient_paths": [patient_1_path], "patient_preferences": [patient_1_medication_preference], "governor_conf":
                        'experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day", "timer_data": timer_data}
 )
