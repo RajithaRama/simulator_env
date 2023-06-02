@@ -88,6 +88,11 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
         variables:
         - e_m = effect of the medication
         - d_m = Number of continuously missing doses
+
+        utility = 1 / (e^( (a+b*d_m)*e_m )) -1)
+
+        y\ =\frac{g}{\sqrt{2\pi}}\exp\left(-g\left(x+b\right)^{2}\right)
+
         """
 
         # visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
@@ -102,11 +107,37 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
             wellbeing_util = 0.0
 
-            if stakeholder == 'follower':
-                # TODO: Implement follower wellbeing utility
-                pass
+            if data['attached_reminders']:
+                
+                e_m = env['environment']['Medication_info'][data['attached_reminders'][1]]['impact'].value
+                d_m = data['attached_reminders'][3].no_of_missed_doses
 
+                x, y = self.Utility_dist(stakeholder_data, env, e_m, d_m)
+
+                max_prob = np.max(y)
+                Utility = np.where(y == max_prob)        
+
+                max_prob = max_prob if max_prob < 1 else 1
+
+                # TODO: Finish calculating the follower wellbeing utility
+                
             stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
 
         return stakholder_wellbeing_values
+    
+    def Utility_dist(self, stakeholder_data, env, e_m, d_m):
+        "Generate a probability distribution of the utility of stakeholder"
+
+        d = d_m
+        f = e_m
+        b = 1 - np.exp(-1*(d + f -1.5))
+        g = (f/2) * np.log(2*d + 1)
+
+        x = np.linspace(-1, 0, 100)
+
+        y = (g/2*np.pi) * np.exp(-g*(x+b)**2)
+
+        return x, y
+    
+        
 
