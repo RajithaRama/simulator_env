@@ -12,7 +12,6 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             'SNOOZE': [True, ROBOT.Robot.snooze.__name__],
             'ACKNOWLEDGE': [True, ROBOT.Robot.acknowledge.__name__]
         }
-        
 
     def run_test(self, data, logger):
         logger.info('Running ' + __name__ + '...')
@@ -36,12 +35,18 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             # logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
             utils['wellbeing'] = wellbeing_util
 
-
             out = {}
             for util_type, values in utils.items():
-                for stakeholder, util_value in values:
-                    col_name = stakeholder + '_' + util_type
-                    out[col_name] = util_value
+                if util_type == 'wellbeing':
+                    for stakeholder, util_value, probability in values:
+                        col_name_util = stakeholder + '_' + util_type
+                        col_name_prob = stakeholder + '_' + 'wellbeing_probability'
+                        out[col_name_util] = util_value
+                        out[col_name_prob] = probability
+                else:
+                    for stakeholder, util_value in values:
+                        col_name = stakeholder + '_' + util_type
+                        out[col_name] = util_value
             self.output[action] = out
 
     def get_autonomy_utility(self, env, stakeholder_data, action, logger):
@@ -51,7 +56,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
         default is 0.
         - return: list with (stakeholder_id, autonomy utility) tuples
         """
-        
+
         instruction_list = stakeholder_data['robot']['instruction_list']
 
         stakholder_autonomy_values = []
@@ -70,15 +75,14 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                             autonomy_utility = 1.0
                         else:
                             autonomy_utility = -1.0
-                
+
                 if action.value[0].__name__ == 'followup':
                     autonomy_utility = -0.5
                 elif action.value[0].__name__ == 'record':
                     autonomy_utility = 0.5
                 elif action.value[0].__name__ == 'record_and_call_careworker':
-                    autonomy_utility = -1.0            
+                    autonomy_utility = -1.0
 
-            
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
         return stakholder_autonomy_values
@@ -106,38 +110,69 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                 continue
 
             wellbeing_util = 0.0
+            proba = 1.0
 
             if data['attached_reminders']:
-                
-                e_m = env['environment']['Medication_info'][data['attached_reminders'][1]]['impact'].value
-                d_m = data['attached_reminders'][3].no_of_missed_doses
 
-                x, y = self.Utility_dist(stakeholder_data, env, e_m, d_m)
+                e_m = env['environment']['Medication_info'][data['attached_reminders']['med_name']]['impact'].value
+                d_m = data['attached_reminders']['timer'].no_of_missed_doses
 
-                max_prob = np.max(y)
-                Utility = np.where(y == max_prob)        
+                if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
+                    d_m += (env['time'] - data['attached_reminders']['time']) / 8
+                    utility, probability = self.highest_probable_utility(e_m, d_m)
+                    if not action.value[0].__name__ == 'acknowledge':
+                        wellbeing_util = utility
+                        proba = probability
 
-                max_prob = max_prob if max_prob < 1 else 1
+                elif data['attached_reminders']['state'] == ROBOT.ReminderState.SNOOZED:
+                    d_m += data['attached_reminders']['no_of_snoozes'] / 3
+                    utility, probability = self.highest_probable_utility(e_m, d_m)
+                    wellbeing_util = utility
+                    proba = probability
+
+                elif data['attached_reminders']['state'] == ROBOT.ReminderState.ACKNOWLEDGED:
+                    if not data['took_meds']:
+                        if action.value[0].__name__ == 'followup':
+                            d_m += data['attached_reminders']['no_of_followups'] / 4
+                            wellbeing_util, proba = self.highest_probable_utility(e_m, d_m)
+                        elif action.value[0].__name__ == 'record':
+                            d_m += 1
+                            wellbeing_util, proba = self.highest_probable_utility(e_m, d_m)
+                        elif action.value[0].__name__ == 'record_and_call_careworker':
+                            wellbeing_util = 0.5
+                            proba = 1.0
 
                 # TODO: Finish calculating the follower wellbeing utility
-                
-            stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
+            else:
+                if action.value[0].__name__ == 'remind_medication' and action.value[1].recipient == stakeholder:
+                    wellbeing_util = 1.0
+
+            stakholder_wellbeing_values.append((stakeholder, wellbeing_util, proba))
 
         return stakholder_wellbeing_values
-    
-    def Utility_dist(self, stakeholder_data, env, e_m, d_m):
-        "Generate a probability distribution of the utility of stakeholder"
+
+    def highest_probable_utility(self, e_m, d_m):
+        "Calculate the highest probable utility of the stakeholder"
+
+        x, y = self.Utility_dist(e_m, d_m)
+        max_prob = np.max(y)
+        utility = np.where(y == max_prob)
+
+        max_prob = max_prob if max_prob < 1 else 1
+
+        return utility, max_prob
+
+    def Utility_dist(self, e_m, d_m):
+        """Generate a probability distribution of the utility of stakeholder
+        """
 
         d = d_m
         f = e_m
-        b = 1 - np.exp(-1*(d + f -1.5))
-        g = (f/2) * np.log(2*d + 1)
+        b = 1 - np.exp(-1 * (d + f - 1.5))
+        g = (f / 2) * np.log(2 * d + 1)
 
         x = np.linspace(-1, 0, 100)
 
-        y = (g/2*np.pi) * np.exp(-g*(x+b)**2)
+        y = (g / 2 * np.pi) * np.exp(-g * (x + b) ** 2)
 
         return x, y
-    
-        
-

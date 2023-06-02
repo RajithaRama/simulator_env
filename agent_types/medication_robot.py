@@ -14,8 +14,7 @@ class ReminderState(IntEnum):
     ISSUED = 1
     SNOOZED = 2
     ACKNOWLEDGED = 3
-    FOLLOW_UP = 4
-    COMPLETED = 5
+    COMPLETED = 4
 
 
 class MessageCode(IntEnum):
@@ -63,12 +62,13 @@ class Robot(HomeAgent):
 
         possible_actions = []
 
+        snoozed = False
+        acknowledged = False
+
         for timer in self.medication_timers:
             hit = timer.step()
             if hit:
-                self.remind_medication(timer)
-
-        # TODO: add next conversions from robot and patient's perspective
+                possible_actions.append((self.remind_medication, timer))
 
         if buffered_instructions:
             for instruction in buffered_instructions:
@@ -77,17 +77,19 @@ class Robot(HomeAgent):
                 if func == self.snooze:
                     try:
                         reminder = self.reminders[instruction[1]]
+
                     except KeyError:
                         reminder = None
 
-                    if reminder and reminder['no_of_snoozes'] > 3:
+                    if reminder and reminder['no_of_followups'] > 3:
                         possible_actions.append((self.record, instruction[1]))
                         possible_actions.append((self.record_and_call_careworker, instruction[1]))
 
                     possible_actions.append((func, instruction[1]))
+                    snoozed = True
                 if func == self.acknowledge:
                     possible_actions.append((func, instruction[1]))
-            
+                    acknowledged = True
 
         for patient, reminder in self.reminders.items():
             if reminder['state'] == ReminderState.ACKNOWLEDGED:
@@ -100,6 +102,14 @@ class Robot(HomeAgent):
                         possible_actions.append((self.followup, patient))
                         possible_actions.append((self.record, patient))
                         possible_actions.append((self.record_and_call_careworker, patient))
+            if reminder['state'] == ReminderState.ISSUED and not (snoozed or acknowledged):
+                time_spent_since_issue = self.time - reminder['time']
+                if time_spent_since_issue > 1:
+                    possible_actions.append((self.followup, patient))
+                    possible_actions.append((self.record, patient))
+                    possible_actions.append((self.record_and_call_careworker, patient))
+            if reminder['state'] == ReminderState.COMPLETED:
+                self.reminders.pop(patient)
 
         if len(possible_actions):
             self.make_final_decision(possible_actions, env)
@@ -131,14 +141,21 @@ class Robot(HomeAgent):
         self.model.pass_message((
                                 'It is time take the medication: ' + timer.med_name + '. Please acknowledge or snooze the reminder.',
                                 MessageCode.REMIND), self, self.model.get_stakeholder(timer.recipient))
-        self.reminders[self.model.get_stakeholder(timer.recipient)] = {
-            "time": self.time,
-            "med_name": timer.med_name,
-            "state": ReminderState.ISSUED,
-            "timer": timer,
-            "no_of_followups": 0,
-            "no_of_snoozes": 0
-        }
+
+        try:
+            reminder = self.reminders[self.model.get_stakeholder(timer.recipient)]
+            reminder['time'] = self.time
+            reminder['state'] = ReminderState.ISSUED
+            reminder['no_of_followups'] += 1
+        except KeyError:
+            self.reminders[self.model.get_stakeholder(timer.recipient)] = {
+                "time": self.time,
+                "med_name": timer.med_name,
+                "state": ReminderState.ISSUED,
+                "timer": timer,
+                "no_of_followups": 0,
+                "no_of_snoozes": 0
+            }
 
     def snooze(self, recipient):
         reminder = self.reminders[recipient]
@@ -164,7 +181,7 @@ class Robot(HomeAgent):
                                  MessageCode.FOLLOW_UP), self, recipient)
         reminder['no_of_followups'] += 1
         reminder['time'] = self.time
-        reminder['state'] = ReminderState.FOLLOW_UP
+        reminder['state'] = ReminderState.ISSUED
 
     def record(self, recipient):
         reminder = self.reminders[recipient]
@@ -174,6 +191,8 @@ class Robot(HomeAgent):
 
         self.record_incident(recipient, 'Medication ' + reminder['time'].med_name + ' not taken. This is the ' + str(
             reminder['time'].no_of_missed_doses) + 'missing dose.')
+
+
 
         reminder['time'] = self.time
         reminder['state'] = ReminderState.COMPLETED
@@ -244,7 +263,7 @@ class Robot(HomeAgent):
 
 
 class MedicationCounter:
-    SNOOZE_TIME = 5
+    SNOOZE_TIME = 3
 
     def __init__(self, start_time, reminder_interval, medication_name, recipient, number_of_missed_doses=0):
         self.start_time = start_time
