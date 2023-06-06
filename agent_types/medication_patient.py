@@ -23,10 +23,10 @@ class Patient(HomeAgent):
 
     def respond(self, request, code):
         if code == MessageCode.REMIND or code == MessageCode.FOLLOW_UP:
+            self.took_meds = False
             self.model.pass_message(self.preferences["responses"][self.reminders], self, self.model.robot)
             if self.preferences["responses"][self.reminders] == 'SNOOZE':
                 self.reminders += 1
-                self.took_meds = False
             elif self.preferences["responses"][self.reminders] == 'ACKNOWLEDGE':
                 if self.preferences["is_taking_meds"]:
                     self.took_meds = True

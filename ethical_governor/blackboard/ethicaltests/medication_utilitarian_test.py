@@ -45,6 +45,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                         out[col_name_prob] = probability
                 else:
                     for stakeholder, util_value in values:
+
                         col_name = stakeholder + '_' + util_type
                         out[col_name] = util_value
             self.output[action] = out
@@ -69,12 +70,15 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             autonomy_utility = 0.0
 
             if data['attached_reminders']:
-                for instruction in instruction_list:
-                    if instruction[1].id == stakeholder_data[stakeholder]['id']:
-                        if self.instruction_function_map[instruction[0]] == action.value[0].__name__:
-                            autonomy_utility = 1.0
-                        else:
-                            autonomy_utility = -1.0
+                try:
+                    for instruction in instruction_list:
+                        if instruction[1].id == stakeholder_data[stakeholder]['id']:
+                            if self.instruction_function_map[instruction[0]][1] == action.value[0].__name__:
+                                autonomy_utility = 1.0
+                            else:
+                                autonomy_utility = -1.0
+                except TypeError:
+                    pass
 
                 if action.value[0].__name__ == 'followup':
                     autonomy_utility = -0.5
@@ -114,7 +118,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
             if data['attached_reminders']:
 
-                e_m = env['environment']['Medication_info'][data['attached_reminders']['med_name']]['impact'].value
+                e_m = env['Medication_info'][data['attached_reminders']['med_name']]['impact'].value
                 d_m = data['attached_reminders']['timer'].no_of_missed_doses
 
                 if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
@@ -127,8 +131,11 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.SNOOZED:
                     d_m += data['attached_reminders']['no_of_snoozes'] / 3
                     utility, probability = self.highest_probable_utility(e_m, d_m)
-                    wellbeing_util = utility
-                    proba = probability
+                    if not action.value[0].__name__ == 'remind_medication':
+                        wellbeing_util = utility
+                        proba = probability
+                    else:
+                        wellbeing_util = 1.0 - utility
 
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.ACKNOWLEDGED:
                     if not data['took_meds']:
@@ -154,11 +161,15 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
     def highest_probable_utility(self, e_m, d_m):
         "Calculate the highest probable utility of the stakeholder"
 
-        x, y = self.Utility_dist(e_m, d_m)
-        max_prob = np.max(y)
-        utility = np.where(y == max_prob)
+        if d_m > 0:
+            x, y = self.Utility_dist(e_m, d_m)
+            max_prob = np.max(y)
+            utility = x[np.where(y == max_prob)][0]
 
-        max_prob = max_prob if max_prob < 1 else 1
+            max_prob = max_prob if max_prob < 1 else 1.0
+        else:
+            utility = 0.0
+            max_prob = 1.0
 
         return utility, max_prob
 

@@ -89,7 +89,7 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
                     for i in path:
                         try:
                             value = value[i]
-                        except KeyError:
+                        except (KeyError, TypeError) as e:
                             value = False
                             logger.warning('Variable: ' + item + 'not found in env.')
                             break

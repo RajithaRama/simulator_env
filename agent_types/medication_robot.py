@@ -91,6 +91,8 @@ class Robot(HomeAgent):
                     possible_actions.append((func, instruction[1]))
                     acknowledged = True
 
+                    
+        reminders_to_pop = []
         for patient, reminder in self.reminders.items():
             if reminder['state'] == ReminderState.ACKNOWLEDGED:
                 if patient.took_meds:
@@ -109,7 +111,10 @@ class Robot(HomeAgent):
                     possible_actions.append((self.record, patient))
                     possible_actions.append((self.record_and_call_careworker, patient))
             if reminder['state'] == ReminderState.COMPLETED:
-                self.reminders.pop(patient)
+                reminders_to_pop.append(patient)    
+
+        for patient in reminders_to_pop:        
+            self.reminders.pop(patient)
 
         if len(possible_actions):
             self.make_final_decision(possible_actions, env)
