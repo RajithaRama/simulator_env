@@ -4,6 +4,9 @@ import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import agent_types.medication_robot as ROBOT
 
 
+RESOLUTION = 0.1
+
+
 class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
     def __init__(self, test_data):
@@ -38,11 +41,13 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             out = {}
             for util_type, values in utils.items():
                 if util_type == 'wellbeing':
-                    for stakeholder, util_value, probability in values:
+                    for stakeholder, util_value, probability, prob_dist in values:
                         col_name_util = stakeholder + '_' + util_type
                         col_name_prob = stakeholder + '_' + 'wellbeing_probability'
+                        col_name_dist = stakeholder + '_' + 'wellbeing_distribution'
                         out[col_name_util] = util_value
                         out[col_name_prob] = probability
+                        out[col_name_dist] = prob_dist
                 else:
                     for stakeholder, util_value in values:
 
@@ -93,11 +98,14 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
     def get_wellbeing_utility(self, env, stakeholder_data, action, logger):
         """
+        Calculates the wellbeing utility distribution for each stakeholder, given the current state of the environment, and the next action.
+        returns a list of tuples (stakeholder_id, Highest probable wellbeing utility, probability, probability_dist) 
         variables:
         - e_m = effect of the medication
         - d_m = Number of continuously missing doses
 
-        utility = 1 / (e^( (a+b*d_m)*e_m )) -1)
+        b=1-e^{\left(-\left(d+f-1.5\right)\right)}
+        g=\left(\frac{f}{2}\right)\ln\left(2d+1\right)
 
         y\ =\frac{g}{\sqrt{2\pi}}\exp\left(-g\left(x+b\right)^{2}\right)
 
@@ -115,6 +123,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
             wellbeing_util = 0.0
             proba = 1.0
+            prob_dist = np.ones(int(2/RESOLUTION + 1))
 
             if data['attached_reminders']:
 
@@ -123,17 +132,19 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
                 if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
                     d_m += (env['time'] - data['attached_reminders']['time']) / 8
-                    utility, probability = self.highest_probable_utility(e_m, d_m)
+                    utility, probability, low_res_dist = self.calculate_wellbeing_values(e_m, d_m)
                     if not action.value[0].__name__ == 'acknowledge':
                         wellbeing_util = utility
                         proba = probability
+                        prob_dist = low_res_dist
 
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.SNOOZED:
                     d_m += data['attached_reminders']['no_of_snoozes'] / 3
-                    utility, probability = self.highest_probable_utility(e_m, d_m)
+                    utility, probability, low_res_dist = self.calculate_wellbeing_values(e_m, d_m)
                     if not action.value[0].__name__ == 'remind_medication':
                         wellbeing_util = utility
                         proba = probability
+                        prob_dist = low_res_dist
                     else:
                         wellbeing_util = 1.0 - utility
 
@@ -141,22 +152,33 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                     if not data['took_meds']:
                         if action.value[0].__name__ == 'followup':
                             d_m += data['attached_reminders']['no_of_followups'] / 4
-                            wellbeing_util, proba = self.highest_probable_utility(e_m, d_m)
+                            wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
                         elif action.value[0].__name__ == 'record':
                             d_m += 1
-                            wellbeing_util, proba = self.highest_probable_utility(e_m, d_m)
+                            wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
                         elif action.value[0].__name__ == 'record_and_call_careworker':
                             wellbeing_util = 0.5
                             proba = 1.0
+                            
 
                 # TODO: Finish calculating the follower wellbeing utility
             else:
                 if action.value[0].__name__ == 'remind_medication' and action.value[1].recipient == stakeholder:
                     wellbeing_util = 1.0
 
-            stakholder_wellbeing_values.append((stakeholder, wellbeing_util, proba))
+            stakholder_wellbeing_values.append((stakeholder, wellbeing_util, proba, prob_dist))
 
         return stakholder_wellbeing_values
+    
+    def calculate_wellbeing_values(self, e_m, d_m, resolution=0.1):
+        """
+        Calculate the wellbeing values for the stakeholder
+        """
+
+        highest_prob_util, proba = self.highest_probable_utility(e_m, d_m)
+        prob_dist = self.get_low_res_probability_dist(e_m, d_m, resolution)
+
+        return highest_prob_util, proba, prob_dist
 
     def highest_probable_utility(self, e_m, d_m):
         "Calculate the highest probable utility of the stakeholder"
@@ -173,6 +195,23 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
         return utility, max_prob
 
+    def get_low_res_probability_dist(self, e_m, d_m, resolution=0.1):
+        """Generate a low resolution probability distribution of the utility of stakeholder
+        """
+        low_res_probs = np.zeros(int((2/resolution) + 1))
+        if d_m > 0:
+            x, y = self.Utility_dist(e_m, d_m)
+            i = 0
+            x = x.round(5).tolist()
+            # space = np.linspace(-1, 1, int(2/resolution + 1))
+            indexes = [x.index(e) for e in np.linspace(-1, 1, int(2/resolution + 1)).round(5)]
+            for j in indexes:
+                low_res_probs[i] = y[j]
+                i += 1
+        
+        return low_res_probs
+
+
     def Utility_dist(self, e_m, d_m):
         """Generate a probability distribution of the utility of stakeholder
         """
@@ -182,8 +221,9 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
         b = 1 - np.exp(-1 * (d + f - 1.5))
         g = (f / 2) * np.log(2 * d + 1)
 
-        x = np.linspace(-1, 0, 100)
+        x, step = np.linspace(-1, 1, 101, retstep=True)
+        # print(step)
 
-        y = (g / 2 * np.pi) * np.exp(-g * (x + b) ** 2)
+        y = (g / np.sqrt(2 * np.pi)) * np.exp(-g * (x + b) ** 2)
 
         return x, y
