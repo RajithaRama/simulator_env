@@ -146,7 +146,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                         proba = probability
                         prob_dist = low_res_dist
                     else:
-                        wellbeing_util = 1.0 - utility
+                        wellbeing_util = 1.0
 
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.ACKNOWLEDGED:
                     if not data['took_meds']:
@@ -193,7 +193,8 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             utility = 0.0
             max_prob = 1.0
 
-        return utility, max_prob
+        return round(utility, 5), round(max_prob, 5)
+    
 
     def get_low_res_probability_dist(self, e_m, d_m, resolution=0.1):
         """Generate a low resolution probability distribution of the utility of stakeholder
@@ -206,7 +207,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             # space = np.linspace(-1, 1, int(2/resolution + 1))
             indexes = [x.index(e) for e in np.linspace(-1, 1, int(2/resolution + 1)).round(5)]
             for j in indexes:
-                low_res_probs[i] = y[j]
+                low_res_probs[i] = y[j].round(5)
                 i += 1
         
         return low_res_probs
