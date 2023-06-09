@@ -78,6 +78,10 @@ class Data:
                 data = self.get_environment_data()
             elif step == 'stakeholders':
                 data = self.get_stakeholders_data()
+            elif type(step) == list:
+                # If a step is a list, retrive data from that location and use as that data as the key.
+                temp_data = self.get_data(step)
+                data = data[temp_data]
             else:
                 # print(step, path_to_data)
                 try:

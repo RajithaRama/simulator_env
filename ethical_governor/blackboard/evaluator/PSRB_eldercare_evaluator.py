@@ -5,9 +5,9 @@ import json
 import ast
 
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
-from ethical_governor.blackboard.commonutils.cbr.cbr import CBR
+from ethical_governor.blackboard.commonutils.cbr.cbr_following import CBRFollowing
 
-CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen.json')
+CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_bathroom.json')
 
 cbr_context_data_feature_map = {
     'seen': ['stakeholders', 'follower', 'seen'],
@@ -30,7 +30,7 @@ cbr_table_data_features = ["follower_autonomy", "follower_wellbeing", "follower_
 class PSRBEvaluator(evaluator.Evaluator):
     def __init__(self):
         super().__init__()
-        self.expert_db = CBR()
+        self.expert_db = CBRFollowing()
         with open(CASE_BASE) as fp:
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
             data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
