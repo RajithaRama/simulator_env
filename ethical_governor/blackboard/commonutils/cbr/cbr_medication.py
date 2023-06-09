@@ -95,7 +95,7 @@ class CBRMedication(cbr.CBR):
             try:
                 feature_data = query[feature].to_numpy().reshape(-1, 1)
                 power_transformer = self.power_transformers[feature]
-                query[feature] = power_transformer.transform(feature_data)
+                query[feature] = power_transformer.transform(feature_data).astype('float64')
             except KeyError:
                 logger.warn('feature "{}" not found in query.'.format(feature))
         
@@ -123,7 +123,8 @@ class CBRMedication(cbr.CBR):
         data_inv = subset_df.T
         for col in data_inv.columns:
             vec_s = data_inv[col]
-            distances.setdefault(self.pairwise_distance(vec_s[q_col_names], query.T[0]), []).append(vec_s['case_id'])
+            query_vec = query.T[0].infer_objects()
+            distances.setdefault(self.pairwise_distance(vec_s[q_col_names], query_vec), []).append(vec_s['case_id'])
             # distances[self.distance(vec_s, query)] = vec_s['case_id']
 
         neighbours = []
@@ -173,7 +174,7 @@ class CBRMedication(cbr.CBR):
         for feature in self.p_transform_features:
             feature_data = data[feature].to_numpy().reshape(-1, 1)
             power_transformer = PowerTransformer().fit(feature_data)
-            data[feature] = power_transformer.transform(feature_data)
+            data[feature] = power_transformer.transform(feature_data).astype('float64')
             self.power_transformers[feature] = power_transformer
 
         # Encoding med_impact

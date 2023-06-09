@@ -3,7 +3,6 @@ import numpy as np
 import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import agent_types.medication_robot as ROBOT
 
-
 RESOLUTION = 0.1
 
 
@@ -50,7 +49,6 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                         out[col_name_dist] = prob_dist
                 else:
                     for stakeholder, util_value in values:
-
                         col_name = stakeholder + '_' + util_type
                         out[col_name] = util_value
             self.output[action] = out
@@ -123,7 +121,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
             wellbeing_util = 0.0
             proba = 1.0
-            prob_dist = np.ones(int(2/RESOLUTION + 1))
+            prob_dist = np.ones(int(2 / RESOLUTION + 1))
 
             if data['attached_reminders']:
 
@@ -159,9 +157,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                         elif action.value[0].__name__ == 'record_and_call_careworker':
                             wellbeing_util = 0.5
                             proba = 1.0
-                            
 
-                # TODO: Finish calculating the follower wellbeing utility
             else:
                 if action.value[0].__name__ == 'remind_medication' and action.value[1].recipient == stakeholder:
                     wellbeing_util = 1.0
@@ -169,7 +165,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             stakholder_wellbeing_values.append((stakeholder, wellbeing_util, proba, prob_dist))
 
         return stakholder_wellbeing_values
-    
+
     def calculate_wellbeing_values(self, e_m, d_m, resolution=0.1):
         """
         Calculate the wellbeing values for the stakeholder
@@ -194,24 +190,22 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             max_prob = 1.0
 
         return round(utility, 5), round(max_prob, 5)
-    
 
     def get_low_res_probability_dist(self, e_m, d_m, resolution=0.1):
         """Generate a low resolution probability distribution of the utility of stakeholder
         """
-        low_res_probs = np.zeros(int((2/resolution) + 1))
+        low_res_probs = np.zeros(int((2 / resolution) + 1))
         if d_m > 0:
             x, y = self.Utility_dist(e_m, d_m)
             i = 0
             x = x.round(5).tolist()
             # space = np.linspace(-1, 1, int(2/resolution + 1))
-            indexes = [x.index(e) for e in np.linspace(-1, 1, int(2/resolution + 1)).round(5)]
+            indexes = [x.index(e) for e in np.linspace(-1, 1, int(2 / resolution + 1)).round(5)]
             for j in indexes:
                 low_res_probs[i] = y[j].round(5)
                 i += 1
-        
-        return low_res_probs
 
+        return low_res_probs
 
     def Utility_dist(self, e_m, d_m):
         """Generate a probability distribution of the utility of stakeholder

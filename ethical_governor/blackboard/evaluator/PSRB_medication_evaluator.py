@@ -23,7 +23,7 @@ cbr_context_data_feature_map = {
 }
 
 cbr_table_data_features = {
-    'follower_autonomy', 'follower_wellbeing', 'wellbeing_probability'
+    'follower_autonomy': 'patient_0_autonomy', 'follower_wellbeing': 'patient_0_wellbeing', 'wellbeing_probability': 'patient_0_wellbeing_probability'
 }
 
 class PSRBEvaluator(evaluator.Evaluator):
@@ -32,7 +32,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         super().__init__()
         self.expert_db = CBRMedication()
         with open(CASE_BASE) as fp:
-            data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
+            data_df = pd.read_json(CASE_BASE, orient='records', precise_float=False)
             data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']] = data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 
@@ -76,6 +76,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         for feature in self.feature_list:
             if feature in ['case_id', 'acceptability', 'intention']:
                 continue
+
             if feature == 'action':
                 query[feature] = [action.value[0].__name__]
                 continue
@@ -85,12 +86,21 @@ class PSRBEvaluator(evaluator.Evaluator):
                 path = None
             if path:
                 if feature == "time_since_last_reminder":
-                    last_remind_time = data.get_data(path) if data.get_data(path) is not None else 0
-                    value = data.get_data(['environment', 'time']) - last_remind_time
+                    if data.get_data(path) is not None:
+                        last_remind_time = data.get_data(path)
+                        value = data.get_data(['environment', 'time']) - last_remind_time
+                    else:
+                        value = None
+                if feature == "took_meds":
+                    if data.get_data(path) == True:
+                        value = 1
+                    else:
+                        value = 0
                 else:
                     value = data.get_data(path)
             else:
-                value = data.get_table_data(action=action, column=feature)
+                path = cbr_table_data_features[feature]
+                value = data.get_table_data(action=action, column=path)
 
             if value == None:
                 continue

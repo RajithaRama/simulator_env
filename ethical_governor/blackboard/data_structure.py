@@ -81,12 +81,15 @@ class Data:
             elif type(step) == list:
                 # If a step is a list, retrive data from that location and use as that data as the key.
                 temp_data = self.get_data(step)
-                data = data[temp_data]
+                try:
+                    data = data[temp_data]
+                except (KeyError, TypeError):
+                    data = None
             else:
                 # print(step, path_to_data)
                 try:
                     data = data[step]
-                except KeyError:
+                except (KeyError, TypeError):
                     data = None
         return data
 
