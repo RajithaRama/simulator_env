@@ -19,7 +19,6 @@ cbr_context_data_feature_map = {
     'no_of_snoozes': ['stakeholders', 'patient_0', 'attached_reminders', 'no_of_snoozes'],
     'user_response': ['stakeholders', 'robot', 'instruction_list'],
     'time_of_day': ['environment', 'time_of_day']
-    #TODO: when traversing algorithm found a list, it should go to the location and get data and use that in the given step
 }
 
 cbr_table_data_features = {
@@ -51,9 +50,9 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
-            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
-            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
-                        str(expert_intention) + ' intention')
+            # expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+            # logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
+                        # str(expert_intention) + ' intention')
             
             # TODO: Rest of the algorithm
             data.put_table_data(action=action, column='desirability_score', value=1)

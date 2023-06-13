@@ -41,7 +41,7 @@ def agent_portrayal(agent):
 patient_1_path = [((2, 2), '')]
 
 
-med_info = {"med_a": {"type": "painkiller", "impact": MedImpact.LOW}, "med_b": {"type": "vitamin_suppliment", "impact": MedImpact.MEDIUM}, "med_c": {"type": "Insulin", "impact": MedImpact.HIGH}}
+med_info = {"med_a": {"type": "painkiller", "impact": MedImpact.LOW}, "med_b": {"type": "supplement", "impact": MedImpact.MEDIUM}, "med_c": {"type": "Insulin", "impact": MedImpact.HIGH}}
 patient_1_medication_preference = {"is_taking_meds": False, "responses": ["SNOOZE", "ACKNOWLEDGE"]}
 timer_data = [[2, 30, 'med_b', 'patient_0', 2]]
 

@@ -88,7 +88,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                 elif action.value[0].__name__ == 'record':
                     autonomy_utility = 0.5
                 elif action.value[0].__name__ == 'record_and_call_careworker':
-                    autonomy_utility = -1.0
+                    autonomy_utility = -0.8
 
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
@@ -129,22 +129,25 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                 d_m = data['attached_reminders']['timer'].no_of_missed_doses
 
                 if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
-                    d_m += (env['time'] - data['attached_reminders']['time']) / 8
-                    utility, probability, low_res_dist = self.calculate_wellbeing_values(e_m, d_m)
-                    if not action.value[0].__name__ == 'acknowledge':
-                        wellbeing_util = utility
-                        proba = probability
-                        prob_dist = low_res_dist
+                    if action.value[0].__name__ == 'snooze':
+                        d_m += (env['time'] - data['attached_reminders']['time']) / 8
+                        wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)  
+                    elif action.value[0].__name__ == 'record':
+                            d_m += 1
+                            wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                    elif action.value[0].__name__ == 'record_and_call_careworker':
+                        d_m += 1
+                        wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                        wellbeing_util = abs(wellbeing_util)  
 
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.SNOOZED:
-                    d_m += data['attached_reminders']['no_of_snoozes'] / 3
-                    utility, probability, low_res_dist = self.calculate_wellbeing_values(e_m, d_m)
                     if not action.value[0].__name__ == 'remind_medication':
-                        wellbeing_util = utility
-                        proba = probability
-                        prob_dist = low_res_dist
+                        d_m += data['attached_reminders']['no_of_snoozes'] / 3
+                        wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
                     else:
-                        wellbeing_util = 1.0
+                        d_m += 1
+                        wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                        wellbeing_util = abs(wellbeing_util)
 
                 elif data['attached_reminders']['state'] == ROBOT.ReminderState.ACKNOWLEDGED:
                     if not data['took_meds']:
@@ -155,12 +158,16 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                             d_m += 1
                             wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
                         elif action.value[0].__name__ == 'record_and_call_careworker':
-                            wellbeing_util = 0.5
-                            proba = 1.0
+                            d_m += 1
+                            wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                            wellbeing_util = abs(wellbeing_util)
 
             else:
                 if action.value[0].__name__ == 'remind_medication' and action.value[1].recipient == stakeholder:
-                    wellbeing_util = 1.0
+                    e_m = env['Medication_info'][action.value[1].med_name]['impact'].value
+                    d_m = action.value[1].no_of_missed_doses + 1
+                    wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                    wellbeing_util = abs(wellbeing_util)
 
             stakholder_wellbeing_values.append((stakeholder, wellbeing_util, proba, prob_dist))
 
@@ -185,6 +192,8 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             utility = x[np.where(y == max_prob)][0]
 
             max_prob = max_prob if max_prob < 1 else 1.0
+            utility = utility if max_prob > 0.05 else 0.0
+
         else:
             utility = 0.0
             max_prob = 1.0
