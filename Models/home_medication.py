@@ -11,6 +11,7 @@ from agent_types.medication_patient import Patient
 from agent_types.medication_robot import Robot
 from agent_types.wall import Wall
 
+
 from collections import deque
 
 PATIENT_2 = True

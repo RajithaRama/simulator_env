@@ -1,11 +1,13 @@
 import os
 import pandas as pd
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
+from Models.home_medication import MedImpact
 
 from ethical_governor.blackboard.commonutils.cbr.cbr_medication import CBRMedication
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_medication.json')
 
+DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 cbr_context_data_feature_map = {
     'took_meds': ['stakeholders', 'patient_0', 'took_meds'],
@@ -17,7 +19,7 @@ cbr_context_data_feature_map = {
     'no_of_missed_doses':['stakeholders', 'patient_0', 'no_of_missed_doses'],
     'no_of_followups':['stakeholders', 'patient_0', 'attached_reminders', 'no_of_followups'],
     'no_of_snoozes': ['stakeholders', 'patient_0', 'attached_reminders', 'no_of_snoozes'],
-    'user_response': ['stakeholders', 'robot', 'instruction_list'],
+    'user_response': ['stakeholders', 'robot', 'instruction_list', 0, 0],
     'time_of_day': ['environment', 'time_of_day']
 }
 
@@ -35,6 +37,9 @@ class PSRBEvaluator(evaluator.Evaluator):
             data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']] = data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 
+        if DUMP_query:
+            self.queries = pd.DataFrame(columns=self.feature_list)
+
         self.charactor = {'wellbeing': 9, 'autonomy': 3, 'risk_propensity': 3}
 
     def evaluate(self, data, logger):
@@ -50,7 +55,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
-            # expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
             # logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         # str(expert_intention) + ' intention')
             
@@ -62,12 +67,16 @@ class PSRBEvaluator(evaluator.Evaluator):
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data)
         # print(query)
-
-        neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
-        logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
-        vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3,
+        if DUMP_query:
+            self.dump_query(query)
+            vote = 1
+            intention = 'test'
+        else:
+            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
+            logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
+            vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3,
                                                                 logger=logger)
-
+        
         return vote, intention
 
     def generate_query(self, action, data):
@@ -90,11 +99,13 @@ class PSRBEvaluator(evaluator.Evaluator):
                         value = data.get_data(['environment', 'time']) - last_remind_time
                     else:
                         value = None
-                if feature == "took_meds":
+                elif feature == "took_meds":
                     if data.get_data(path) == True:
                         value = 1
                     else:
                         value = 0
+                elif feature == "med_impact" and type(data.get_data(path)) == MedImpact:
+                    value = data.get_data(path).value
                 else:
                     value = data.get_data(path)
             else:
@@ -102,9 +113,15 @@ class PSRBEvaluator(evaluator.Evaluator):
                 value = data.get_table_data(action=action, column=path)
 
             if value == None:
+                if DUMP_query:
+                    query[feature] = [value]
                 continue
 
             query[feature] = [value]
             
         return query
     
+    def dump_query(self, query):
+        
+        self.queries = self.queries.append(query, ignore_index=True)
+        self.queries.to_excel('query_dump.xlsx', sheet_name='query')

@@ -243,7 +243,7 @@ class Robot(HomeAgent):
             agent_data['seen'] = True
             agent_data['attached_reminders'] = self.reminders.get(agent, None)
             agent_data['took_meds'] = agent.did_take_meds()
-            agent_data['no_of_missed_doses'] = agent_data['attached_reminders']['timer'].no_of_missed_doses if agent_data['attached_reminders'] is not None else 0
+            agent_data['no_of_missed_doses'] = agent_data['attached_reminders']['timer'].no_of_missed_doses if agent_data['attached_reminders'] is not None else None
             stakeholders[agent.id] = agent_data
 
         robot_data = {'id': "this", 'type': "robot", 'battery_level': self.battery, 'model': self,
