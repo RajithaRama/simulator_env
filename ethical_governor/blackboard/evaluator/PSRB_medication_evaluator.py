@@ -56,11 +56,42 @@ class PSRBEvaluator(evaluator.Evaluator):
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
             expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
-            # logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
-                        # str(expert_intention) + ' intention')
+            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
+                        str(expert_intention) + ' intention')
             
             # TODO: Rest of the algorithm
-            data.put_table_data(action=action, column='desirability_score', value=1)
+
+            desirability = 0
+
+            wellbeing = data.get_table_data(action, 'patient_0_wellbeing')
+            autonomy = data.get_table_data(action, 'patient_0_autonomy')
+            wellbeing_probability = data.get_table_data(action, 'patient_0_wellbeing_probability')
+            wellbeing_prob_dist = data.get_table_data(action, 'patient_0_wellbeing_probability_distribution')
+
+            rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
+
+            if expert_opinion and not rule_broken:
+                # When rules and expert both accept, accept
+                data.put_table_data(action=action, column='desirability_score', value=1)
+                logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken and '
+                                                                                       'accepted by experts.')
+                
+            elif not expert_opinion and rule_broken:
+                # When rules and expert both reject, reject
+                data.put_table_data(action=action, column='desirability_score', value=0)
+                logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                    data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken and not '
+                                                                                      'accepted by experts.')
+                
+            elif expert_opinion and rule_broken:
+                #TODO: Implement this
+                pass
+
+            elif not expert_opinion and not rule_broken:
+                pass
+
+            if DUMP_query:
+                data.put_table_data(action=action, column='desirability_score', value=1) 
             
 
     

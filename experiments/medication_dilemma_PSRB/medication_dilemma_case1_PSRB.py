@@ -48,7 +48,7 @@ timer_data = [[2, 30, 'med_a', 'patient_0', 0]]
 
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
-conversations = modules.ConversationBox()
+conversations = modules.ConversationBox()   
 
 server = ModularVisualization.ModularServer(
     Home,
