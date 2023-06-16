@@ -1,6 +1,10 @@
 import os
 import pandas as pd
+import numpy as np
+
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
+import ethical_governor.blackboard.ethicaltests.medication_utilitarian_test as medication_utilitarian_test 
+
 from Models.home_medication import MedImpact
 
 from ethical_governor.blackboard.commonutils.cbr.cbr_medication import CBRMedication
@@ -40,7 +44,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         if DUMP_query:
             self.queries = pd.DataFrame(columns=self.feature_list)
 
-        self.charactor = {'wellbeing': 9, 'autonomy': 3, 'risk_propensity': 3}
+        self.charactor = {'wellbeing': 4, 'autonomy': 7, 'risk_propensity': 3}
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
@@ -59,14 +63,27 @@ class PSRBEvaluator(evaluator.Evaluator):
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
             
-            # TODO: Rest of the algorithm
+            # TODO: Debug the algorithm
 
-            desirability = 0
+            acceptability = 1
 
             wellbeing = data.get_table_data(action, 'patient_0_wellbeing')
             autonomy = data.get_table_data(action, 'patient_0_autonomy')
             wellbeing_probability = data.get_table_data(action, 'patient_0_wellbeing_probability')
-            wellbeing_prob_dist = data.get_table_data(action, 'patient_0_wellbeing_probability_distribution')
+            wellbeing_prob_dist = data.get_table_data(action, 'patient_0_wellbeing_distribution')
+
+            # Calculating Expectation values for wellbeing
+            resolution = medication_utilitarian_test.RESOLUTION
+            utility_range = np.linspace(-1, 1, int(2 / resolution + 1)).round(5).tolist()
+            
+            expectation_values = []
+
+            for i in range(len(utility_range)):
+                #Calculating expectation values only for negative utility values 
+                #(because positive utility == chance, not risk) (ref: Sven ove Hansson - The ethics of risk)
+                if utility_range[i] <= 0:                
+                    expectation_values.append(abs(wellbeing_prob_dist[i] * utility_range[i]))
+
 
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
 
@@ -84,11 +101,96 @@ class PSRBEvaluator(evaluator.Evaluator):
                                                                                       'accepted by experts.')
                 
             elif expert_opinion and rule_broken:
-                #TODO: Implement this
-                pass
+                # when rules broken but accepted by expert
+                
+                # Risk threshold = threshold for expectation value of wellbeing
+                risk_threshold = self.charactor['risk_propensity']/10
+                
+                # Accessing autonomy acceptability
+                if 'autonomy' in expert_intention:
+                    threshold = (10 - self.charactor['autonomy'])/10
+                    if autonomy < threshold:
+                        acceptability = 0
+                else:
+                    threshold = (self.charactor['autonomy'] - 10)/10
+                    if autonomy < threshold:
+                        acceptability = 0
+
+                # Accessing wellbeing acceptability ( Considering the highest possible utility value)
+                if 'wellbeing' in expert_intention:
+                    threshold = (10 - self.charactor['wellbeing'])/10
+                    if wellbeing < threshold:
+                        acceptability = 0
+                else:
+                    threshold = (self.charactor['wellbeing'] - 10)/10
+                    if wellbeing < threshold:
+                        acceptability = 0
+
+                # Accessing risk acceptability
+                risk_acceptable = True
+                if acceptability:
+                    for expectation_value in expectation_values:
+                        if expectation_value > risk_threshold:
+                            acceptability = 0
+                            risk_acceptable = False
+                    
+                data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                # Explanations
+                if acceptability:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        'experts. Since it increases ' + str(expert_intention) + 'values greatly and the outcome is ' 
+                        'within accepted risk levels, deemed accepted by PSRB system.')
+                    
+                elif not risk_acceptable:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        'experts. The value tradeoff is satisfactory, but the risk taken by the action is not acceptable to bend the rule.')
+                
+                else:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        'experts. However, the value tradeoff is not satisfactory to bend the rule.')
+
 
             elif not expert_opinion and not rule_broken:
-                pass
+                
+                # when the action obeys the rules, but not accepted by experts
+                if 'autnomy' in expert_intention:
+                    lower_threshold = (self.charactor['autonomy'] - 10)/10
+                    if autonomy < lower_threshold:
+                        acceptability = 0
+
+                if 'wellbeing' in expert_intention:
+                    lower_threshold = (self.charactor['wellbeing'] - 10)/10
+                    if wellbeing < lower_threshold:
+                        acceptability = 0
+                
+                risk_acceptable = True
+                if acceptability:
+                    risk_threshold = self.charactor['risk_propensity']/10
+                    for expectation_value in expectation_values:
+                        if expectation_value > risk_threshold:
+                            acceptability = 0
+                            risk_acceptable = False
+
+                data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                #Explanations
+                if acceptability:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
+                        'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
+                    
+                elif not risk_acceptable:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
+                        'experts. Since the action outcomes introduces a high risk, deemed not accepted by the PSRB system.')
+                    
+                else:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
+                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
+                                                                                                                       'PSRB system.')
+
 
             if DUMP_query:
                 data.put_table_data(action=action, column='desirability_score', value=1) 

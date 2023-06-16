@@ -175,5 +175,5 @@ if __name__ == '__main__':
                               'follower_availability', 'action']))
     # print(neighbours)
 
-    vote = ex1.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours, threshold=3)
+    vote = ex1.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours, threshold=3, logger=None)
     # print(vote)
