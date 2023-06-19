@@ -84,7 +84,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                     pass
 
                 if action.value[0].__name__ == 'followup':
-                    autonomy_utility = -0.5
+                    autonomy_utility = -0.1 * data['attached_reminders']['no_of_followups']
                 elif action.value[0].__name__ == 'record':
                     autonomy_utility = 0.5
                 elif action.value[0].__name__ == 'record_and_call_careworker':

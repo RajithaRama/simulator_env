@@ -194,8 +194,8 @@ class Robot(HomeAgent):
             'med_name'] + '. I am recording this incident.', MessageCode.NOT_DETECTED), self, recipient)
         reminder['timer'].add_missed_dose()
 
-        self.record_incident(recipient, 'Medication ' + reminder['time'].med_name + ' not taken. This is the ' + str(
-            reminder['time'].no_of_missed_doses) + 'missing dose.')
+        self.record_incident(recipient, 'Medication ' + reminder['timer'].med_name + ' not taken. This is the ' + str(
+            reminder['timer'].no_of_missed_doses) + 'missing dose.')
 
 
 

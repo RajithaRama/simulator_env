@@ -157,7 +157,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             elif not expert_opinion and not rule_broken:
                 
                 # when the action obeys the rules, but not accepted by experts
-                if 'autnomy' in expert_intention:
+                if 'autonomy' in expert_intention:
                     lower_threshold = (self.charactor['autonomy'] - 10)/10
                     if autonomy < lower_threshold:
                         acceptability = 0
