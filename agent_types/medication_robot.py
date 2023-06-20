@@ -24,13 +24,16 @@ class MessageCode(IntEnum):
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, responsible_resident_name, governor_conf, start_battery, timer_data):
+    def __init__(self, unique_id, name, model, responsible_resident_name, governor_conf, start_battery, timer_data, character):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
         self.time = 0
+
+        # setting up the ethical governor
         self.ethical_governor = EthicalGovernor(governor_conf)
-        # self.roles = {responsible_resident_name: 'caring_resident'}
+        self.ethical_governor.blackboard.evaluator.set_character(character)
+        
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
         self.medication_timers = []
         for timer in timer_data:
@@ -181,7 +184,7 @@ class Robot(HomeAgent):
         reminder = self.reminders[recipient]
         time_passed = self.time - reminder['time']
         self.model.pass_message(('I could not detect you taking the medicine ' + reminder['med_name'] + '. It is ' + str(
-            time_passed * self.model.MINS_PER_STEP) + 'mins since your acknowledgement. Please take the medication. '
+            time_passed * self.model.MINS_PER_STEP) + ' mins since your acknowledgement. Please take the medication. '
                                                       'It is important for your wellbeing.',
                                  MessageCode.FOLLOW_UP), self, recipient)
         reminder['no_of_followups'] += 1
@@ -195,7 +198,7 @@ class Robot(HomeAgent):
         reminder['timer'].add_missed_dose()
 
         self.record_incident(recipient, 'Medication ' + reminder['timer'].med_name + ' not taken. This is the ' + str(
-            reminder['timer'].no_of_missed_doses) + 'missing dose.')
+            reminder['timer'].no_of_missed_doses) + ' missing dose.')
 
 
 
@@ -212,12 +215,12 @@ class Robot(HomeAgent):
         reminder['timer'].add_missed_dose()
 
         self.record_incident(recipient, 'Medication ' + reminder['med_name'] + ' not taken. This is the ' + str(
-            reminder['timer'].no_of_missed_doses) + 'missing dose.')
+            reminder['timer'].no_of_missed_doses) + ' missing dose.')
 
         self.model.alert_careworker(
             "Patient " + recipient.id + " did not take the medication " + reminder['med_name'] + " at step " + str(
-                self.time) + " . This is their " + str(
-                reminder['timer'].no_of_missed_doses) + "  consecutively missing dose.")
+                self.time) + ". This is their " + str(
+                reminder['timer'].no_of_missed_doses) + " consecutively missing dose.")
 
         reminder['time'] = self.time
         reminder['state'] = ReminderState.COMPLETED

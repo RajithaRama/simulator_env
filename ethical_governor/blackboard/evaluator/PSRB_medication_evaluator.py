@@ -44,7 +44,11 @@ class PSRBEvaluator(evaluator.Evaluator):
         if DUMP_query:
             self.queries = pd.DataFrame(columns=self.feature_list)
 
-        self.charactor = {'wellbeing': 4, 'autonomy': 7, 'risk_propensity': 3}
+        self.character = {}
+        
+
+    def set_character(self, character):
+        self.character = character
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
@@ -84,7 +88,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 if utility_range[i] <= 0:                
                     expectation_values.append(abs(wellbeing_prob_dist[i] * utility_range[i]))
 
-
+ 
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
 
             if expert_opinion and not rule_broken:
@@ -104,25 +108,25 @@ class PSRBEvaluator(evaluator.Evaluator):
                 # when rules broken but accepted by expert
                 
                 # Risk threshold = threshold for expectation value of wellbeing
-                risk_threshold = self.charactor['risk_propensity']/10
+                risk_threshold = self.character['risk_propensity']/10
                 
                 # Accessing autonomy acceptability
                 if 'autonomy' in expert_intention:
-                    threshold = (10 - self.charactor['autonomy'])/10
+                    threshold = (10 - self.character['autonomy'])/10
                     if autonomy < threshold:
                         acceptability = 0
                 else:
-                    threshold = (self.charactor['autonomy'] - 10)/10
+                    threshold = (self.character['autonomy'] - 10)/10
                     if autonomy < threshold:
                         acceptability = 0
 
                 # Accessing wellbeing acceptability ( Considering the highest possible utility value)
                 if 'wellbeing' in expert_intention:
-                    threshold = (10 - self.charactor['wellbeing'])/10
+                    threshold = (10 - self.character['wellbeing'])/10
                     if wellbeing < threshold:
                         acceptability = 0
                 else:
-                    threshold = (self.charactor['wellbeing'] - 10)/10
+                    threshold = (self.character['wellbeing'] - 10)/10
                     if wellbeing < threshold:
                         acceptability = 0
 
@@ -139,18 +143,18 @@ class PSRBEvaluator(evaluator.Evaluator):
                 # Explanations
                 if acceptability:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
-                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
-                        'experts. Since it increases ' + str(expert_intention) + 'values greatly and the outcome is ' 
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
+                        'experts. Since it increases ' + str(expert_intention) + ' values greatly and the outcome is ' 
                         'within accepted risk levels, deemed accepted by PSRB system.')
                     
                 elif not risk_acceptable:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
-                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
                         'experts. The value tradeoff is satisfactory, but the risk taken by the action is not acceptable to bend the rule.')
                 
                 else:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
-                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
                         'experts. However, the value tradeoff is not satisfactory to bend the rule.')
 
 
@@ -158,18 +162,18 @@ class PSRBEvaluator(evaluator.Evaluator):
                 
                 # when the action obeys the rules, but not accepted by experts
                 if 'autonomy' in expert_intention:
-                    lower_threshold = (self.charactor['autonomy'] - 10)/10
+                    lower_threshold = (self.character['autonomy'] - 10)/10
                     if autonomy < lower_threshold:
                         acceptability = 0
 
                 if 'wellbeing' in expert_intention:
-                    lower_threshold = (self.charactor['wellbeing'] - 10)/10
+                    lower_threshold = (self.character['wellbeing'] - 10)/10
                     if wellbeing < lower_threshold:
                         acceptability = 0
                 
                 risk_acceptable = True
                 if acceptability:
-                    risk_threshold = self.charactor['risk_propensity']/10
+                    risk_threshold = self.character['risk_propensity']/10
                     for expectation_value in expectation_values:
                         if expectation_value > risk_threshold:
                             acceptability = 0
@@ -188,7 +192,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     
                 else:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
-                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
+                        'experts. Since it decreases ' + str(expert_intention) + ' values too much, deemed not accepted by '
                                                                                                                        'PSRB system.')
 
 

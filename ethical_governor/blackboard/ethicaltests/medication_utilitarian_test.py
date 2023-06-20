@@ -79,16 +79,17 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                             if self.instruction_function_map[instruction[0]][1] == action.value[0].__name__:
                                 autonomy_utility = 1.0
                             else:
-                                autonomy_utility = -1.0
+                                autonomy_utility = -0.7
                 except TypeError:
                     pass
-
-                if action.value[0].__name__ == 'followup':
-                    autonomy_utility = -0.1 * data['attached_reminders']['no_of_followups']
-                elif action.value[0].__name__ == 'record':
-                    autonomy_utility = 0.5
-                elif action.value[0].__name__ == 'record_and_call_careworker':
-                    autonomy_utility = -0.8
+                
+                if autonomy_utility == 0.0:
+                    if action.value[0].__name__ == 'followup':
+                        autonomy_utility = -0.1 * data['attached_reminders']['no_of_followups']
+                    elif action.value[0].__name__ == 'record':
+                        autonomy_utility = 0.5
+                    elif action.value[0].__name__ == 'record_and_call_careworker':
+                        autonomy_utility = -0.7
 
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
@@ -153,7 +154,11 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                     if not data['took_meds']:
                         if action.value[0].__name__ == 'followup':
                             d_m += data['attached_reminders']['no_of_followups'] / 4
+                            # wellbeing lost (or gained) by delaying the medication + wellbeing gained by nudging towards taking the medication
                             wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
+                            # if wellbeing is negative, Wellbeing gained by nudging = 0.5 (fixed)
+                            wellbeing_util += 0.5
+                        
                         elif action.value[0].__name__ == 'record':
                             d_m += 1
                             wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)
@@ -192,7 +197,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             utility = x[np.where(y == max_prob)][0]
 
             max_prob = max_prob if max_prob < 1 else 1.0
-            utility = utility if max_prob > 0.05 else 0.0
+            utility = utility if (max_prob > 0.05) and (utility < 0.0) else 0.0
 
         else:
             utility = 0.0
