@@ -86,6 +86,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
                 if autonomy_utility == 0.0:
                     if action.value[0].__name__ == 'followup':
                         autonomy_utility = -0.1 * data['attached_reminders']['no_of_followups']
+                        autonomy_utility = max(autonomy_utility, -1)
                     elif action.value[0].__name__ == 'record':
                         autonomy_utility = 0.5
                     elif action.value[0].__name__ == 'record_and_call_careworker':
@@ -196,7 +197,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
             max_prob = np.max(y)
             utility = x[np.where(y == max_prob)][0]
 
-            max_prob = max_prob if max_prob < 1 else 1.0
+            max_prob = min(max_prob, 1.0)
             utility = utility if (max_prob > 0.05) and (utility < 0.0) else 0.0
 
         else:
