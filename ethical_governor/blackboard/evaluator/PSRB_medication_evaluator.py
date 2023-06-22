@@ -43,6 +43,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         if DUMP_query:
             self.queries = pd.DataFrame(columns=self.feature_list)
+            self.query_list = [self.queries]
 
         self.character = {}
         
@@ -259,6 +260,8 @@ class PSRBEvaluator(evaluator.Evaluator):
         return query
     
     def dump_query(self, query):
-        
-        self.queries = self.queries.append(query, ignore_index=True)
+
+        self.query_list.append(query)
+        # self.queries = self.queries.append(query, ignore_index=True)
+        self.queries = pd.concat(self.query_list, ignore_index=True)
         self.queries.to_excel('query_dump.xlsx', sheet_name='query')
