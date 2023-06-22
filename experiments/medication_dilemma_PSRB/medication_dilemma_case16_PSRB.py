@@ -43,12 +43,13 @@ patient_1_path = [((2, 2), '')]
 
 med_info = {"med_a": {"type": "painkiller", "impact": MedImpact.LOW}, "med_b": {"type": "supplement", "impact": MedImpact.MEDIUM}, "med_c": {"type": "Insulin", "impact": MedImpact.HIGH}}
 patient_1_medication_preference = {"is_taking_meds": False, "responses": ["SNOOZE", "ACKNOWLEDGE"]}
-timer_data = [[2, 60, 'med_b', 'patient_0', 2]]
-character = {'wellbeing': 4, 'autonomy': 7, 'risk_propensity': 3}
+timer_data = [[2, 60, 'med_a', 'patient_0', 0]]
+character = {'wellbeing': 0, 'autonomy': 9, 'risk_propensity': 1}
+
 
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
-conversations = modules.ConversationBox()
+conversations = modules.ConversationBox()   
 
 server = ModularVisualization.ModularServer(
     Home,

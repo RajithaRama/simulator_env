@@ -132,6 +132,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
                 if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
                     if action.value[0].__name__ == 'snooze':
+                        # TODO: Check this coz d_m will always be 1/8
                         d_m += (env['time'] - data['attached_reminders']['time']) / 8
                         wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)  
                     elif action.value[0].__name__ == 'record':
