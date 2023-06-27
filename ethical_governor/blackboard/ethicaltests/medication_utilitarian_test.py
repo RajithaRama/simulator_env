@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import gamma
 
 import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import agent_types.medication_robot as ROBOT
@@ -132,7 +133,6 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
                 if data['attached_reminders']['state'] == ROBOT.ReminderState.ISSUED:
                     if action.value[0].__name__ == 'snooze':
-                        # TODO: Check this coz d_m will always be 1/8
                         d_m += (data['attached_reminders']['no_of_followups'] + 1) / 8
                         wellbeing_util, proba, prob_dist = self.calculate_wellbeing_values(e_m, d_m)  
                     elif action.value[0].__name__ == 'record':
@@ -180,25 +180,25 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
         return stakholder_wellbeing_values
 
-    def calculate_wellbeing_values(self, e_m, d_m, resolution=0.1):
+    def calculate_wellbeing_values(self, e_m, d_m, resolution=RESOLUTION):
         """
         Calculate the wellbeing values for the stakeholder
         """
 
-        highest_prob_util, proba = self.highest_probable_utility(e_m, d_m)
-        prob_dist = self.get_low_res_probability_dist(e_m, d_m, resolution)
+        highest_prob_util, proba = self.highest_probable_utility(e_m, d_m, resolution/2)
+        _, prob_dist = self.Utility_dist(e_m, d_m, resolution)
 
         return highest_prob_util, proba, prob_dist
 
-    def highest_probable_utility(self, e_m, d_m):
+    def highest_probable_utility(self, e_m, d_m, resolution=0.1):
         "Calculate the highest probable utility of the stakeholder"
 
         if d_m > 0:
-            x, y = self.Utility_dist(e_m, d_m)
-            max_prob = np.max(y)
-            utility = x[np.where(y == max_prob)][0]
+            x, y = self.Utility_dist(e_m, d_m, resolution)
+            max_prob = max(y)
+            utility = x[y.index(max_prob)]
 
-            max_prob = min(max_prob, 1.0)
+            
             utility = utility if (max_prob > 0.05) and (utility < 0.0) else 0.0
 
         else:
@@ -207,34 +207,58 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
         return round(utility, 5), round(max_prob, 5)
 
-    def get_low_res_probability_dist(self, e_m, d_m, resolution=0.1):
-        """Generate a low resolution probability distribution of the utility of stakeholder
-        """
-        low_res_probs = np.zeros(int((2 / resolution) + 1))
-        if d_m > 0:
-            x, y = self.Utility_dist(e_m, d_m)
-            i = 0
-            x = x.round(5).tolist()
-            # space = np.linspace(-1, 1, int(2/resolution + 1))
-            indexes = [x.index(e) for e in np.linspace(-1, 1, int(2 / resolution + 1)).round(5)]
-            for j in indexes:
-                low_res_probs[i] = y[j].round(5)
-                i += 1
+    # ///////// OLD CODE
+    # def get_low_res_probability_dist(self, e_m, d_m, resolution=0.1):
+    #     """Generate a low resolution probability distribution of the utility of stakeholder
+    #     """
+    #     low_res_probs = np.zeros(int((2 / resolution) + 1))
+    #     if d_m > 0:
+    #         x, y = self.Utility_dist(e_m, d_m, resolution)
+    #         i = 0
+    #         x = x.round(5).tolist()
+    #         # space = np.linspace(-1, 1, int(2/resolution + 1))
+    #         indexes = [x.index(e) for e in np.linspace(-1, 1, int(2 / resolution + 1)).round(5)]
+    #         for j in indexes:
+    #             low_res_probs[i] = y[j].round(5)
+    #             i += 1
 
-        return low_res_probs
+    #     return low_res_probs
 
-    def Utility_dist(self, e_m, d_m):
+    # 
+    # def Utility_dist(self, e_m, d_m):
+    #     """Generate a probability distribution of the utility of stakeholder
+    #     """
+
+    #     d = d_m
+    #     f = e_m
+    #     b = 1 - np.exp(-1 * (d + f - 1.5))
+    #     g = (f / 2) * np.log(2 * d + 1)
+
+    #     x, step = np.linspace(-1, 1, 101, retstep=True)
+    #     # print(step)
+
+    #     y = (g / np.sqrt(2 * np.pi)) * np.exp(-g * (x + b) ** 2)
+
+    #     return x, y
+
+    def Utility_dist(self, e_m, d_m, resolution=0.1):
         """Generate a probability distribution of the utility of stakeholder
         """
 
         d = d_m
         f = e_m
-        b = 1 - np.exp(-1 * (d + f - 1.5))
-        g = (f / 2) * np.log(2 * d + 1)
+        
+        a = 1.325*f*f - 9.475*f + 18.15
+        scale = np.exp(-2.65 - (d/2)) + 0.01 # q
+        loc = -1
 
-        x, step = np.linspace(-1, 1, 101, retstep=True)
-        # print(step)
+        domain = np.linspace(-1, 1, int(2 / resolution + 1)).round(5).tolist()
 
-        y = (g / np.sqrt(2 * np.pi)) * np.exp(-g * (x + b) ** 2)
+        x = []
+        y = []
+        for i in range((len(domain) - 1)):
+            # print(i)
+            x.append((domain[i+1] + domain[i])/2)
+            y.append(gamma.cdf(domain[i+1], a=a, loc=loc, scale=scale) - gamma.cdf(domain[i], a=a, loc=loc, scale=scale))
 
         return x, y

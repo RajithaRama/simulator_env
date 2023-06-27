@@ -11,7 +11,7 @@ from ethical_governor.blackboard.commonutils.cbr.cbr_medication import CBRMedica
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_medication.json')
 
-DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 cbr_context_data_feature_map = {
     'took_meds': ['stakeholders', 'patient_0', 'took_meds'],
@@ -83,11 +83,12 @@ class PSRBEvaluator(evaluator.Evaluator):
             
             expectation_values = []
 
-            for i in range(len(utility_range)):
+            for i in range(len(utility_range) - 1):
                 #Calculating expectation values only for negative utility values 
                 #(because positive utility == chance, not risk) (ref: Sven ove Hansson - The ethics of risk)
-                if utility_range[i] <= 0:                
-                    expectation_values.append(abs(wellbeing_prob_dist[i] * utility_range[i]))
+                if utility_range[i] < 0:
+                    utility = (utility_range[i] + utility_range[i+1])/2                
+                    expectation_values.append(abs(wellbeing_prob_dist[i] * utility))
 
  
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
@@ -109,7 +110,9 @@ class PSRBEvaluator(evaluator.Evaluator):
                 # when rules broken but accepted by expert
                 
                 # Risk threshold = threshold for expectation value of wellbeing
-                risk_threshold = self.character['risk_propensity']/10
+                r = self.character['risk_propensity']
+                # risk_threshold = self.character['risk_propensity']/10
+                risk_threshold = ((np.exp(r/4.17) - 1)/10).round(2)
                 
                 # Accessing autonomy acceptability
                 if 'autonomy' in expert_intention:
@@ -174,7 +177,9 @@ class PSRBEvaluator(evaluator.Evaluator):
                 
                 risk_acceptable = True
                 if acceptability:
-                    risk_threshold = self.character['risk_propensity']/10
+                    r = self.character['risk_propensity']
+                    # risk_threshold = self.character['risk_propensity']/10
+                    risk_threshold = ((np.exp(r/4.17) - 1)/10).round(2)
                     for expectation_value in expectation_values:
                         if expectation_value > risk_threshold:
                             acceptability = 0
