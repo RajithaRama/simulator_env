@@ -11,7 +11,7 @@ from ethical_governor.blackboard.commonutils.cbr.cbr_medication import CBRMedica
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_medication.json')
 
-DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 cbr_context_data_feature_map = {
     'took_meds': ['stakeholders', 'patient_0', 'took_meds'],
