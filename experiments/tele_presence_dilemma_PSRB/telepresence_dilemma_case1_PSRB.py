@@ -1,5 +1,11 @@
-from mesa_updated.visualization import ModularVisualization, modules
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[2]
+sys.path.append(str(path_root))
+print(sys.path)
 
+
+from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
@@ -34,14 +40,99 @@ def agent_portrayal(agent):
 patient_1_path = [((8, 2), '')]
 patient_2_path = [((10, 2), '')]
 
-caller_instructions = ['go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
+caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
-patient_1_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
-patient_2_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
+patient_1_preference = {
+    'bedroom': {
+        'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        }, 
+    'kitchen': {
+        'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        },
+    'bathroom': {
+        'permitted_caller': {
+            'with_company': False, 
+            'Alone': False
+            }, 
+        'unpermitted_caller': {
+            'with_company': False, 
+            'Alone': False
+            }
+        }, 
+    'living_room': {'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        },
+    }
+
+patient_2_preference = {
+    'bedroom': {
+        'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        }, 
+    'kitchen': {
+        'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        },
+    'bathroom': {
+        'permitted_caller': {
+            'with_company': False, 
+            'Alone': False
+            }, 
+        'unpermitted_caller': {
+            'with_company': False, 
+            'Alone': False
+            }
+        }, 
+    'living_room': {
+        'permitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }, 
+        'unpermitted_caller': {
+            'with_company': True, 
+            'Alone': True
+            }
+        },
+    }
+
+# TODO: Create a permitted caller list for each resident and using that decide whether to take a call or not first place.
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY
+    'type': CALLER_TYPE.FAMILY,
+    'calling_resident': 'patient_0'
 }
 
 

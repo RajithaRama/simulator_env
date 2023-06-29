@@ -9,11 +9,13 @@ class CALLER_TYPE(Enum):
     DOCTOR = 4
 
 class Caller(HomeAgent):
-    def __init__(self, unique_id, name, model, commands, type):
+    def __init__(self, unique_id, name, model, commands, type, calling_resident):
         super().__init__(unique_id, name, model, "caller")
         self.robot_commands = commands
         self.steps = 0
         self.type = type
+        self.calling_resident = calling_resident
+        self.call_declined = False
 
 
     def step(self):
@@ -23,12 +25,19 @@ class Caller(HomeAgent):
             if code == -1:
                 self.steps -= 1
 
+            if code == -2:
+                self.call_declined = True
+                self.steps -= 1
+
         self.send_message()
 
     def receive_message(self, receiver):
         return self.model.get_message(receiver)
 
     def send_message(self):
+        if self.call_declined:
+            return
+        
         try:
             next_command = self.robot_commands[self.steps]
         except IndexError:

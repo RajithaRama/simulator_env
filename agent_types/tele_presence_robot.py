@@ -17,7 +17,9 @@ class Robot(HomeAgent):
         self.time = 0
         self.ethical_governor = EthicalGovernor(governor_conf)
         self.roles = {caller_name: 'caller'}
-        self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right}
+        self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right, "call": self.take_call}
+        self.on_call = False
+
 
     def step(self):
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
@@ -45,8 +47,13 @@ class Robot(HomeAgent):
         if buffered_instructions:
             for instruction in buffered_instructions:
                 action = self.instruction_func_map[instruction[0]]
-                possible_actions.append((action, ))
-            possible_actions.append((self.decline_instruction, "Declined the calller instructions considering recommendations of the ethical governor.", "caller"))
+                
+                if action == self.take_call:
+                    possible_actions.append((action, instruction[1].id))
+                    possible_actions.append((self.decline_call, instruction[1].id))
+                else:
+                    possible_actions.append((action, ))
+                    possible_actions.append((self.decline_instruction, "Declined the calller instruction " + instruction[0] + " considering recommendations of the ethical governor.", "caller"))
         else:
             possible_actions.append((self.stay, ))
 
@@ -68,7 +75,7 @@ class Robot(HomeAgent):
             user_commands = {value for key, value in self.instruction_func_map.items()}
             for recommendation in recommendations:
                 if recommendation[0] in user_commands:
-                    recommendation[0](*recommendation[1:])
+                    recommendations[0][0](*recommendations[0][1:])
                     print('Action executed: ' + str(recommendation[0]))
                     return
 
@@ -84,34 +91,55 @@ class Robot(HomeAgent):
 
     def move_forward(self):
         next_pos = (self.pos[0], self.pos[1] + 1)
-        if self.is_possible_move(next_pos):
+        if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
+        elif not self.on_call:
+            raise Exception("Robot is not on call")
         else:
             self.decline_instruction("Robot can't move forward from the current position", "caller")
             self.stay()
 
     def move_backward(self):
         next_pos = (self.pos[0], self.pos[1] - 1)
-        if self.is_possible_move(next_pos):
+        if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
+        elif not self.on_call:
+            raise Exception("Robot is not on call")
         else:
             self.decline_instruction("Robot can't move backward from the current position", "caller")
             self.stay()
     def move_right(self):
         next_pos = (self.pos[0] + 1, self.pos[1])
-        if self.is_possible_move(next_pos):
+        if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
+        elif not self.on_call:
+            raise Exception("Robot is not on call")
         else:
             self.decline_instruction("Robot can't move right from the current position", "caller")
             self.stay()
 
     def move_left(self):
         next_pos = (self.pos[0] - 1, self.pos[1])
-        if self.is_possible_move(next_pos):
+        if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
+        elif not self.on_call:
+            raise Exception("Robot is not on call")
         else:
             self.decline_instruction("Robot can't move left from the current position", "caller")
             self.stay()
+
+    def take_call(self, caller_name):
+        self.on_call = True
+        print("Robot: Answered the call from " + caller_name)
+
+    def decline_call(self, caller_name):
+        self.on_call = False
+
+        code = -2
+        msg = "Cannot answer the call now. Please try again later."
+        reciever = self.model.get_stakeholder(caller_name)
+        self.model.pass_message((msg, code), self, reciever)
+        print("Robot: Declined the call from " + caller_name)
 
     def stay(self):
         pass
@@ -142,14 +170,24 @@ class Robot(HomeAgent):
             agent_data['seen_location'] = self.model.get_location(agent.pos)
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
+            agent_data['preferences'] = agent.preferences
             stakeholders[agent.id] = agent_data
 
-        caller = {'id': 'caller', 'type': 'caller'}
-        stakeholders['follower'] = caller
+        instructions = self.model.get_message(self)
+
+        if instructions:
+            for instruction in instructions:
+                if instruction[0] in self.instruction_func_map.keys():
+                    caller = {}
+                    caller['id'] = instruction[1].id
+                    caller['type'] = instruction[1].type
+                    caller['calling_resident'] = instruction[1].calling_resident
+
+                    stakeholders['caller'] = caller
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'battery_level': self.battery, 'model': self,
-                      'visible_dist': self.visible_dist, 'instruction_list': self.model.get_message(self)}
+                      'visible_dist': self.visible_dist, 'instruction_list': instructions}
 
         stakeholders['robot'] = robot_data
 

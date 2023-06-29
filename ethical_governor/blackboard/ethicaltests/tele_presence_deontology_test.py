@@ -96,6 +96,8 @@ class ElderCareRuleTest(ethical_test.EthicalTest):
 
                     value = False if value is None else value
 
+                    # value = value.split(':')[0] if (type(value) == str) and (':' in value) else value
+
                     if left is not None and operation:
                         right = value
                     elif operation and left is None:

@@ -45,7 +45,7 @@ class Home(Model):
             self.stakeholders.append(CareWorker(id_gen.get_id(), 'care_worker', self, worker_data['path'], worker_data['preferences']))
 
         # Init caller
-        caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'])
+        caller = Caller(id_gen.get_id(), 'caller', self, caller_data['commands'], caller_data['type'], caller_data['calling_resident'])
         self.stakeholders.append(caller)
 
         self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
