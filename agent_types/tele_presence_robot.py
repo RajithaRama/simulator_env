@@ -89,7 +89,7 @@ class Robot(HomeAgent):
     def move(self, pos):
         self.model.grid.move_agent(self, pos)
 
-    def move_forward(self):
+    def move_forward(self, act=True):
         next_pos = (self.pos[0], self.pos[1] + 1)
         if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
@@ -99,7 +99,7 @@ class Robot(HomeAgent):
             self.decline_instruction("Robot can't move forward from the current position", "caller")
             self.stay()
 
-    def move_backward(self):
+    def move_backward(self, act=True):
         next_pos = (self.pos[0], self.pos[1] - 1)
         if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
@@ -108,7 +108,7 @@ class Robot(HomeAgent):
         else:
             self.decline_instruction("Robot can't move backward from the current position", "caller")
             self.stay()
-    def move_right(self):
+    def move_right(self, act=True):
         next_pos = (self.pos[0] + 1, self.pos[1])
         if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)
@@ -118,7 +118,7 @@ class Robot(HomeAgent):
             self.decline_instruction("Robot can't move right from the current position", "caller")
             self.stay()
 
-    def move_left(self):
+    def move_left(self, act=True):
         next_pos = (self.pos[0] - 1, self.pos[1])
         if self.on_call and self.is_possible_move(next_pos):
             self.move(next_pos)

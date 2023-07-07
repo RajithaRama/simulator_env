@@ -44,90 +44,89 @@ caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward
 
 patient_1_preference = {
     'bedroom': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         }, 
     'kitchen': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         },
     'bathroom': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': False, 
-            'Alone': False
+            'alone': False
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': False, 
-            'Alone': False
+            'alone': False
             }
         }, 
-    'living_room': {'permitted_caller': {
+    'living_room': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         },
     }
 
 patient_2_preference = {
     'bedroom': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         }, 
     'kitchen': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         },
     'bathroom': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': False, 
-            'Alone': False
+            'alone': False
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': False, 
-            'Alone': False
+            'alone': False
             }
         }, 
     'living_room': {
-        'permitted_caller': {
+        'reciever': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }, 
-        'unpermitted_caller': {
+        '3rd_party': {
             'with_company': True, 
-            'Alone': True
+            'alone': True
             }
         },
     }
-
-# TODO: Create a permitted caller list for each resident and using that decide whether to take a call or not first place.
 
 caller_data = {
     'commands': caller_instructions,

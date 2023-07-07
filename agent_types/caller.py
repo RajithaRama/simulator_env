@@ -7,6 +7,7 @@ class CALLER_TYPE(Enum):
     FRIEND = 2
     CAREGIVER = 3
     DOCTOR = 4
+    OTHER = 5
 
 class Caller(HomeAgent):
     def __init__(self, unique_id, name, model, commands, type, calling_resident):
