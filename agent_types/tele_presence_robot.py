@@ -10,7 +10,7 @@ VISIBLE_DIST = 3
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, caller_name, governor_conf, start_battery):
+    def __init__(self, unique_id, name, model, caller_name, governor_conf, start_battery, patient_preferences):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
@@ -19,6 +19,7 @@ class Robot(HomeAgent):
         self.roles = {caller_name: 'caller'}
         self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right, "call": self.take_call}
         self.on_call = False
+        self.patient_preferences = patient_preferences
 
 
     def step(self):
@@ -198,6 +199,7 @@ class Robot(HomeAgent):
                        "walls": self.model.wall_coordinates,
                        "things": self.model.things,
                        "things_robot_inaccessible": self.model.things_robot_inaccessible
+                       
                        }
         env_data['environment'] = environment
         env_data['other_inputs'] = {}

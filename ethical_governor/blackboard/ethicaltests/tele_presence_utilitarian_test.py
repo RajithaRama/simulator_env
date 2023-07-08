@@ -42,11 +42,11 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             # logger.info('Wellbeing utilities for action ' + str(action.value) + ': ' + str(wellbeing_util))
             utils['wellbeing'] = wellbeing_util
 
-            # logger.info('Calculating the availability for stakeholders')
-            availability_util = self.get_availability_util(env=env, stakeholder_data=stakeholder_data, action=action,
+            # logger.info('Calculating the privacy for stakeholders')
+            privacy_util = self.get_privacy_utility(env=env, stakeholder_data=stakeholder_data, action=action,
                                                            logger=logger)
-            # logger.info('Availability utils for action ' + str(action.value) + ': ' + str(availability_util))
-            utils['availability'] = availability_util
+            # logger.info('privact utils for action ' + str(action.value) + ': ' + str(privacy_util))
+            utils['privacy'] = privacy_util
 
             out = {}
             for util_type, values in utils.items():
@@ -143,16 +143,22 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         """
 
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'call':
+        if action.value[0].__name__ == 'take_call':
             next_pos = stakeholder_data['robot']['pos']
+        elif action.value[0].__name__ == 'decline_call':
+            next_pos = None
         else:
             next_pos = action.value[0](*action.value[1:], act=False)
         # next_loc = stakeholder_data['robot']['model'].model.get_location(next_pos)
         
-        visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
-        center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-        visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
-        
+        if next_pos is not None:
+            visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
+            center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
+            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
+        else:
+            visible_stakeholders_ids = []
+            visible_stakeholders = []
+
         stakholder_wellbeing_values = []
 
         # Doctor and caregiver can have higher wellbeing impact. Family and friends have a 
@@ -189,31 +195,95 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         """
         Calculating privacy values for stakeholders depending on the location and the privacy preferences.
         """
+
+        # Private levels of the locations: 1 = most private, 0 = least private
+        location_privacy_levels = {
+            'kitchen': 0.5,
+            'living': 0.5,
+            'bedroom': 0.8,
+            'bedroom_close_bed': 0.8,
+            'bathroom': 1.0,
+            'other': 0.2
+        }
+
+
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'call':
+        if action.value[0].__name__ == 'take_call':
             next_pos = stakeholder_data['robot']['pos']
+        elif action.value[0].__name__ == 'decline_call':
+            # If the call declined, no one will be seen.
+            next_pos = None
         else:
             next_pos = action.value[0](*action.value[1:], act=False)
 
         # next_loc = stakeholder_data['robot']['model'].model.get_location(next_pos)
+        if next_pos:
+            visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
+            center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
+            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
+        else:
+            visible_stakeholders = []
+            visible_stakeholders_ids = []
 
-        visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
-        center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-        visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
-        
         call_reciever = stakeholder_data['caller']['calling_resident']
 
-        for stakeholder, data in stakeholder_data.items():
-            if (stakeholder == 'robot') or (stakeholder == 'caller'):
-                continue
+        stakeholder_wellbeing_values = []
 
-            # TODO: Finish the privacy util. how to get the 3rd persons preferences without seeing them?
+        # Privacy should be calculated for all the stakeholders that'll be visible in the next step. Caller privacy is 
+        # not calculated because the caller is initiated the call and have control.
+        for stakeholder in visible_stakeholders:
+            location = stakeholder_data['robot']['model'].model.get_location(stakeholder.pos)
+            role = 'reciever' if stakeholder.id == call_reciever else '3rd_party'
 
             other_visible_stakeholders = [item for item in visible_stakeholders_ids if item != stakeholder]
-            if stakeholder == 'visible_stakeholders':
-                continue
             with_company = 'with_company' if len(other_visible_stakeholders) > 0 else 'alone'
-            location = data['seen_location']
+
+            # if stakeholder.id == 'care_worker':
+            #     preference = env['worker_preferences'][location][role][with_company]
+            # else:
+            #     preference = env['resident_preferences'][location][role][with_company]
+
+            preference = stakeholder.preferences[location][role][with_company]
+
+            privacy_util = 0.0
+
+            if preference:
+                continue
+            else:
+                try:
+                    privacy_util = -1 * location_privacy_levels[location]
+                except KeyError:
+                    privacy_util = -1 * location_privacy_levels['other']
+
+            stakeholder_wellbeing_values.append((stakeholder.id, privacy_util))
+
+        # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
+        for stakeholder, data in  stakeholder_data.items():
+            if stakeholder == 'robot' or stakeholder == 'caller':
+                continue
+
+            if stakeholder not in visible_stakeholders_ids:
+                location = data['seen_location']
+                role = 'reciever' if stakeholder == call_reciever else '3rd_party'
+
+                other_stakeholders = [item for item in stakeholder_data.keys() if item not in [stakeholder, 'robot', 'caller']]
+                with_company = 'with_company' if len(other_stakeholders) > 0 else 'alone'
+
+
+                preference = stakeholder.preferences[location][role][with_company]
+
+                privacy_util = 0.0
+                
+                if preference:
+                    continue
+                else:
+                    try:
+                        privacy_util = location_privacy_levels[location]
+                    except KeyError:
+                        privacy_util = location_privacy_levels['other']
+                
+                stakeholder_wellbeing_values.append((stakeholder, privacy_util))
+
 
 
 

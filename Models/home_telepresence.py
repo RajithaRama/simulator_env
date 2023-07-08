@@ -33,7 +33,7 @@ class Home(Model):
 
         id_gen = GenId(1)
         # Init robot
-        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'caller', governor_conf, 100)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'caller', governor_conf, 100, patient_preferences)
 
         # Init_stakeholders
         self.stakeholders = []
