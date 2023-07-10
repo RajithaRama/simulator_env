@@ -89,51 +89,8 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                     autonomy_utility = 1.0
                 else:
                     autonomy_utility = -1.0
-        
-
-            # if stakeholder == 'follower' and stakeholder_data['robot']['model'].not_follow_request:
-            #     if action.value[0].__name__ == self.instruction_function_map['do_not_follow_to'][1]:
-            #         if self.instruction_function_map['do_not_follow_to'][0]:
-            #             autonomy_utility = 1.0
-            #         else:
-            #             autonomy_utility = -0.7
-            #     elif next_loc in stakeholder_data['robot']['not_follow_locations']:
-            #         autonomy_utility = -0.7
-            #     else:
-            #         autonomy_utility = 1.0
-
-            # for ins, giver in instruction_list:
-            #     if giver.id == stakeholder_data[stakeholder]['id']:
-            #         ins, *args = ins.split('__')
-            #         cond, exp_action = self.instruction_function_map[ins]
-            #         # If the robot is blocking the user doing something, the autonomy is -1. If the robot disobeying
-            #         # the user but that does not affect what user does autonomy is -.7.
-
-            #         if (ins in self.actions_related_constrained_user):
-            #             if action.value[0].__name__ == exp_action:
-            #                 if cond:
-            #                     autonomy_utility = 1.0
-            #                 else:
-            #                     autonomy_utility = -1.0
-            #             else:
-            #                 if cond:
-            #                     autonomy_utility = -1.0
-
-            #         # if it is a positive request (
-            #         # i.e. asking to do something) then not doing it is (-) values and doing it is 1. But if it is a negative
-            #         # request (i.e. asking not to do something), thn doing that is (-), but doing everything else is
-            #         # neutral (0).
-            #         elif cond:
-            #             if action.value[0].__name__ == exp_action:
-            #                 autonomy_utility = 1.0
-            #             else:
-            #                 autonomy_utility = -0.7
-            #         else:
-            #             if action.value[0].__name__ == exp_action:
-            #                 autonomy_utility = -0.7
-
             
-            stakholder_autonomy_values.append((stakeholder, autonomy_utility))
+                stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
         return stakholder_autonomy_values
 
@@ -143,7 +100,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         """
 
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'take_call':
+        if action.value[0].__name__ == 'take_call' or action.value[0].__name__ == 'decline_instruction':
             next_pos = stakeholder_data['robot']['pos']
         elif action.value[0].__name__ == 'decline_call':
             next_pos = None
@@ -172,22 +129,34 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             CALLER_TYPE.OTHER: 0.0
         }
 
-        for stakeholder, data in stakeholder_data.items():
-            if stakeholder == 'robot':
-                continue
+        # for stakeholder, data in stakeholder_data.items():
+        #     if stakeholder == 'robot':
+        #         continue
 
-            wellbeing_util = 0.0
+        #     wellbeing_util = 0.0
 
 
-            if (stakeholder == stakeholder_data['caller']['calling_resident']) and (stakeholder in visible_stakeholders_ids):
-                wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
+        #     if (stakeholder == stakeholder_data['caller']['calling_resident']) and (stakeholder in visible_stakeholders_ids):
+        #         wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
                 
-                # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
-                if 'care_worker' in visible_stakeholders_ids:
-                    wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
+        #         # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
+        #         if 'care_worker' in visible_stakeholders_ids:
+        #             wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
                     
             
-            stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
+        #         stakholder_wellbeing_values.append((stakeholder, wellbeing_util))
+
+        # Only considering the reciever wellbeing in this implementation
+        reciever = stakeholder_data['caller']['calling_resident']
+        if reciever in visible_stakeholders_ids:
+            wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
+            
+            # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
+            if 'care_worker' in visible_stakeholders_ids:
+                wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
+                
+        
+            stakholder_wellbeing_values.append((reciever, wellbeing_util))
 
         return stakholder_wellbeing_values
     
@@ -208,7 +177,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
 
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'take_call':
+        if action.value[0].__name__ == 'take_call' or action.value[0].__name__ == 'decline_instruction':
             next_pos = stakeholder_data['robot']['pos']
         elif action.value[0].__name__ == 'decline_call':
             # If the call declined, no one will be seen.
@@ -220,7 +189,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         if next_pos:
             visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
             center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
+            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders if stakeholder.type != 'robot']
         else:
             visible_stakeholders = []
             visible_stakeholders_ids = []
@@ -229,13 +198,18 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         stakeholder_wellbeing_values = []
 
-        # Privacy should be calculated for all the stakeholders that'll be visible in the next step. Caller privacy is 
-        # not calculated because the caller is initiated the call and have control.
+        # Privacy should be calculated for all the stakeholders that'll be visible in the next step 
+        # (Assuming nobody otherthan robot moved). Caller privacy is not calculated because the caller 
+        # is initiated the call and have control.
+
         for stakeholder in visible_stakeholders:
+            if stakeholder.type == 'robot':
+                continue
+
             location = stakeholder_data['robot']['model'].model.get_location(stakeholder.pos)
             role = 'reciever' if stakeholder.id == call_reciever else '3rd_party'
 
-            other_visible_stakeholders = [item for item in visible_stakeholders_ids if item != stakeholder]
+            other_visible_stakeholders = [item for item in visible_stakeholders_ids if (item != stakeholder.id)]
             with_company = 'with_company' if len(other_visible_stakeholders) > 0 else 'alone'
 
             # if stakeholder.id == 'care_worker':
@@ -248,7 +222,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             privacy_util = 0.0
 
             if preference:
-                continue
+                pass
             else:
                 try:
                     privacy_util = -1 * location_privacy_levels[location]
@@ -256,6 +230,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                     privacy_util = -1 * location_privacy_levels['other']
 
             stakeholder_wellbeing_values.append((stakeholder.id, privacy_util))
+
 
         # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
         for stakeholder, data in  stakeholder_data.items():
@@ -270,12 +245,12 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                 with_company = 'with_company' if len(other_stakeholders) > 0 else 'alone'
 
 
-                preference = stakeholder.preferences[location][role][with_company]
+                preference = data['preferences'][location][role][with_company]
 
                 privacy_util = 0.0
                 
                 if preference:
-                    continue
+                    pass
                 else:
                     try:
                         privacy_util = location_privacy_levels[location]
@@ -285,7 +260,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                 stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
 
-
+        return stakeholder_wellbeing_values
 
     def follower_nex_pos_approx(self, env, stakeholder_data, stakeholder):
         data = stakeholder_data[stakeholder]

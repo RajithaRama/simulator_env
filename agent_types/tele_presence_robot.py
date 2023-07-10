@@ -23,7 +23,7 @@ class Robot(HomeAgent):
 
 
     def step(self):
-        self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
+        self.visible_dist = VISIBLE_DIST if self.model.time_of_day == 'day' else 1
 
         if self.pos in self.model.things['charge_station']:
 
@@ -92,40 +92,61 @@ class Robot(HomeAgent):
 
     def move_forward(self, act=True):
         next_pos = (self.pos[0], self.pos[1] + 1)
+        
         if self.on_call and self.is_possible_move(next_pos):
-            self.move(next_pos)
+            if act:
+                self.move(next_pos)
+            else:
+                return next_pos
         elif not self.on_call:
             raise Exception("Robot is not on call")
         else:
+            if not act:
+                return self.pos
             self.decline_instruction("Robot can't move forward from the current position", "caller")
             self.stay()
 
     def move_backward(self, act=True):
         next_pos = (self.pos[0], self.pos[1] - 1)
         if self.on_call and self.is_possible_move(next_pos):
-            self.move(next_pos)
+            if act:
+                self.move(next_pos)
+            else:
+                return next_pos
         elif not self.on_call:
             raise Exception("Robot is not on call")
         else:
+            if not act:
+                return self.pos
             self.decline_instruction("Robot can't move backward from the current position", "caller")
             self.stay()
     def move_right(self, act=True):
         next_pos = (self.pos[0] + 1, self.pos[1])
         if self.on_call and self.is_possible_move(next_pos):
-            self.move(next_pos)
+            if act:
+                self.move(next_pos)
+            else:
+                return next_pos
         elif not self.on_call:
             raise Exception("Robot is not on call")
         else:
+            if not act:
+                return self.pos
             self.decline_instruction("Robot can't move right from the current position", "caller")
             self.stay()
 
     def move_left(self, act=True):
         next_pos = (self.pos[0] - 1, self.pos[1])
         if self.on_call and self.is_possible_move(next_pos):
-            self.move(next_pos)
+            if act:
+                self.move(next_pos)
+            else:
+                return next_pos
         elif not self.on_call:
             raise Exception("Robot is not on call")
         else:
+            if not act:
+                return self.pos
             self.decline_instruction("Robot can't move left from the current position", "caller")
             self.stay()
 
@@ -199,7 +220,6 @@ class Robot(HomeAgent):
                        "walls": self.model.wall_coordinates,
                        "things": self.model.things,
                        "things_robot_inaccessible": self.model.things_robot_inaccessible
-                       
                        }
         env_data['environment'] = environment
         env_data['other_inputs'] = {}

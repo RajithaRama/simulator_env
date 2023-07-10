@@ -221,7 +221,7 @@ class Home(Model):
             # print(robot_pos.shape)
             # robot_pos = robot_pos.reshape(1, 1)
             # print(robot_pos.shape)
-            visible_line = bresenhamline(np.array([np.array(self.robot.pos)]), np.array([np.array(neighbor.pos)]), -1)
+            visible_line = bresenhamline(np.array([np.array(center_agent_pos)]), np.array([np.array(neighbor.pos)]), -1)
 
             # print(visible_line)
             visible = True

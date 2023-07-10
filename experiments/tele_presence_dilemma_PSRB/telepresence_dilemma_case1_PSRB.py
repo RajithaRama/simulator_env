@@ -73,7 +73,7 @@ patient_1_preference = {
             'alone': False
             }
         }, 
-    'living_room': {
+    'living': {
         'reciever': {
             'with_company': True, 
             'alone': True
@@ -116,7 +116,7 @@ patient_2_preference = {
             'alone': False
             }
         }, 
-    'living_room': {
+    'living': {
         'reciever': {
             'with_company': True, 
             'alone': True
