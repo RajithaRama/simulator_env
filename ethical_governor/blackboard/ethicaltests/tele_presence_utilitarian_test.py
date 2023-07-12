@@ -100,21 +100,21 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         """
 
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'take_call' or action.value[0].__name__ == 'decline_instruction':
-            next_pos = stakeholder_data['robot']['pos']
-        elif action.value[0].__name__ == 'decline_call':
-            next_pos = None
-        else:
-            next_pos = action.value[0](*action.value[1:], act=False)
+        # if action.value[0].__name__ == 'take_call':
+        #     next_pos = stakeholder_data['robot']['pos']
+        # elif action.value[0].__name__ == 'decline_call' or action.value[0].__name__ == 'decline_instruction_end_call':
+        #     next_pos = None
+        # else:
+        #     next_pos = action.value[0](*action.value[1:], act=False)
         # next_loc = stakeholder_data['robot']['model'].model.get_location(next_pos)
         
-        if next_pos is not None:
-            visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
-            center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
-        else:
-            visible_stakeholders_ids = []
-            visible_stakeholders = []
+        # if next_pos is not None:
+        #     visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
+        #     center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
+        #     visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders]
+        # else:
+        
+        visible_stakeholders_ids = [stakeholder_id for stakeholder_id in stakeholder_data.keys() if stakeholder_id != 'robot']
 
         stakholder_wellbeing_values = []
 
@@ -177,22 +177,21 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
 
         # Simulating next pos and visible lines
-        if action.value[0].__name__ == 'take_call' or action.value[0].__name__ == 'decline_instruction':
-            next_pos = stakeholder_data['robot']['pos']
-        elif action.value[0].__name__ == 'decline_call':
-            # If the call declined, no one will be seen.
-            next_pos = None
-        else:
-            next_pos = action.value[0](*action.value[1:], act=False)
+        # if action.value[0].__name__ == 'take_call':
+        #     next_pos = stakeholder_data['robot']['pos']
+        # elif action.value[0].__name__ == 'decline_call' or action.value[0].__name__ == 'decline_instruction_end_call':
+        #     # If the call declined, no one will be seen.
+        #     next_pos = None
+        # else:
+        #     next_pos = action.value[0](*action.value[1:], act=False)
 
         # next_loc = stakeholder_data['robot']['model'].model.get_location(next_pos)
-        if next_pos:
-            visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
-            center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
-            visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders if stakeholder.type != 'robot']
-        else:
-            visible_stakeholders = []
-            visible_stakeholders_ids = []
+        # if next_pos:
+        #     visible_stakeholders = stakeholder_data['robot']['model'].model.visible_stakeholders(
+        #     center_agent_pos=next_pos, visibility_radius=ROBOT.VISIBLE_DIST)
+        #     visible_stakeholders_ids = [stakeholder.id for stakeholder in visible_stakeholders if stakeholder.type != 'robot']
+        # else:
+        visible_stakeholders_ids = [stakeholder_id for stakeholder_id in stakeholder_data.keys() if stakeholder_id not in ['robot', 'caller']]
 
         call_reciever = stakeholder_data['caller']['calling_resident']
 
@@ -202,14 +201,12 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         # (Assuming nobody otherthan robot moved). Caller privacy is not calculated because the caller 
         # is initiated the call and have control.
 
-        for stakeholder in visible_stakeholders:
-            if stakeholder.type == 'robot':
-                continue
+        for stakeholder in visible_stakeholders_ids:
 
-            location = stakeholder_data['robot']['model'].model.get_location(stakeholder.pos)
-            role = 'reciever' if stakeholder.id == call_reciever else '3rd_party'
+            location = stakeholder_data[stakeholder]['seen_location']
+            role = 'reciever' if stakeholder == call_reciever else '3rd_party'
 
-            other_visible_stakeholders = [item for item in visible_stakeholders_ids if (item != stakeholder.id)]
+            other_visible_stakeholders = [item for item in visible_stakeholders_ids if (item != stakeholder)]
             with_company = 'with_company' if len(other_visible_stakeholders) > 0 else 'alone'
 
             # if stakeholder.id == 'care_worker':
@@ -217,7 +214,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             # else:
             #     preference = env['resident_preferences'][location][role][with_company]
 
-            preference = stakeholder.preferences[location][role][with_company]
+            preference = stakeholder_data[stakeholder]['preferences'][location][role][with_company]
 
             privacy_util = 0.0
 
@@ -229,7 +226,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                 except KeyError:
                     privacy_util = -1 * location_privacy_levels['other']
 
-            stakeholder_wellbeing_values.append((stakeholder.id, privacy_util))
+            stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
 
         # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
@@ -262,30 +259,3 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         return stakeholder_wellbeing_values
 
-    def follower_nex_pos_approx(self, env, stakeholder_data, stakeholder):
-        data = stakeholder_data[stakeholder]
-        if data['seen']:
-            next_pos = tuple(map(lambda i, j: i + (i - j), data['pos'],
-                                 (data['last_seen_pos'] if data['last_seen_pos'] else data['pos'])))
-
-        else:
-            next_pos = data['last_seen_pos']
-
-        for wall in env['walls']:
-            if next_pos in wall:
-                next_pos = data['last_seen_pos'] if data['last_seen_pos'] else data['pos']
-                break
-
-        return next_pos
-
-    def get_availability_util(self, env, stakeholder_data, action, logger):
-
-        battery_level = stakeholder_data['robot']['battery_level']
-        availability = (-28.125 / (battery_level + 12.5)) + 1.25
-
-        if action.value[0].__name__ == 'go_to_charge_station':
-            availability = float(availability + abs(availability) if availability < 0.4 else availability)
-
-        stakeholder_availability_values = [('robot', availability)]
-
-        return stakeholder_availability_values

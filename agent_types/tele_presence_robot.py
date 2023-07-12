@@ -16,9 +16,9 @@ class Robot(HomeAgent):
         self.battery = start_battery
         self.time = 0
         self.ethical_governor = EthicalGovernor(governor_conf)
-        self.roles = {caller_name: 'caller'}
         self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right, "call": self.take_call}
         self.on_call = False
+        self.caller = None
         self.patient_preferences = patient_preferences
 
 
@@ -54,9 +54,11 @@ class Robot(HomeAgent):
                     possible_actions.append((self.decline_call, instruction[1].id))
                 else:
                     possible_actions.append((action, ))
-                    possible_actions.append((self.decline_instruction, "Declined the calller instruction " + instruction[0] + " considering recommendations of the ethical governor.", "caller"))
+                    possible_actions.append((self.decline_instruction_end_call, instruction[0], "caller"))
+                    
         else:
             possible_actions.append((self.stay, ))
+            possible_actions.append((self.decline_call))
 
         self.make_final_decision(possible_actions, env)
 
@@ -152,19 +154,23 @@ class Robot(HomeAgent):
 
     def take_call(self, caller_name):
         self.on_call = True
+        self.caller = caller_name
         print("Robot: Answered the call from " + caller_name)
 
-    def decline_call(self, caller_name):
-        self.on_call = False
-
+    def decline_call(self):
         code = -2
         msg = "Cannot answer the call now. Please try again later."
-        reciever = self.model.get_stakeholder(caller_name)
+        reciever = self.model.get_stakeholder(self.caller)
         self.model.pass_message((msg, code), self, reciever)
-        print("Robot: Declined the call from " + caller_name)
+        print("Robot: Declined the call from " + str(self.caller))
 
-    def stay(self):
-        pass
+`       # reset the robot state to default`
+        self.on_call = False
+        self.caller = None
+
+    def stay(self, act=True):
+        if not act:
+            return self.pos
 
     def decline_instruction(self, reason, caller_name):
         code = -1
@@ -173,7 +179,15 @@ class Robot(HomeAgent):
         self.model.pass_message((msg, code), self, reciever)
         print("Robot: Declined " + caller_name + " command. Reason: " + reason)
 
-    
+    def decline_instruction_end_call(self, instruction, caller_name):
+        code = -2
+        msg = "Declining the calller instruction " + instruction + " considering recommendations of the ethical governor. Call will be ending now. Please call at a later time."
+        reciever = self.model.get_stakeholder(caller_name)
+        self.model.pass_message((msg, code), self, reciever)
+
+        self.on_call = False
+        print("Robot: Declined " + caller_name + " command and ended the call.")
+
     def get_env_data(self):
         env_data = {}
         visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
@@ -207,8 +221,8 @@ class Robot(HomeAgent):
 
                     stakeholders['caller'] = caller
 
-        robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
-                      'battery_level': self.battery, 'model': self,
+        robot_data = {'id': self.id, 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
+                      'battery_level': self.battery, 'model': self, 'on_call': self.on_call,
                       'visible_dist': self.visible_dist, 'instruction_list': instructions}
 
         stakeholders['robot'] = robot_data

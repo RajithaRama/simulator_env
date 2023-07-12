@@ -17,32 +17,39 @@ class Caller(HomeAgent):
         self.type = type
         self.calling_resident = calling_resident
         self.call_declined = False
-
+        self.instruction_sent = 0
 
     def step(self):
         message = self.receive_message(self)
+        
         if message is not None:
             reason, code = message[0][0]
             if code == -1:
                 self.steps -= 1
+                self.nstruction_sent = 0
 
             if code == -2:
                 self.call_declined = True
                 self.steps -= 1
+                self.instruction_sent = 0
 
-        self.send_message()
-
+        if not self.instruction_sent:
+            self.instruction_sent = self.send_message()
+            return
+        
+        self.instruction_sent = 0
+    
     def receive_message(self, receiver):
         return self.model.get_message(receiver)
 
     def send_message(self):
         if self.call_declined:
-            return
+            return 0
         
         try:
             next_command = self.robot_commands[self.steps]
         except IndexError:
-            return
+            return 0
 
         try:
             if next_command[0] != '':
@@ -50,6 +57,7 @@ class Caller(HomeAgent):
                 print("Caller: " + str(next_command))
         except Exception as e:
             print(e)
-            return
+            return 0
 
         self.steps += 1
+        return 1
