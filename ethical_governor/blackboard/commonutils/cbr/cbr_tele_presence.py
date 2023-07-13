@@ -15,17 +15,17 @@ class CBRTelePresence(cbr.CBR):
         self.data_original = pd.DataFrame()
         self.dist_feature_map = {}
         self.value_diff_mat = vdm.VDM()
-        self.categorical_data_cols = ['med_name', 'med_type', 'state', 'user_response', 'time_of_day', 'action']
-        self.numerical_data_cols = ['med_impact', 'no_of_missed_doses', 'time_since_last_reminder', 'no_of_followups', 'no_of_snoozes', 'follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']
-        self.list_data_cols = []
+        self.categorical_data_cols = ['robot_location', 'caller_type', 'caller_instruction', 'receiver_location', 'receiver_with_company', 'worker_location', 'action']
+        self.numerical_data_cols = ['other_negative_preference_%', 'caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']
+        self.list_data_cols = ['other_patient_locations']
         self.categorical_encoder = OrdinalEncoder()
 
         # Features to be encoded using power transform
-        self.p_transform_features = ['time_since_last_reminder', 'no_of_missed_doses', 'no_of_followups', 'no_of_snoozes']
+        self.p_transform_features = []
         self.power_transformers = {}
 
         # Features to be encoded using min-max scaler
-        self.min_max_features = ['med_impact']
+        self.min_max_features = []
         self.min_max_scaler = MinMaxScaler()
 
     def add_data(self, data):
@@ -177,12 +177,13 @@ class CBRTelePresence(cbr.CBR):
             data[feature] = power_transformer.transform(feature_data).astype('float64')
             self.power_transformers[feature] = power_transformer
 
-        # Encoding med_impact
+
         
         other_numeric_data = data[self.min_max_features].to_numpy().reshape(-1, 1)
 
-        self.min_max_scaler = MinMaxScaler()
-        data[self.min_max_features] = self.min_max_scaler.fit_transform(other_numeric_data)
+        if len(self.min_max_features):
+            self.min_max_scaler = MinMaxScaler()
+            data[self.min_max_features] = self.min_max_scaler.fit_transform(other_numeric_data)
     
         return data
 

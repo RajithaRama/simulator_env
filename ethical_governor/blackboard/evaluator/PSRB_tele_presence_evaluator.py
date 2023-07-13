@@ -6,7 +6,7 @@ import ethical_governor.blackboard.evaluator.evaluator as evaluator
 
 from ethical_governor.blackboard.commonutils.cbr.cbr_tele_presence import CBRTelePresence
 
-CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_medication.json')
+CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
 DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
@@ -22,7 +22,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             'on_call': ['stakeholders', 'robot', 'on_call'],
             'caller_type': ['stakeholders', 'caller', 'type'],
             'caller_instruction': self.get_caller_instruction,
-            'reciever_seen': self.get_receiver_seen,
+            'receiver_seen': self.get_receiver_seen,
             'receiver_location': self.get_receiver_location,
             'receiver_preference': self.get_receiver_preference,
             'receiver_with_company': self.get_with_company,
@@ -33,18 +33,24 @@ class PSRBEvaluator(evaluator.Evaluator):
             'other_patient_locations': self.get_other_patient_locations,
             'other_negative_preference_%': self.get_other_negative_pref_percentage,
             'caller_autonomy': self.get_caller_autonomy,
-            'reciever_wellbeing': self.get_receiver_wellbeing,
+            'receiver_wellbeing': self.get_receiver_wellbeing,
             'receiver_privacy': self.get_receiver_privacy,
             'worker_privacy': self.get_worker_privacy,
             'other_resident_privacy': self.get_other_patient_privacy
         }
 
         self.expert_db = CBRTelePresence()
-        
+        data_df = pd.read_json(CASE_BASE, orient='records', precise_float=False)
+        data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']] = data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']].astype('float')
+        self.feature_list = self.expert_db.add_data(data_df)
+
         if DUMP_query:
-            self.feature_list = [col for col in self.cbr_context_data_feature_map.keys()]
+            if self.feature_list is None:
+                self.feature_list = [col for col in self.cbr_context_data_feature_map.keys()]
             self.queries = pd.DataFrame(columns=self.feature_list)
             self.query_list = [self.queries]
+
+        self.character = {}
 
     def set_character(self, character):
         self.character = character
@@ -75,8 +81,11 @@ class PSRBEvaluator(evaluator.Evaluator):
             intention = 'test'
         else:
             # TODO: Change after query gathering completed.
-            vote = 1
-            intention = 'test'
+            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
+            logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
+            vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist,
+                                                                    threshold=3,
+                                                                    logger=logger)
 
         return vote, intention
     
