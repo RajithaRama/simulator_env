@@ -44,7 +44,7 @@ caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward
 
 patient_1_preference = {
     'bedroom': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 
@@ -54,7 +54,7 @@ patient_1_preference = {
             }
         }, 
     'kitchen': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 
@@ -64,7 +64,7 @@ patient_1_preference = {
             }
         },
     'bathroom': {
-        'reciever': {
+        'receiver': {
             'with_company': False, 
             'alone': False
             }, 
@@ -74,7 +74,7 @@ patient_1_preference = {
             }
         }, 
     'living': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 
@@ -87,7 +87,7 @@ patient_1_preference = {
 
 patient_2_preference = {
     'bedroom': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 
@@ -97,7 +97,7 @@ patient_2_preference = {
             }
         }, 
     'kitchen': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 
@@ -107,7 +107,7 @@ patient_2_preference = {
             }
         },
     'bathroom': {
-        'reciever': {
+        'receiver': {
             'with_company': False, 
             'alone': False
             }, 
@@ -117,7 +117,7 @@ patient_2_preference = {
             }
         }, 
     'living': {
-        'reciever': {
+        'receiver': {
             'with_company': True, 
             'alone': True
             }, 

@@ -16,7 +16,14 @@ class Robot(HomeAgent):
         self.battery = start_battery
         self.time = 0
         self.ethical_governor = EthicalGovernor(governor_conf)
-        self.instruction_func_map = { "go_forward": self.move_forward, "go_backward": self.move_backward, "go_left": self.move_left, "go_right": self.move_right, "call": self.take_call}
+        self.instruction_func_map = { 
+            "go_forward": self.move_forward, 
+            "go_backward": self.move_backward, 
+            "go_left": self.move_left, 
+            "go_right": self.move_right, 
+            "call": self.take_call,
+            # "hung_up": self.hung_up
+            }
         self.on_call = False
         self.caller = None
         self.patient_preferences = patient_preferences
@@ -58,7 +65,7 @@ class Robot(HomeAgent):
                     
         else:
             possible_actions.append((self.stay, ))
-            possible_actions.append((self.decline_call))
+            possible_actions.append((self.decline_call, self.caller))
 
         self.make_final_decision(possible_actions, env)
 
@@ -74,7 +81,7 @@ class Robot(HomeAgent):
             print('Action executed: ' + str(recommendations[0][0]))
             return
         else:
-            #TODO: implement a way to choose between multiple recommendations
+            
             user_commands = {value for key, value in self.instruction_func_map.items()}
             for recommendation in recommendations:
                 if recommendation[0] in user_commands:
@@ -163,8 +170,12 @@ class Robot(HomeAgent):
         reciever = self.model.get_stakeholder(self.caller)
         self.model.pass_message((msg, code), self, reciever)
         print("Robot: Declined the call from " + str(self.caller))
+        
+        # reset the robot state to default
+        self.on_call = False
+        self.caller = None
 
-`       # reset the robot state to default`
+    def hung_up(self):
         self.on_call = False
         self.caller = None
 
@@ -220,6 +231,14 @@ class Robot(HomeAgent):
                     caller['calling_resident'] = instruction[1].calling_resident
 
                     stakeholders['caller'] = caller
+
+        elif self.on_call:
+            caller = {}
+            caller['id'] = self.caller
+            caller['type'] = self.model.get_stakeholder(self.caller).type
+            caller['calling_resident'] = self.model.get_stakeholder(self.caller).calling_resident
+
+            stakeholders['caller'] = caller
 
         robot_data = {'id': self.id, 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'battery_level': self.battery, 'model': self, 'on_call': self.on_call,
