@@ -5,10 +5,11 @@ import numpy as np
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
 
 from ethical_governor.blackboard.commonutils.cbr.cbr_tele_presence import CBRTelePresence
+from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pref
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
-DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 
 
@@ -61,17 +62,23 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.score = {}
       
         for action in data.get_actions():
-            logger.info('Evaluating action: ' + str(action))
-            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
-            logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
-                    str(expert_intention) + ' intention')
-        
-            
-            if data.get_table_data(action, 'is_breaking_rule'):
-                self.score[action] = 0
+
+            if self.character['autonomy'] is Autonomy.NONE:
+                if data.get_table_data(action, 'is_breaking_rule'):
+                    self.score[action] = 0
+                else:
+                    self.score[action] = 1
+                logger.info('Desirability of action ' + str(action.value) + ' : ' + str(self.score[action]))
+
             else:
-                self.score[action] = 1
-            logger.info('Desirability of action ' + str(action.value) + ' : ' + str(self.score[action]))
+                logger.info('Evaluating action: ' + str(action))
+                expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+                logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
+                        str(expert_intention) + ' intention')
+                
+
+
+
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data, logger)
@@ -94,7 +101,27 @@ class PSRBEvaluator(evaluator.Evaluator):
         logger.info(__name__ + ' started query generation using the data in the blackboard.')
         query = pd.DataFrame()
         query['action'] = [action.value[0].__name__]
+
+        control_pref_exclude_list = [x for x, y in self.character['control_bias'].items() if y is Control_Bias.NONE]
+        wellbeing_pref = self.character['wellbeing_value_preference'].value
+
+
         for feature, feature_path in self.cbr_context_data_feature_map.items():
+            
+            # Skip control preference features if the character has no control preference
+            skip = False
+            feature_tokens = feature.split('_')
+            if feature_tokens[-1] in ['privacy', 'autonomy']:
+                for item in control_pref_exclude_list:
+                    if item.split('_') == feature_tokens[:-1]:
+                        skip = True
+                        break
+            if wellbeing_pref == 0 and feature_tokens[-1] == 'wellbeing':
+                skip = True
+            
+            if skip:
+                continue
+
             if callable(feature_path):
                 value = feature_path(action, data, logger)
             elif isinstance(feature_path, list):

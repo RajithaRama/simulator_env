@@ -2,6 +2,7 @@ import random
 
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
+from enum import Enum
 
 import numpy as np
 
@@ -10,12 +11,15 @@ VISIBLE_DIST = 3
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, caller_name, governor_conf, start_battery, patient_preferences):
+    def __init__(self, unique_id, name, model, caller_name, governor_conf, start_battery, patient_preferences, character):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
         self.time = 0
+        
         self.ethical_governor = EthicalGovernor(governor_conf)
+        self.ethical_governor.blackboard.evaluator.set_character(character)
+
         self.instruction_func_map = { 
             "go_forward": self.move_forward, 
             "go_backward": self.move_backward, 
@@ -259,3 +263,19 @@ class Robot(HomeAgent):
 
         # print("robot env: " + str(env))
         return env_data
+
+
+class Autonomy(Enum):
+    NONE = 0
+    LOW = 1
+    HIGH = 2
+
+class Control_Bias(Enum):
+    NONE = 0
+    LOW = 1
+    HIGH = 2
+
+class Wellbeing_Pref(Enum):
+    NONE = 0
+    LOW = 2
+    HIGH = 7

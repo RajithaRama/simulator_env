@@ -9,6 +9,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
+from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pref
 
 def agent_portrayal(agent):
     portrayal = {
@@ -33,6 +34,8 @@ def agent_portrayal(agent):
         portrayal["xAlign"] = 0.5
         portrayal["yAlign"] = 0.5
     return portrayal
+
+
 
 
 # Patient 1 path
@@ -134,6 +137,17 @@ caller_data = {
     'calling_resident': 'patient_0'
 }
 
+character = {
+    'control_bias': {
+        'caller': Control_Bias.HIGH,
+        'receiver': Control_Bias.LOW,
+        'other_resident': Control_Bias.NONE,
+        'worker': Control_Bias.HIGH
+    },
+    'autonomy': Autonomy.HIGH,
+    'wellbeing_value_preference': Wellbeing_Pref.HIGH
+    }
+
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
@@ -141,8 +155,8 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "governor_conf":
-                       'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
+                   "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "robot_character": character,
+                   "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
 
 server.port = 8123

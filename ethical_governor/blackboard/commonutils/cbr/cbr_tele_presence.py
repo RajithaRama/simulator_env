@@ -128,7 +128,7 @@ class CBRTelePresence(cbr.CBR):
             # distances[self.distance(vec_s, query)] = vec_s['case_id']
 
         neighbours = []
-        while len(neighbours) < k:
+        while len(neighbours) < k and len(neighbours) < len(distances):
             min_dist = min(distances.keys())
             if len(distances[min_dist]) + len(neighbours) <= k:
                 for case in distances[min_dist]:
@@ -193,7 +193,7 @@ class CBRTelePresence(cbr.CBR):
 
     def minkowski_distance(self, a, b, p):
         if type(a) != type(b):
-            # print(type(a), type(b))
+            print(type(a), type(b))
             raise ValueError("a and b have different types.")
 
         distance = 0

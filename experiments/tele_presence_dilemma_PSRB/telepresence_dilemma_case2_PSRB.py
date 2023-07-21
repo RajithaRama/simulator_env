@@ -40,14 +40,99 @@ def agent_portrayal(agent):
 patient_1_path = [((8, 2), '')]
 patient_2_path = [((10, 2), '')]
 
-caller_instructions = ['go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
+caller_instructions = ['call', 'go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
-patient_1_preference = {'bedroom': {'with_company': False, 'Alone': True}, 'kitchen': {'with_company': False, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': False, 'Alone': True}}
-patient_2_preference = {'bedroom': {'with_company': False, 'Alone': True}, 'kitchen': {'with_company': False, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': False, 'Alone': True}}
+
+patient_1_preference = {
+    'bedroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'kitchen': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        },
+    'bathroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': False
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'living': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        },
+    }
+
+patient_2_preference = {
+    'bedroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        }, 
+    'kitchen': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        },
+    'bathroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': False
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'living': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        },
+    }
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY
+    'type': CALLER_TYPE.FAMILY,
+    'calling_resident': 'patient_0'
 }
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
