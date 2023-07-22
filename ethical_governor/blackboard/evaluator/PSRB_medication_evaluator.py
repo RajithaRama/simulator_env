@@ -68,7 +68,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
             
-            # TODO: Debug the algorithm
+            
 
             acceptability = 1
 

@@ -59,16 +59,16 @@ class PSRBEvaluator(evaluator.Evaluator):
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
 
-        self.score = {}
+        acceptability = 1
       
         for action in data.get_actions():
 
             if self.character['autonomy'] is Autonomy.NONE:
                 if data.get_table_data(action, 'is_breaking_rule'):
-                    self.score[action] = 0
+                    acceptability = 0
                 else:
-                    self.score[action] = 1
-                logger.info('Desirability of action ' + str(action.value) + ' : ' + str(self.score[action]))
+                    acceptability = 1
+                logger.info('Desirability of action ' + str(action.value) + ' : ' + str(acceptability))
 
             else:
                 logger.info('Evaluating action: ' + str(action))
@@ -77,8 +77,78 @@ class PSRBEvaluator(evaluator.Evaluator):
                         str(expert_intention) + ' intention')
                 
 
+                caller_autonomy	= self.get_caller_autonomy(action, data, logger)
+                receiver_wellbeing	= self.get_receiver_wellbeing(action, data, logger)
+                receiver_privacy = self.get_receiver_privacy(action, data, logger)
+                worker_privacy	= self.get_worker_privacy(action, data, logger)
+                other_privacy = self.get_other_patient_privacy(action, data, logger)
 
+                rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
 
+                if expert_opinion and not rule_broken:
+                    # When rules and expert both accept, accept
+                    acceptability = 1
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken and '
+                                                                                       'accepted by experts.')
+                    
+                elif not expert_opinion and rule_broken:
+                    # When rules and expert both reject, reject
+                    acceptability = 0   
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                    data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken and not '
+                                                                                      'accepted by experts.')
+
+                elif expert_opinion and rule_broken:
+                    # when rules are broken but expert accepts
+
+                    # First check the wellbeing value
+                    if self.character['wellbeing_value_preference'] is not Wellbeing_Pref.NONE:
+                        if 'receiver_wellbeing' is expert_intention:
+                            threshold = (10 - self.character['wellbeing_value_preference'].value)/10
+                            if receiver_wellbeing < threshold:
+                                acceptability = 0
+                        else:
+                            threshold = (self.character['wellbeing_value_preference'].value - 10)/10
+                            if receiver_wellbeing < threshold:
+                                acceptability = 0
+
+                    # Then check for the control bias
+                    have_control = []
+                    not_have_control = []
+
+                    for name, value in locals().items():
+                        if value is not None and (name.endswith('_privacy') or name.endswith('_autonomy')):
+                            if self.character['control_bias'][name.split('_')[0]] is not Control_Bias.NONE:
+                                if value < 0:
+                                    not_have_control.append(name.split('_')[0])
+                                elif value >= 0:
+                                    have_control.append(name.split('_')[0])
+
+                    if len(not_have_control) == 0:
+                        acceptability = 1
+                    elif len(have_control) == 0:
+                        acceptability = 0
+                    else:
+                        for stakeholder in not_have_control:
+                            for stakeholder2 in have_control:
+                                if self.character['control_bias'][stakeholder].value > self.character['control_bias'][stakeholder2].value:
+                                    acceptability = 0
+                                    break
+                                elif self.character['control_bias'][stakeholder].value == self.character['control_bias'][stakeholder2].value:
+                                    # In a tie, if the autonomy is low, rules have the authority. when autonomy is high knowledge base has it.
+                                    if self.character['autonomy'] == Autonomy.LOW:
+                                        acceptability = 0
+                                        break
+                                    
+                                else:
+                                    acceptability = 1
+                    
+                    # TODO: debug and complete.
+                else:
+                    # When rules are not broken but expert rejects
+                    pass    
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data, logger)

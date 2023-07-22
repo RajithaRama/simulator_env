@@ -141,7 +141,7 @@ character = {
     'control_bias': {
         'caller': Control_Bias.HIGH,
         'receiver': Control_Bias.LOW,
-        'other_resident': Control_Bias.NONE,
+        'other': Control_Bias.NONE,
         'worker': Control_Bias.HIGH
     },
     'autonomy': Autonomy.HIGH,
