@@ -123,7 +123,8 @@ class CBRTelePresence(cbr.CBR):
         data_inv = subset_df.T
         for col in data_inv.columns:
             vec_s = data_inv[col]
-            query_vec = query.T[0].infer_objects()
+            query_vec = query.transpose()[0].infer_objects()
+            # query_vec = query.T[0].infer_objects()
             distances.setdefault(self.pairwise_distance(vec_s[q_col_names], query_vec), []).append(vec_s['case_id'])
             # distances[self.distance(vec_s, query)] = vec_s['case_id']
 

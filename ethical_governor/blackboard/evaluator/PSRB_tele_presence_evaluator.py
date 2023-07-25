@@ -41,8 +41,15 @@ class PSRBEvaluator(evaluator.Evaluator):
         }
 
         self.expert_db = CBRTelePresence()
-        data_df = pd.read_json(CASE_BASE, orient='records', precise_float=False)
-        data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']] = data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']].astype('float')
+        data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True, dtype={
+            'other_negative_preference_%': float,
+            'caller_autonomy': float,
+            "receiver_wellbeing": float,
+            "receiver_privacy": float,
+            "worker_privacy": float,
+            "other_resident_privacy": float,
+        })
+        # data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']] = data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']].astype('float')
         self.feature_list = self.expert_db.add_data(data_df)
 
         if DUMP_query:
@@ -105,7 +112,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                     # First check the wellbeing value
                     if self.character['wellbeing_value_preference'] is not Wellbeing_Pref.NONE:
-                        if 'receiver_wellbeing' is expert_intention:
+                        if 'receiver_wellbeing' in expert_intention:
                             threshold = (10 - self.character['wellbeing_value_preference'].value)/10
                             if receiver_wellbeing < threshold:
                                 acceptability = 0
@@ -122,33 +129,77 @@ class PSRBEvaluator(evaluator.Evaluator):
                         if value is not None and (name.endswith('_privacy') or name.endswith('_autonomy')):
                             if self.character['control_bias'][name.split('_')[0]] is not Control_Bias.NONE:
                                 if value < 0:
-                                    not_have_control.append(name.split('_')[0])
+                                    not_have_control.append(name)
                                 elif value >= 0:
-                                    have_control.append(name.split('_')[0])
+                                    have_control.append(name)
+                    
+                    # Commented to improve readability
+                    # if len(not_have_control) == 0:
+                    #     acceptability = 1
 
-                    if len(not_have_control) == 0:
-                        acceptability = 1
-                    elif len(have_control) == 0:
+                    if len(have_control) == 0:
                         acceptability = 0
                     else:
                         for stakeholder in not_have_control:
                             for stakeholder2 in have_control:
-                                if self.character['control_bias'][stakeholder].value > self.character['control_bias'][stakeholder2].value:
+                                if self.character['control_bias'][stakeholder.split('_')[0]].value > self.character['control_bias'][stakeholder2.split('_')[0]].value:
                                     acceptability = 0
                                     break
-                                elif self.character['control_bias'][stakeholder].value == self.character['control_bias'][stakeholder2].value:
+                                elif self.character['control_bias'][stakeholder.split('_')[0]].value == self.character['control_bias'.split('_')[0]][stakeholder2].value:
                                     # In a tie, if the autonomy is low, rules have the authority. when autonomy is high knowledge base has it.
                                     if self.character['autonomy'] == Autonomy.LOW:
                                         acceptability = 0
                                         break
                                     
                                 else:
-                                    acceptability = 1
+                                    # if the control bias is high, the stakeholder should not get a very high privacy breach.
+                                    lower_threshold = (self.character['wellbeing_value_preference'].value - 10)/10
+                                    if eval(stakeholder2) < lower_threshold:
+                                        acceptability = 0
+
                     
                     # TODO: debug and complete.
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                    # Explanations
+                    if acceptability:
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
+                            data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
+                            'experts. Since it increases ' + str(expert_intention) + ' values greatly deemed accepted by PSRB system.')
+                    
+                    else:
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                            data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
+                            'experts. However, the value tradeoff is not satisfactory to bend the rule.')
+                
+                
                 else:
                     # When rules are not broken but expert rejects
-                    pass    
+                    if 'receiver_wellbeing' in expert_intention:
+                        lower_threshold = (self.character['wellbeing_value_preference'].value - 10)/10
+                        if receiver_wellbeing < lower_threshold:
+                            acceptability = 0
+
+                    # Then check for reciever intended the control bias
+                    for name, value in locals().items():
+                        if name in expert_intention:
+                            lower_threshold = (self.character['control_bias'][name.split('_')[0]].value - 10)/10
+                            if value < lower_threshold:
+                                acceptability = 0
+                                break
+
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+
+                    #Explanations
+                    if acceptability:
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
+                            'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
+                        
+                    else:
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
+                            'experts. Since it decreases ' + str(expert_intention) + ' values too much, deemed not accepted by '
+                                                                                                                            'PSRB system.')
+
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data, logger)
@@ -285,7 +336,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         if self.get_worker_seen(action, data, logger):
             return data.get_data(['stakeholders', 'care_worker', 'seen_location'])
         else:
-            None
+            return None
 
     def get_worker_preference(self, action, data, logger):
         if self.get_worker_seen(action, data, logger):
@@ -343,33 +394,33 @@ class PSRBEvaluator(evaluator.Evaluator):
                     if not preference:
                         other_negative_pref_count += 1
                     other_patient_number += 1
-            return other_negative_pref_count / other_patient_number
+            return np.float64(other_negative_pref_count / other_patient_number)
         else:
             return None
     
     def get_caller_autonomy(self, action, data, logger):
         try:
-            return data.get_table_data(action, 'caller_autonomy')
+            return np.float64(data.get_table_data(action, 'caller_autonomy'))
         except KeyError:
             return None
         
     def get_receiver_wellbeing(self, action, data, logger):
         if self.get_receiver_seen(action, data, logger):
             receiver = data.get_data(['stakeholders', 'caller', 'calling_resident'])
-            return data.get_table_data(action, receiver + '_wellbeing')
+            return np.float64(data.get_table_data(action, receiver + '_wellbeing'))
         else:
             return None
 
     def get_receiver_privacy(self, action, data, logger):
         if self.get_receiver_seen(action, data, logger):
             receiver = data.get_data(['stakeholders', 'caller', 'calling_resident'])
-            return data.get_table_data(action, receiver + '_privacy')
+            return np.float64(data.get_table_data(action, receiver + '_privacy'))
         else:
             return None
     
     def get_worker_privacy(self, action, data, logger):
         if self.get_worker_seen(action, data, logger):
-            return data.get_table_data(action, 'care_worker_privacy')
+            return np.float64(data.get_table_data(action, 'care_worker_privacy'))
         else:
             return None
         
@@ -387,7 +438,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                         privacy = data.get_table_data(action, col)
                         if privacy < min_privacy:
                             min_privacy = privacy
-            return min_privacy      
+            return np.float64(min_privacy)      
             
         else:
             return None
