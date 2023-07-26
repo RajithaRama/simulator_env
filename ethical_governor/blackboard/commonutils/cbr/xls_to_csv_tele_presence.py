@@ -7,8 +7,25 @@ import os
 # df.to_excel('data.xlsx')
 
 CASE_BASE = 'data_telepresence.xlsx'
-df = pd.read_excel(CASE_BASE, header=0, index_col=None, dtype={})
-# df.astype({"not_follow_locations": list,  "instructions_given": list})
+df = pd.read_excel(CASE_BASE, header=0, index_col=None, keep_default_na=False, dtype={"other_patient_locations": list, 
+    "on_call": bool, 
+    "receiver_seen": bool,	
+    "receiver_preference": bool, 
+    "worker_seen": bool,
+    "worker_preference": bool,
+    "other_patient_seen": bool})
+# df.astype({
+#     "other_patient_locations": list, 
+#     "on_call": bool, 
+#     "receiver_seen": bool,	
+#     "receiver_preference": bool, 
+#     "worker_seen": bool,
+#     "worker_preference": bool,
+#     "other_patient_seen": bool
+# })
+
+df = df.replace({'': None})
+
 print(df)
 print(df.dtypes)
 

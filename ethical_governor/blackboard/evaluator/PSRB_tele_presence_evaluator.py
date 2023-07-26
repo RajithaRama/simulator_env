@@ -69,13 +69,26 @@ class PSRBEvaluator(evaluator.Evaluator):
         acceptability = 1
       
         for action in data.get_actions():
+            
 
             if self.character['autonomy'] is Autonomy.NONE:
                 if data.get_table_data(action, 'is_breaking_rule'):
                     acceptability = 0
-                else:
-                    acceptability = 1
+                # else:
+                #     acceptability = 1
                 logger.info('Desirability of action ' + str(action.value) + ' : ' + str(acceptability))
+                
+                data.put_table_data(action=action, column='desirability_score', value=acceptability)
+                
+                # Explanations
+                if acceptability:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken.')
+                
+                else:
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                            data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken.')
+
+
 
             else:
                 logger.info('Evaluating action: ' + str(action))
@@ -83,6 +96,10 @@ class PSRBEvaluator(evaluator.Evaluator):
                 logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
                 
+               # to dump query
+                if DUMP_query:
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+                    continue
 
                 caller_autonomy	= self.get_caller_autonomy(action, data, logger)
                 receiver_wellbeing	= self.get_receiver_wellbeing(action, data, logger)
@@ -125,7 +142,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                     have_control = []
                     not_have_control = []
 
-                    for name, value in locals().items():
+                    local_vars = dict(locals())
+                    for name, value in local_vars.items():
                         if value is not None and (name.endswith('_privacy') or name.endswith('_autonomy')):
                             if self.character['control_bias'][name.split('_')[0]] is not Control_Bias.NONE:
                                 if value < 0:
@@ -181,7 +199,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                             acceptability = 0
 
                     # Then check for reciever intended the control bias
-                    for name, value in locals().items():
+                    local_vars = dict(locals())
+                    for name, value in local_vars.items():
                         if name in expert_intention:
                             lower_threshold = (self.character['control_bias'][name.split('_')[0]].value - 10)/10
                             if value < lower_threshold:
@@ -208,7 +227,6 @@ class PSRBEvaluator(evaluator.Evaluator):
             vote = 1
             intention = 'test'
         else:
-            # TODO: Change after query gathering completed.
             neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
             logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
             vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist,

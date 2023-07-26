@@ -72,21 +72,27 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         stakholder_autonomy_values = []
 
-        for stakeholder in stakeholder_data.keys():
-            # skip for robot
-            if stakeholder == 'robot':
-                continue
+        
 
-            autonomy_utility = 0.0
+        autonomy_utility = 0.0
 
-            if stakeholder in instruction_givers_instruction_map.keys():
-                instructed_action = self.instruction_function_map[instruction_givers_instruction_map[stakeholder]]
-                if action.value[0].__name__ == instructed_action:
-                    autonomy_utility = 1.0
-                else:
-                    autonomy_utility = -1.0
+        for stakeholder in instruction_givers_instruction_map.keys():
+            instructed_action = self.instruction_function_map[instruction_givers_instruction_map[stakeholder]]
+            if action.value[0].__name__ == instructed_action:
+                autonomy_utility = 1.0
+            else:
+                autonomy_utility = -1.0
+        
+            stakholder_autonomy_values.append((stakeholder, autonomy_utility))
+
+        if stakeholder_data['robot']['on_call']:
+        
+            if action.value[0].__name__ == 'decline_call':
+                autonomy_utility = -1.0
+            else:
+                autonomy_utility = 0.0
             
-                stakholder_autonomy_values.append((stakeholder, autonomy_utility))
+            stakholder_autonomy_values.append(('caller', autonomy_utility))
 
         return stakholder_autonomy_values
 
@@ -217,19 +223,24 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             if preference:
                 pass
             else:
-                try:
-                    privacy_util = -1 * location_privacy_levels[location]
-                except KeyError:
-                    privacy_util = -1 * location_privacy_levels['other']
+                # End call == will not see anymore.
+                if action.value[0].__name__ == 'decline_call' or action.value[0].__name__ == 'decline_instruction_end_call':
+                    privacy_util = 1 * location_privacy_levels[location]
+                else:
+                    try:
+                        privacy_util = -1 * location_privacy_levels[location]
+                    except KeyError:
+                        privacy_util = -1 * location_privacy_levels['other']
 
             stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
 
         # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
-        for stakeholder, data in  stakeholder_data.items():
+        for stakeholder, data in stakeholder_data.items():
             if stakeholder == 'robot' or stakeholder == 'caller':
                 continue
 
+            
             if stakeholder not in visible_stakeholders_ids:
                 location = data['seen_location']
                 role = 'receiver' if stakeholder == call_receiver else '3rd_party'
@@ -252,6 +263,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                 
                 stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
+        
 
         return stakeholder_wellbeing_values
 
