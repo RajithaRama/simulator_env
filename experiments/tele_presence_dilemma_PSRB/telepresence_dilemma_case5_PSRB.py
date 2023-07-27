@@ -9,6 +9,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
+from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pref
 
 def agent_portrayal(agent):
     portrayal = {
@@ -43,14 +44,110 @@ def agent_portrayal(agent):
 patient_1_path = [((8, 11), '')]
 care_worker_path = [((7, 11), '')]
 
-caller_instructions = ['go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
-patient_1_preference = {'bedroom': {'with_company': True, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
-care_worker_preference = {'bedroom': {'with_company': False, 'Alone': True}, 'kitchen': {'with_company': True, 'Alone': True}, 'bathroom': {'with_company': False, 'Alone': False}, 'living_room': {'with_company': True, 'Alone': True}}
+caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
+
+patient_1_preference = {
+    'bedroom': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        }, 
+    'kitchen': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    'bathroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': False
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'living': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    }
+
+care_worker_preference = {
+    'bedroom': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'kitchen': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    'bathroom': {
+        'receiver': {
+            'with_company': False, 
+            'alone': False
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': False
+            }
+        }, 
+    'living': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    }
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY
+    'type': CALLER_TYPE.FAMILY,
+    'calling_resident': 'patient_0'
+}
+
+character = {
+    'control_bias': {
+        'caller': Control_Bias.HIGH,
+        'receiver': Control_Bias.LOW,
+        'other': Control_Bias.NONE,
+        'worker': Control_Bias.HIGH
+    },
+    'autonomy': Autonomy.HIGH,
+    'wellbeing_value_preference': Wellbeing_Pref.HIGH
 }
 
 worker_data = {
@@ -64,8 +161,8 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "worker_data": worker_data, "governor_conf":
-                       'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
+                   "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "robot_character": character,
+                   "worker_data": worker_data, "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
 
 server.port = 8123

@@ -36,6 +36,13 @@ def agent_portrayal(agent):
         portrayal["yAlign"] = 0.5
     return portrayal
 
+"""
+Case 2: character bias towards caller. 
+Both patients preference not to be seen. Both in living room.
+No worker.
+caller = family member
+"""
+
 
 # Patient 1 path
 # start

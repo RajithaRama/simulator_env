@@ -9,7 +9,7 @@ from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pr
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
-DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 
 

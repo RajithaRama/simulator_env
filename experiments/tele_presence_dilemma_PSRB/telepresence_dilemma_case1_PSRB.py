@@ -36,7 +36,12 @@ def agent_portrayal(agent):
     return portrayal
 
 
-
+"""
+Case 1: character bias towards caller. 
+Both patients preference consents to be seen. Both in living room.
+No worker.
+caller = family member
+"""
 
 # Patient 1 path
 # start
