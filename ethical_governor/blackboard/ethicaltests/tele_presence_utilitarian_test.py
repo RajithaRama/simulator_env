@@ -215,8 +215,8 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             #     preference = env['worker_preferences'][location][role][with_company]
             # else:
             #     preference = env['resident_preferences'][location][role][with_company]
-
-            preference = stakeholder_data[stakeholder]['preferences'][location][role][with_company]
+            rel_location = stakeholder_data[stakeholder]['relative_location']
+            preference = stakeholder_data[stakeholder]['preferences'][rel_location][role][with_company]
 
             privacy_util = 0.0
 
@@ -248,8 +248,8 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                 other_stakeholders = [item for item in stakeholder_data.keys() if item not in [stakeholder, 'robot', 'caller']]
                 with_company = 'with_company' if len(other_stakeholders) > 0 else 'alone'
 
-
-                preference = data['preferences'][location][role][with_company]
+                rel_location = data['relative_location']
+                preference = data['preferences'][rel_location][role][with_company]
 
                 privacy_util = 0.0
                 

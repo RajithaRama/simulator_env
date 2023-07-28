@@ -8,6 +8,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 
 from Models.home_telepresence import Home
+
 from agent_types.caller import CALLER_TYPE
 from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pref
 
@@ -38,17 +39,33 @@ def agent_portrayal(agent):
         portrayal["yAlign"] = 0.5
     return portrayal
 
+"""
+Case 4: character bias towards caller. 
+Receiver and care worker both okay to be seen. Both in the receiver's room.
+No other residents.
+caller = family member
+"""
+
 
 # Patient 1 path
 # start
 patient_1_path = [((8, 11), '')]
 care_worker_path = [((7, 11), '')]
 
-
 caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {
     'bedroom': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        }, 
+    'bedroom_close_bed': {
         'receiver': {
             'with_company': True, 
             'alone': True
@@ -97,8 +114,18 @@ care_worker_preference = {
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
-            'alone': False
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    'bedroom_close_bed': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
             }
         }, 
     'kitchen': {
@@ -128,6 +155,16 @@ care_worker_preference = {
             }, 
         '3rd_party': {
             'with_company': True, 
+            'alone': True
+            }
+        },
+    'other': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
             'alone': True
             }
         },

@@ -116,6 +116,11 @@ class Home(Model):
         self.locations["bedroom"] = [[(5, 8), (8, 9)], [(5, 10), (6, 11)], [(5, 7), (5, 7)]]
         self.locations["bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
 
+        self.common_locations = ['kitchen', 'living', 'hall', 'utility']
+        self.reserved_locations = {'bedroom': ['patient_0'], 
+                                   'bathroom': ['patient_0'],
+                                   'bedroom_close_bed': ['patient_0']}
+
     def init_things(self):
         self.things = {}
 
@@ -142,6 +147,19 @@ class Home(Model):
             return location_name
         else:
             raise EnvironmentError("Agent Location Unknown for position: " + str(pos))
+
+    def get_patient_relative_location(self, location, patient_id):
+        """ 
+        Returns the location from the POV of patient
+        i.e: If the patient in a common area or in a area reserved to them, this will return the area.
+        Else, this will return 'other'
+        """
+        if location in self.common_locations:
+            return location
+        elif patient_id in self.reserved_locations[location]:
+            return location
+        else:
+            return 'other'
 
     def get_things(self, pos):
         things = []

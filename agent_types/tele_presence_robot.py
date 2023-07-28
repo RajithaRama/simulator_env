@@ -219,6 +219,7 @@ class Robot(HomeAgent):
             # agent_data['seen_time'] = self.time
             # agent_data['seen_pos'] = agent.pos
             agent_data['seen_location'] = self.model.get_location(agent.pos)
+            agent_data['relative_location'] = self.model.get_relative_location(agent_data['seen_location'], agent_data['id'])
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
             agent_data['preferences'] = agent.preferences

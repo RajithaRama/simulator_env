@@ -134,6 +134,16 @@ patient_2_preference = {
             'alone': True
             }
         },
+    'other': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
+            }
+        },
     }
 
 caller_data = {
