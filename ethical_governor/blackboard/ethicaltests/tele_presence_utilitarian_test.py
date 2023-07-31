@@ -225,10 +225,10 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             else:
                 # End call == will not see anymore.
                 if action.value[0].__name__ == 'decline_call' or action.value[0].__name__ == 'decline_instruction_end_call':
-                    privacy_util = 1 * location_privacy_levels[location]
+                    privacy_util = 1 * location_privacy_levels[rel_location]
                 else:
                     try:
-                        privacy_util = -1 * location_privacy_levels[location]
+                        privacy_util = -1 * location_privacy_levels[rel_location]
                     except KeyError:
                         privacy_util = -1 * location_privacy_levels['other']
 
@@ -257,7 +257,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                     pass
                 else:
                     try:
-                        privacy_util = location_privacy_levels[location]
+                        privacy_util = location_privacy_levels[rel_location]
                     except KeyError:
                         privacy_util = location_privacy_levels['other']
                 

@@ -169,10 +169,11 @@ character = {
 
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
+conversations = modules.ConversationBox()
 
 server = ModularVisualization.ModularServer(
     Home,
-    [grid],
+    [grid, conversations],
     "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": robot_start,
                    "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "robot_character": character,
                    "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}

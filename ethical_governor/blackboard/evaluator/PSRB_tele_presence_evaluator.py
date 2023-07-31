@@ -9,7 +9,7 @@ from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pr
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
-DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 
 
@@ -322,7 +322,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             receiver = data.get_data(['stakeholders', 'caller', 'calling_resident'])
             preferences = data.get_data(['stakeholders', receiver, 'preferences'])
             
-            location = data.get_data(['stakeholders', receiver, 'seen_location'])
+            location = data.get_data(['stakeholders', receiver, 'relative_location'])
             
             other_visible_stakeholders_ids = [stakeholder_id for stakeholder_id in data.get_data(['stakeholders']).keys() if stakeholder_id not in ['robot', 'caller', receiver]]
             with_company = 'with_company' if len(other_visible_stakeholders_ids) > 0 else 'alone'
@@ -360,7 +360,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         if self.get_worker_seen(action, data, logger):
             preferences = data.get_data(['stakeholders', 'care_worker', 'preferences'])
 
-            location = data.get_data(['stakeholders', 'care_worker', 'seen_location'])
+            location = data.get_data(['stakeholders', 'care_worker', 'relative_location'])
             role = '3rd_party'
 
             other_visible_stakeholders_ids = [stakeholder_id for stakeholder_id in data.get_data(['stakeholders']).keys() if stakeholder_id not in ['robot', 'caller', 'care_worker']]
@@ -402,7 +402,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             for id in stakeholder_data.keys():
                 if id not in ['robot', 'caller', data.get_data(['stakeholders', 'caller', 'calling_resident']), 'care_worker']:
                     preferences = stakeholder_data[id]['preferences']
-                    location = stakeholder_data[id]['seen_location']
+                    location = stakeholder_data[id]['relative_location']
                     role = '3rd_party'
                     if len([stakeholder_id for stakeholder_id in stakeholder_data.keys() if stakeholder_id not in ['robot', 'caller', id]]) > 0:
                         with_company = 'with_company' 

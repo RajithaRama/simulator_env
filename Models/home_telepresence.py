@@ -31,6 +31,8 @@ class Home(Model):
         self.time_of_day = time_of_day
         self.instructions = {}
 
+        self.message_history = []
+
         id_gen = GenId(1)
         # Init robot
         self.robot = Robot(id_gen.get_id(), 'robot1', self, 'caller', governor_conf, 100, patient_preferences, character=robot_character)
@@ -148,7 +150,7 @@ class Home(Model):
         else:
             raise EnvironmentError("Agent Location Unknown for position: " + str(pos))
 
-    def get_patient_relative_location(self, location, patient_id):
+    def get_relative_location(self, location, agent_id):
         """ 
         Returns the location from the POV of patient
         i.e: If the patient in a common area or in a area reserved to them, this will return the area.
@@ -156,7 +158,7 @@ class Home(Model):
         """
         if location in self.common_locations:
             return location
-        elif patient_id in self.reserved_locations[location]:
+        elif (location in self.reserved_locations.keys()) and (agent_id in self.reserved_locations[location]):
             return location
         else:
             return 'other'
@@ -331,6 +333,12 @@ class Home(Model):
 
     def pass_message(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])
+        if giver.type == 'robot':
+            self.message_history.append([command[0], giver.id, receiver.id, self.schedule.steps])
+            print('Passing message: "' + command[0] + '" from ' + giver.id + ' to ' + receiver.id)
+        else:
+            self.message_history.append([command, giver.id, receiver.id, self.schedule.steps])
+            print('Passing message: "' + command + '" from ' + giver.id + ' to ' + receiver.id)
 
     def get_message(self, receiver):
         instructions = None

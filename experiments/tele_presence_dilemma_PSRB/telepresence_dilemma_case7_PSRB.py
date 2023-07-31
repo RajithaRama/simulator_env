@@ -168,7 +168,18 @@ care_worker_preference = {
             'alone': True
             }
         },
+    'other': {
+        'receiver': {
+            'with_company': False, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': False, 
+            'alone': True
+            }
+        },
     }
+    
 
 caller_data = {
     'commands': caller_instructions,
@@ -193,11 +204,12 @@ worker_data = {
 }
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
+conversations = modules.ConversationBox()
 
 server = ModularVisualization.ModularServer(
     Home,
-    [grid],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
+    [grid, conversations],
+    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (7, 10),
                    "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "robot_character": character,
                    "worker_data": worker_data, "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
