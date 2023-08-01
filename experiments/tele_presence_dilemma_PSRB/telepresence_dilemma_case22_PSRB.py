@@ -7,7 +7,6 @@ print(sys.path)
 
 from mesa_updated.visualization import ModularVisualization, modules
 
-
 from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
 from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pref
@@ -36,13 +35,13 @@ def agent_portrayal(agent):
         portrayal["yAlign"] = 0.5
     return portrayal
 
-"""
-Case 2: character bias towards caller. 
-Both patients preference not to be seen. Both in living room.
-No worker.
-caller = family member
-"""
 
+"""
+Case 1: character bias towards receiver. 
+Both patients preference consents to be seen. Both in living room.
+No worker.
+caller = Doctor
+"""
 
 # Patient 1 path
 # start
@@ -51,25 +50,24 @@ patient_2_path = [((10, 2), '')]
 
 caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_backward', 'go_right']
 
-
 patient_1_preference = {
     'bedroom': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
-            'alone': False
+            'with_company': True, 
+            'alone': True
             }
         }, 
     'kitchen': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -85,11 +83,11 @@ patient_1_preference = {
         }, 
     'living': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -98,21 +96,21 @@ patient_1_preference = {
 patient_2_preference = {
     'bedroom': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         }, 
     'kitchen': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -128,21 +126,21 @@ patient_2_preference = {
         }, 
     'living': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
     'other': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -150,14 +148,14 @@ patient_2_preference = {
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY,
+    'type': CALLER_TYPE.DOCTOR,
     'calling_resident': 'patient_0'
 }
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.HIGH,
-        'receiver': Control_Bias.LOW,
+        'caller': Control_Bias.LOW,
+        'receiver': Control_Bias.HIGH,
         'other': Control_Bias.NONE,
         'worker': Control_Bias.HIGH
     },
@@ -168,7 +166,6 @@ character = {
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 conversations = modules.ConversationBox()
-
 
 server = ModularVisualization.ModularServer(
     Home,

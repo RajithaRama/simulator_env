@@ -50,7 +50,7 @@ caller = family member
 patient_1_path = [((8, 2), '')]
 patient_2_path = [((10, 2), '')]
 robot_start = (9, 3)
-caller_instructions = ['call', 'go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
+caller_instructions = ['call', 'go_forward'] #, 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
 
 patient_1_preference = {

@@ -40,7 +40,8 @@ def agent_portrayal(agent):
 Case 2: character bias towards caller. 
 Both patients preference not to be seen. Both in living room.
 No worker.
-caller = family member
+Robot is near the recidents
+caller = Doctor
 """
 
 
@@ -48,8 +49,8 @@ caller = family member
 # start
 patient_1_path = [((8, 2), '')]
 patient_2_path = [((10, 2), '')]
-
-caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_backward', 'go_right']
+robot_start = (9, 3)
+caller_instructions = ['call', 'go_forward'] #, 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
 
 patient_1_preference = {
@@ -146,11 +147,12 @@ patient_2_preference = {
             'alone': True
             }
         },
+            
     }
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY,
+    'type': CALLER_TYPE.DOCTOR,
     'calling_resident': 'patient_0'
 }
 
@@ -169,11 +171,10 @@ character = {
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 conversations = modules.ConversationBox()
 
-
 server = ModularVisualization.ModularServer(
     Home,
     [grid, conversations],
-    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5),
+    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": robot_start,
                    "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "robot_character": character,
                    "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )

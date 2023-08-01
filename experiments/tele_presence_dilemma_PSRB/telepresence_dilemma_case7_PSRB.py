@@ -52,7 +52,7 @@ patient_1_path = [((8, 11), '')]
 care_worker_path = [((7, 11), '')]
 
 
-caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
+caller_instructions = ['call', 'go_forward'] #, 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {
     'bedroom': {

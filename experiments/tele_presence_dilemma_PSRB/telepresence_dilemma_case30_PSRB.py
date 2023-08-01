@@ -4,7 +4,6 @@ path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 print(sys.path)
 
-
 from mesa_updated.visualization import ModularVisualization, modules
 
 
@@ -27,6 +26,9 @@ def agent_portrayal(agent):
         # portrayal["Color"] = "blue"
         portrayal["Shape"] = "elder.png"
         # portrayal["r"] = 0.5
+    elif agent.type == 'care_worker':
+        portrayal["Shape"] = "careworker.png"
+        # portrayal["Color"] = "blue"
     elif agent.type == 'wall':
         portrayal["Color"] = "black"
         portrayal["Shape"] = "rect"
@@ -37,39 +39,48 @@ def agent_portrayal(agent):
     return portrayal
 
 """
-Case 2: character bias towards caller. 
-Both patients preference not to be seen. Both in living room.
-No worker.
+Case 5: character bias towards caller, but not worker. 
+Receiver is okay to be seen, but care worker is not. Both in the receiver's room.
+No other residents.
 caller = family member
 """
 
-
 # Patient 1 path
 # start
-patient_1_path = [((8, 2), '')]
-patient_2_path = [((10, 2), '')]
+patient_1_path = [((8, 11), '')]
+care_worker_path = [((7, 11), '')]
 
-caller_instructions = ['call','go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_backward', 'go_right']
 
+caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {
     'bedroom': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
-            'alone': False
+            'with_company': True, 
+            'alone': True
+            }
+        },
+    'bedroom_close_bed': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
+            'alone': True
             }
         }, 
     'kitchen': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -85,34 +96,44 @@ patient_1_preference = {
         }, 
     'living': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
     }
 
-patient_2_preference = {
+care_worker_preference = {
     'bedroom': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
             'with_company': False, 
-            'alone': True
+            'alone': False
             }
         }, 
-    'kitchen': {
+    'bedroom_close_bed': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
             'with_company': False, 
+            'alone': False
+            }
+        },
+    'kitchen': {
+        'receiver': {
+            'with_company': True, 
+            'alone': True
+            }, 
+        '3rd_party': {
+            'with_company': True, 
             'alone': True
             }
         },
@@ -128,11 +149,11 @@ patient_2_preference = {
         }, 
     'living': {
         'receiver': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': False, 
+            'with_company': True, 
             'alone': True
             }
         },
@@ -156,26 +177,29 @@ caller_data = {
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.HIGH,
-        'receiver': Control_Bias.LOW,
-        'other': Control_Bias.NONE,
-        'worker': Control_Bias.HIGH
+        'caller': Control_Bias.LOW,
+        'receiver': Control_Bias.HIGH,
+        'other': Control_Bias.HIGH,
+        'worker': Control_Bias.LOW
     },
     'autonomy': Autonomy.HIGH,
     'wellbeing_value_preference': Wellbeing_Pref.HIGH
-    }
+}
 
+worker_data = {
+    'path': care_worker_path,
+    'preferences': care_worker_preference
+}
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 conversations = modules.ConversationBox()
 
-
 server = ModularVisualization.ModularServer(
     Home,
     [grid, conversations],
-    "Home model", {"no_patients": 2, "patient_starts": [patient_1_path[0][0], patient_2_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path, patient_2_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference, patient_2_preference], "robot_character": character,
-                   "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
+    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
+                   "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "robot_character": character,
+                   "worker_data": worker_data, "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
 
 server.port = 8123

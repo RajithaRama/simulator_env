@@ -27,6 +27,7 @@ df = df.replace({'': None})
 
 df[["on_call", "receiver_seen", "receiver_preference", "worker_seen", "worker_preference", "other_patient_seen"]] = df[["on_call", "receiver_seen", "receiver_preference", "worker_seen", "worker_preference", "other_patient_seen"]].astype(bool)
 df["other_patient_locations"] = df["other_patient_locations"].apply(str_to_list)
+df[["caller_autonomy", "receiver_wellbeing", "receiver_privacy", "worker_privacy", "other_resident_privacy"]] = df[["caller_autonomy", "receiver_wellbeing", "receiver_privacy", "worker_privacy", "other_resident_privacy"]].astype(float)
 
 
 

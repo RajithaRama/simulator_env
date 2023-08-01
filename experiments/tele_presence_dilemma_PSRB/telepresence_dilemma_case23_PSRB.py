@@ -37,10 +37,10 @@ def agent_portrayal(agent):
     return portrayal
 
 """
-Case 2: character bias towards caller. 
+Case 1: character bias towards receiver. 
 Both patients preference not to be seen. Both in living room.
 No worker.
-caller = family member
+caller = Doctor
 """
 
 
@@ -150,20 +150,20 @@ patient_2_preference = {
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY,
+    'type': CALLER_TYPE.DOCTOR,
     'calling_resident': 'patient_0'
 }
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.HIGH,
-        'receiver': Control_Bias.LOW,
+        'caller': Control_Bias.LOW,
+        'receiver': Control_Bias.HIGH,
         'other': Control_Bias.NONE,
         'worker': Control_Bias.HIGH
     },
     'autonomy': Autonomy.HIGH,
     'wellbeing_value_preference': Wellbeing_Pref.HIGH
-    }
+}
 
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
