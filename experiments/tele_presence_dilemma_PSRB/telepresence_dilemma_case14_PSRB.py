@@ -183,7 +183,7 @@ care_worker_preference = {
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY,
+    'type': CALLER_TYPE.DOCTOR,
     'calling_resident': 'patient_0'
 }
 

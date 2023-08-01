@@ -274,9 +274,9 @@ class Autonomy(Enum):
 class Control_Bias(Enum):
     NONE = 0
     LOW = 2
-    HIGH = 7
+    HIGH = 8
 
 class Wellbeing_Pref(Enum):
     NONE = 0
     LOW = 2
-    HIGH = 7
+    HIGH = 8

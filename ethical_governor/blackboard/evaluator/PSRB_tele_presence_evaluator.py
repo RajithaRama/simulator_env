@@ -21,7 +21,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.cbr_context_data_feature_map = {
             'robot_location': ['stakeholders', 'robot', 'location'],
             'on_call': ['stakeholders', 'robot', 'on_call'],
-            'caller_type': ['stakeholders', 'caller', 'type'],
+            'caller_type': self.get_caller_type, #['stakeholders', 'caller', 'type'],
             'caller_instruction': self.get_caller_instruction,
             'receiver_seen': self.get_receiver_seen,
             'receiver_location': self.get_receiver_location,
@@ -92,6 +92,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
             else:
                 logger.info('Evaluating action: ' + str(action))
+
                 expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
                 logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
@@ -131,11 +132,11 @@ class PSRBEvaluator(evaluator.Evaluator):
                     if self.character['wellbeing_value_preference'] is not Wellbeing_Pref.NONE:
                         if 'receiver_wellbeing' in expert_intention:
                             threshold = (10 - self.character['wellbeing_value_preference'].value)/10
-                            if receiver_wellbeing < threshold:
+                            if receiver_wellbeing <= threshold:
                                 acceptability = 0
                         else:
                             threshold = (self.character['wellbeing_value_preference'].value - 10)/10
-                            if receiver_wellbeing < threshold:
+                            if receiver_wellbeing <= threshold:
                                 acceptability = 0
 
                     # Then check for the control bias
@@ -171,9 +172,10 @@ class PSRBEvaluator(evaluator.Evaluator):
                                     
                                 else:
                                     # if the control bias is high, the stakeholder should not get a very high privacy breach.
-                                    lower_threshold = (self.character['wellbeing_value_preference'].value - 10)/10
-                                    if eval(stakeholder2) < lower_threshold:
-                                        acceptability = 0
+                                    if '_privacy' in stakeholder:
+                                        lower_threshold = (self.character['control_bias'][stakeholder.split('_')[0]].value - 10)/10
+                                        if eval(stakeholder) <= lower_threshold:
+                                            acceptability = 0
 
                     
                     # TODO: debug and complete.
@@ -195,7 +197,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     # When rules are not broken but expert rejects
                     if 'receiver_wellbeing' in expert_intention:
                         lower_threshold = (self.character['wellbeing_value_preference'].value - 10)/10
-                        if receiver_wellbeing < lower_threshold:
+                        if receiver_wellbeing <= lower_threshold:
                             acceptability = 0
 
                     # Then check for reciever intended the control bias
@@ -203,7 +205,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     for name, value in local_vars.items():
                         if name in expert_intention:
                             lower_threshold = (self.character['control_bias'][name.split('_')[0]].value - 10)/10
-                            if value < lower_threshold:
+                            if value <= lower_threshold:
                                 acceptability = 0
                                 break
 
@@ -285,6 +287,14 @@ class PSRBEvaluator(evaluator.Evaluator):
     ######################################
     # Feature extraction functions
     ######################################
+
+    def get_caller_type(self, action, data, logger):
+        caller_type = data.get_data(['stakeholders', 'caller', 'type'])
+        caller_type_str = str(caller_type)
+        if caller_type == None:
+            return None
+        else:
+            return caller_type_str
 
     def get_caller_instruction(self, action, data, logger):
         instruction_list = data.get_data(['stakeholders', 'robot', 'instruction_list'])
