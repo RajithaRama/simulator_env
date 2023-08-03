@@ -183,7 +183,7 @@ character = {
         'worker': Control_Bias.HIGH
     },
     'autonomy': Autonomy.HIGH,
-    'wellbeing_value_preference': Wellbeing_Pref.HIGH
+    'wellbeing_value_preference': Wellbeing_Pref.LOW
 }
 
 worker_data = {

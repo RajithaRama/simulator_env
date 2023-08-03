@@ -89,8 +89,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         
             if action.value[0].__name__ == 'decline_call':
                 autonomy_utility = -1.0
-            else:
-                autonomy_utility = 0.0
+            
             
             stakholder_autonomy_values.append(('caller', autonomy_utility))
 
@@ -120,9 +119,11 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         stakholder_wellbeing_values = []
 
-        # Doctor and caregiver can have higher wellbeing impact. Family and friends have a 
+        # Doctor and caregiver have higher wellbeing impact. Family and friends have a 
         # relatively low but considerable impact because the mental health benefits of their 
         # visits.
+
+        # TODO: check the utility dist for doctor and care_giver
         caller_type_util_map = {
             CALLER_TYPE.DOCTOR: 1.0,
             CALLER_TYPE.FAMILY: 0.5,
@@ -150,14 +151,20 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         # Only considering the receiver wellbeing in this implementation
         receiver = stakeholder_data['caller']['calling_resident']
-        if receiver in visible_stakeholders_ids:
-            wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
-            
-            # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
-            if 'care_worker' in visible_stakeholders_ids:
-                wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
-                
+
         
+        
+        if (receiver in visible_stakeholders_ids):
+            if (action.value[0].__name__ not in ['decline_call', 'decline_instruction_end_call']):
+                wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
+                
+                # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
+                if 'care_worker' in visible_stakeholders_ids:
+                    wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
+            else:
+                wellbeing_util = 0.0
+            
+            # Wellbeing is only when receiver is seen.
             stakholder_wellbeing_values.append((receiver, wellbeing_util))
 
         return stakholder_wellbeing_values
@@ -235,33 +242,33 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
 
-        # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
-        for stakeholder, data in stakeholder_data.items():
-            if stakeholder == 'robot' or stakeholder == 'caller':
-                continue
+        # # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
+        # for stakeholder, data in stakeholder_data.items():
+        #     if stakeholder == 'robot' or stakeholder == 'caller':
+        #         continue
 
             
-            if stakeholder not in visible_stakeholders_ids:
-                location = data['seen_location']
-                role = 'receiver' if stakeholder == call_receiver else '3rd_party'
+        #     if stakeholder not in visible_stakeholders_ids:
+        #         location = data['seen_location']
+        #         role = 'receiver' if stakeholder == call_receiver else '3rd_party'
 
-                other_stakeholders = [item for item in stakeholder_data.keys() if item not in [stakeholder, 'robot', 'caller']]
-                with_company = 'with_company' if len(other_stakeholders) > 0 else 'alone'
+        #         other_stakeholders = [item for item in stakeholder_data.keys() if item not in [stakeholder, 'robot', 'caller']]
+        #         with_company = 'with_company' if len(other_stakeholders) > 0 else 'alone'
 
-                rel_location = data['relative_location']
-                preference = data['preferences'][rel_location][role][with_company]
+        #         rel_location = data['relative_location']
+        #         preference = data['preferences'][rel_location][role][with_company]
 
-                privacy_util = 0.0
+        #         privacy_util = 0.0
                 
-                if preference:
-                    pass
-                else:
-                    try:
-                        privacy_util = location_privacy_levels[rel_location]
-                    except KeyError:
-                        privacy_util = location_privacy_levels['other']
+        #         if preference:
+        #             pass
+        #         else:
+        #             try:
+        #                 privacy_util = location_privacy_levels[rel_location]
+        #             except KeyError:
+        #                 privacy_util = location_privacy_levels['other']
                 
-                stakeholder_wellbeing_values.append((stakeholder, privacy_util))
+        #         stakeholder_wellbeing_values.append((stakeholder, privacy_util))
 
         
 
