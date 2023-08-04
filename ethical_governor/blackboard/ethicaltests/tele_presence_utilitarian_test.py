@@ -127,10 +127,13 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
         caller_type_util_map = {
             CALLER_TYPE.DOCTOR: 1.0,
             CALLER_TYPE.FAMILY: 0.5,
-            CALLER_TYPE.CAREGIVER: 1.0,
+            CALLER_TYPE.CAREGIVER: 0.8,
             CALLER_TYPE.FRIEND: 0.5,
             CALLER_TYPE.OTHER: 0.0
         }
+
+        interference_util_hit = 0.3
+
 
         # for stakeholder, data in stakeholder_data.items():
         #     if stakeholder == 'robot':
@@ -158,11 +161,9 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             if (action.value[0].__name__ not in ['decline_call', 'decline_instruction_end_call']):
                 wellbeing_util = caller_type_util_map[stakeholder_data['caller']['type']]
                 
-                # but reduce the wellbeing if the patient is socialising with the care_worker because it might distrupt their session.
-                if 'care_worker' in visible_stakeholders_ids:
-                    wellbeing_util -= caller_type_util_map[CALLER_TYPE.CAREGIVER]
             else:
-                wellbeing_util = 0.0
+                # consider the  negative wellbeing impact of declining of calls
+                wellbeing_util = -1*caller_type_util_map[stakeholder_data['caller']['type']]
             
             # Wellbeing is only when receiver is seen.
             stakholder_wellbeing_values.append((receiver, wellbeing_util))
