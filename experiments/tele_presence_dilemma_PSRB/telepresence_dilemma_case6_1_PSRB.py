@@ -39,10 +39,10 @@ def agent_portrayal(agent):
     return portrayal
 
 """
-Case 1: character bias towards receiver. 
+Case 5: character bias towards caller. 
 Receiver is okay to be seen, but care worker is not. Both in the receiver's room.
 No other residents.
-caller = doctor
+caller = family member
 """
 
 # Patient 1 path
@@ -56,21 +56,21 @@ caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_for
 patient_1_preference = {
     'bedroom': {
         'receiver': {
-            'with_company': True, 
+            'with_company': False, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': True, 
+            'with_company': False, 
             'alone': True
             }
         },
     'bedroom_close_bed': {
         'receiver': {
-            'with_company': True, 
+            'with_company': False, 
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': True, 
+            'with_company': False, 
             'alone': True
             }
         }, 
@@ -171,19 +171,19 @@ care_worker_preference = {
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.DOCTOR,
+    'type': CALLER_TYPE.FAMILY,
     'calling_resident': 'patient_0'
 }
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.LOW,
-        'receiver': Control_Bias.HIGH,
+        'caller': Control_Bias.HIGH,
+        'receiver': Control_Bias.LOW,
         'other': Control_Bias.NONE,
         'worker': Control_Bias.HIGH
     },
     'autonomy': Autonomy.HIGH,
-    'wellbeing_value_preference': Wellbeing_Pref.HIGH
+    'wellbeing_value_preference': Wellbeing_Pref.LOW
 }
 
 worker_data = {

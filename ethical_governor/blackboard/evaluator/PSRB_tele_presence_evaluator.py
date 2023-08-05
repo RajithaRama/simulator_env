@@ -66,10 +66,11 @@ class PSRBEvaluator(evaluator.Evaluator):
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
 
-        acceptability = 1
+        
       
         for action in data.get_actions():
             
+            acceptability = 1
 
             if self.character['autonomy'] is Autonomy.NONE:
                 if data.get_table_data(action, 'is_breaking_rule'):
@@ -106,7 +107,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 receiver_wellbeing	= self.get_receiver_wellbeing(action, data, logger)
                 receiver_privacy = self.get_receiver_privacy(action, data, logger)
                 worker_privacy	= self.get_worker_privacy(action, data, logger)
-                other_privacy = self.get_other_patient_privacy(action, data, logger)
+                other_resident_privacy = self.get_other_patient_privacy(action, data, logger)
 
                 rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
 
@@ -140,6 +141,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                                 acceptability = 0
 
                     # Then check for the control bias
+
+                    
                     have_control = []
                     not_have_control = []
 
@@ -151,6 +154,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                                     not_have_control.append(name)
                                 elif value >= 0:
                                     have_control.append(name)
+                            
                     
                     # Commented to improve readability
                     # if len(not_have_control) == 0:
@@ -158,24 +162,26 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                     if len(have_control) == 0:
                         acceptability = 0
+                    elif not set(expert_intention).intersection(set(have_control+not_have_control)):
+                        # if the intention has Control_bias.None, the action should not be acceptable.
+                        acceptability = 0
                     else:
                         for stakeholder in not_have_control:
                             for stakeholder2 in have_control:
                                 if self.character['control_bias'][stakeholder.split('_')[0]].value > self.character['control_bias'][stakeholder2.split('_')[0]].value:
                                     acceptability = 0
                                     break
-                                elif self.character['control_bias'][stakeholder.split('_')[0]].value == self.character['control_bias'.split('_')[0]][stakeholder2].value:
+                                elif self.character['control_bias'][stakeholder.split('_')[0]].value == self.character['control_bias'][stakeholder2.split('_')[0]].value:
                                     # In a tie, if the autonomy is low, rules have the authority. when autonomy is high knowledge base has it.
                                     if self.character['autonomy'] == Autonomy.LOW:
                                         acceptability = 0
                                         break
-                                    
-                                else:
-                                    # if the control bias is high, the stakeholder should not get a very high privacy breach.
-                                    if '_privacy' in stakeholder:
-                                        lower_threshold = (self.character['control_bias'][stakeholder.split('_')[0]].value - 10)/10
-                                        if eval(stakeholder) <= lower_threshold:
-                                            acceptability = 0
+                                        
+                            # if the control bias is high, the stakeholder should not get a very high privacy breach.
+                            if '_privacy' in stakeholder:
+                                lower_threshold = (self.character['control_bias'][stakeholder.split('_')[0]].value - 10)/10
+                                if eval(stakeholder) <= lower_threshold:
+                                    acceptability = 0
 
                     
                     # TODO: debug and complete.

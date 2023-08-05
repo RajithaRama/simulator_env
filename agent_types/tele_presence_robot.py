@@ -168,10 +168,10 @@ class Robot(HomeAgent):
         self.caller = caller_name
         print("Robot: Answered the call from " + caller_name)
 
-    def decline_call(self):
+    def decline_call(self, caller_name):
         code = -2
         msg = "Cannot answer the call now. Please try again later."
-        reciever = self.model.get_stakeholder(self.caller)
+        reciever = self.model.get_stakeholder(caller_name)
         self.model.pass_message((msg, code), self, reciever)
         print("Robot: Declined the call from " + str(self.caller))
         

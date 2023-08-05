@@ -183,7 +183,7 @@ care_worker_preference = {
 
 caller_data = {
     'commands': caller_instructions,
-    'type': CALLER_TYPE.FAMILY,
+    'type': CALLER_TYPE.DOCTOR,
     'calling_resident': 'patient_0'
 }
 
@@ -195,7 +195,7 @@ character = {
         'worker': Control_Bias.HIGH
     },
     'autonomy': Autonomy.HIGH,
-    'wellbeing_value_preference': Wellbeing_Pref.HIGH
+    'wellbeing_value_preference': Wellbeing_Pref.LOW
 }
 
 worker_data = {

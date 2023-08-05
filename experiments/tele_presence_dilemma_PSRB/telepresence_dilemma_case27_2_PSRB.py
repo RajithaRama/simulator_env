@@ -39,11 +39,10 @@ def agent_portrayal(agent):
     return portrayal
 
 """
-Case 7: character bias towards caller. 
+Case 1: character bias towards receiver. 
 Receiver is okay to be seen, but care worker is not. Both in the receiver's room.
 No other residents.
-robot starts in the receiver's room.
-caller = Doctor
+caller = doctor
 """
 
 # Patient 1 path
@@ -52,7 +51,7 @@ patient_1_path = [((8, 11), '')]
 care_worker_path = [((7, 11), '')]
 
 
-caller_instructions = ['call', 'go_forward'] #, 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
+caller_instructions = ['call', 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {
     'bedroom': {
@@ -102,16 +101,6 @@ patient_1_preference = {
             }, 
         '3rd_party': {
             'with_company': True, 
-            'alone': True
-            }
-        },
-    'other': {
-        'receiver': {
-            'with_company': False, 
-            'alone': True
-            }, 
-        '3rd_party': {
-            'with_company': False, 
             'alone': True
             }
         },
@@ -179,7 +168,6 @@ care_worker_preference = {
             }
         },
     }
-    
 
 caller_data = {
     'commands': caller_instructions,
@@ -189,8 +177,8 @@ caller_data = {
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.HIGH,
-        'receiver': Control_Bias.LOW,
+        'caller': Control_Bias.LOW,
+        'receiver': Control_Bias.HIGH,
         'other': Control_Bias.NONE,
         'worker': Control_Bias.HIGH
     },
@@ -209,7 +197,7 @@ conversations = modules.ConversationBox()
 server = ModularVisualization.ModularServer(
     Home,
     [grid, conversations],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (7, 10),
+    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
                    "patient_paths": [patient_1_path], "caller_data": caller_data, "patient_preferences": [patient_1_preference], "robot_character": character,
                    "worker_data": worker_data, "governor_conf": 'experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', "time_of_day": "day"}
 )
