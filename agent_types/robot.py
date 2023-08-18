@@ -62,8 +62,11 @@ class Robot(HomeAgent):
                     if ins_split[1] in self.model.locations.keys():
                         self.do_not_follow_to(to_location=ins_split[1], follower=instruction[1])
                         env['stakeholders']['robot']['not_follow_request'] = self.not_follow_request
+                        env['stakeholders']['robot']['not_follow_locations'] = self.not_follow_locations.copy()
                 if 'continue' == instruction[0] and self.not_follow_request:
                     self.remove_do_not_follow()
+                    env['stakeholders']['robot']['not_follow_request'] = self.not_follow_request
+                    env['stakeholders']['robot']['not_follow_locations'] = self.not_follow_locations.copy()
 
         # get visible neighbours and set follower
         visible_neighbors = self.model.visible_stakeholders(self.pos, self.visible_dist)
@@ -298,7 +301,7 @@ class Robot(HomeAgent):
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'not_follow_request': self.not_follow_request,
-                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
+                      'not_follow_locations': self.not_follow_locations.copy(), 'battery_level': self.battery, 'model': self,
                       'visible_dist': self.visible_dist, 'instruction_list': self.model.get_commands(self)}
 
         stakeholders['robot'] = robot_data
