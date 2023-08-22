@@ -1,4 +1,5 @@
 import os
+import json
 import pandas as pd
 import numpy as np
 
@@ -10,6 +11,7 @@ from Models.home_medication import MedImpact
 from ethical_governor.blackboard.commonutils.cbr.cbr_medication import CBRMedication
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_medication.json')
+SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_medication.json')
 
 DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
@@ -31,6 +33,8 @@ cbr_table_data_features = {
     'follower_autonomy': 'patient_0_autonomy', 'follower_wellbeing': 'patient_0_wellbeing', 'wellbeing_probability': 'patient_0_wellbeing_probability'
 }
 
+dropping_cases = ["Scn6"]
+
 class PSRBEvaluator(evaluator.Evaluator):
 
     def __init__(self):
@@ -38,6 +42,14 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.expert_db = CBRMedication()
         with open(CASE_BASE) as fp:
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=False)
+            with open(SCN_RANGE_JSON) as scnfp:
+                scn_range = json.load(scnfp)
+                for scn in dropping_cases:
+                    start = int(scn_range[scn]['start'])
+                    end = int(scn_range[scn]['end'])
+                    case_range = list(range(start, end + 1))
+                    data_df = data_df[~data_df['case_id'].isin(case_range)]
+
             data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']] = data_df[['follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']].astype(float)
             self.feature_list = self.expert_db.add_data(data_df)
 

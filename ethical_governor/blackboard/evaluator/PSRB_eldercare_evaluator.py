@@ -8,6 +8,7 @@ import ethical_governor.blackboard.evaluator.evaluator as evaluator
 from ethical_governor.blackboard.commonutils.cbr.cbr_following import CBRFollowing
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_bathroom.json')
+SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_bathroom.json')
 
 cbr_context_data_feature_map = {
     'seen': ['stakeholders', 'follower', 'seen'],
@@ -26,7 +27,10 @@ cbr_context_data_feature_map = {
 
 cbr_table_data_features = ["follower_autonomy", "follower_wellbeing", "follower_availability", "action"]
 
-DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+
+dropping_cases = ["Scn8"]
+
 
 class PSRBEvaluator(evaluator.Evaluator):
     def __init__(self):
@@ -34,6 +38,14 @@ class PSRBEvaluator(evaluator.Evaluator):
         self.expert_db = CBRFollowing()
         with open(CASE_BASE) as fp:
             data_df = pd.read_json(CASE_BASE, orient='records', precise_float=True)
+            with open(SCN_RANGE_JSON) as scnfp:
+                scn_range = json.load(scnfp)
+                for scn in dropping_cases:
+                    start = int(scn_range[scn]['start'])
+                    end = int(scn_range[scn]['end'])
+                    case_range = list(range(start, end + 1))
+                    data_df = data_df[~data_df['case_id'].isin(case_range)]
+
             data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
                 ['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']].astype(float)
             data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))

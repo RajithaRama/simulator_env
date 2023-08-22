@@ -1,4 +1,5 @@
 import os
+import json
 
 import pandas as pd
 import numpy as np
@@ -10,8 +11,9 @@ from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pr
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
 DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_telepresence.json')
 
-
+dropping_cases = ["Scn8"]
 
 class PSRBEvaluator(evaluator.Evaluator):
 
@@ -50,6 +52,14 @@ class PSRBEvaluator(evaluator.Evaluator):
             "other_resident_privacy": float,
         })
         # data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']] = data_df[['caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']].astype('float')
+        with open(SCN_RANGE_JSON) as scnfp:
+                scn_range = json.load(scnfp)
+                for scn in dropping_cases:
+                    start = int(scn_range[scn]['start'])
+                    end = int(scn_range[scn]['end'])
+                    case_range = list(range(start, end + 1))
+                    data_df = data_df[~data_df['case_id'].isin(case_range)]
+        
         self.feature_list = self.expert_db.add_data(data_df)
 
         if DUMP_query:
