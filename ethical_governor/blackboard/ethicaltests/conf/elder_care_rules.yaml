@@ -2,3 +2,4 @@
 - [2, [stakeholders.robot.not_follow_locations, stakeholders.robot.not_follow_request, stakeholders.follower.last_seen_location, action], stakeholders.robot.not_follow_request and ( action == go_to_last_seen ) and ( stakeholders.follower.last_seen_location in stakeholders.robot.not_follow_locations ), False]
 - [3, [instructions, action], ( move_away:patient_0 in instructions ) and ( action != move_away ), False]
 - [4, [stakeholders.robot.battery_level, action, stakeholders.robot.pos, environment.things.charge_station], ( action == go_to_charge_station ) and ( stakeholders.robot.battery_level > 25 ) and ( ( stakeholders.robot.pos in environment.things.charge_station ) == False ), False]
+- [5, [stakeholders.robot.not_follow_locations, stakeholders.robot.not_follow_request, stakeholders.robot.location, action], stakeholders.robot.not_follow_request and ( stakeholders.robot.location in stakeholders.robot.not_follow_locations ) and ( action != move_away ), False]

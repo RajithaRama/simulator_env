@@ -110,11 +110,11 @@ class Robot(HomeAgent):
         env['other_inputs'] = {'robot_model': self}
 
         recommendations = self.ethical_governor.recommend(env)
-        print('Action executed at step ' + str(self.time) + ': ' + str(recommendations))
+        # print('Recommendations at ' + str(self.time) + ': ' + str(recommendations))
 
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
-            print('Action executed: ' + str(recommendations[0][0]))
+            print('Action executed at step ' + str(self.time+1) + ': ' + str(recommendations[0][0]))
             return
         else:
             # Check for low battery
@@ -122,14 +122,14 @@ class Robot(HomeAgent):
                 for action in recommendations:
                     if self.go_to_charge_station == action[0]:
                         action[0](*action[1:])
-                        print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+                        print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
                         return
 
             # Check for follow
             for action in recommendations:
                 if self.follow == action[0]:
                     action[0](*action[1:])
-                    print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+                    print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
                     return
                 # if self.move_away == action[0]:
                 #     action[0](*action[1:])
@@ -158,7 +158,7 @@ class Robot(HomeAgent):
                 action = random.choice([recommendations[j] for j in indices])
 
             action[0](*action[1:])
-            print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+            print('Action executed at step ' + str(self.time + 1) + ': ' + str(action[0]))
 
             return
 

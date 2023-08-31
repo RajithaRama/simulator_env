@@ -13,7 +13,7 @@ CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonu
 DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_telepresence.json')
 
-dropping_cases = ["Scn8"]
+dropping_cases = []
 
 class PSRBEvaluator(evaluator.Evaluator):
 
