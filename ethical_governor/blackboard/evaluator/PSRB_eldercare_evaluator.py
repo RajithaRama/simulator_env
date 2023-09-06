@@ -56,8 +56,10 @@ class PSRBEvaluator(evaluator.Evaluator):
             self.queries = pd.DataFrame(columns=self.feature_list)
             self.query_list = []
 
-        self.charactor = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
+        self.character = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
 
+    def set_character(self, character):
+        self.character = character
 
     def convert_lists(self, str):
         # print(str, type(str))
@@ -102,16 +104,17 @@ class PSRBEvaluator(evaluator.Evaluator):
                                                                                       'accepted by experts.')
             elif expert_opinion and rule_broken:
                 # when rules reject but experts accept, if
-                values = self.charactor.keys()
+                values = self.character.keys()
 
                 acceptability = 1
                 for value in values:
                     if value in expert_intention:
-                        threshold = (10 - self.charactor[value]) / 10
+                        threshold = (10 - self.character[value]) / 10
                         if eval(value) < threshold:
                             acceptability = 0
+                    # TODO: remove else and see
                     else:
-                        threshold = (self.charactor[value] - 10) / 10
+                        threshold = (self.character[value] - 10) / 10
                         if eval(value) < threshold:
                             acceptability = 0
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
@@ -129,7 +132,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 # When rules accept and experts reject
                 acceptability = 1
                 for value in expert_intention:
-                    lower_threshold = (self.charactor[value] - 10) / 10
+                    lower_threshold = (self.character[value] - 10) / 10
                     if eval(value) < lower_threshold:
                         acceptability = 0
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)

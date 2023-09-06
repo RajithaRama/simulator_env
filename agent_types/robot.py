@@ -10,7 +10,7 @@ VISIBLE_DIST = 3
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, follower_name, governor_conf, start_battery):
+    def __init__(self, unique_id, name, model, follower_name, governor_conf, start_battery, character):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
@@ -22,6 +22,7 @@ class Robot(HomeAgent):
         self.not_follow_request = False
         self.not_follow_locations = []
         self.ethical_governor = EthicalGovernor(governor_conf)
+        self.ethical_governor.blackboard.evaluator.set_character(character)
         self.roles = {follower_name: 'follower'}
 
 

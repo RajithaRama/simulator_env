@@ -69,7 +69,7 @@ for i in range(40):
 #                        ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
 
 
-robot_character = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
+robot_character = {'wellbeing': 3, 'autonomy': 9, 'availability': 3}
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
