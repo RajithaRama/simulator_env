@@ -22,7 +22,10 @@ class Robot(HomeAgent):
         self.not_follow_request = False
         self.not_follow_locations = []
         self.ethical_governor = EthicalGovernor(governor_conf)
-        self.ethical_governor.blackboard.evaluator.set_character(character)
+        try:
+            self.ethical_governor.blackboard.evaluator.set_character(character)
+        except AttributeError:
+            pass
         self.roles = {follower_name: 'follower'}
 
 

@@ -32,7 +32,10 @@ class Robot(HomeAgent):
 
         # setting up the ethical governor
         self.ethical_governor = EthicalGovernor(governor_conf)
-        self.ethical_governor.blackboard.evaluator.set_character(character)
+        try:
+            self.ethical_governor.blackboard.evaluator.set_character(character)
+        except AttributeError:
+            pass
         
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
         self.medication_timers = []

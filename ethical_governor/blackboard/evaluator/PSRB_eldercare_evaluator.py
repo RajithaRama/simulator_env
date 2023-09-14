@@ -112,7 +112,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                         threshold = (10 - self.character[value]) / 10
                         if eval(value) < threshold:
                             acceptability = 0
-                    # TODO: remove else and see
+                    
                     else:
                         threshold = (self.character[value] - 10) / 10
                         if eval(value) < threshold:
