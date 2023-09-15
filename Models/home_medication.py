@@ -317,10 +317,10 @@ class Home(Model):
     def pass_message(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])
         if giver.type == 'robot':
-            self.message_history.append([command[0], giver.id, receiver.id, self.schedule.steps])
+            self.message_history.append([command[0], giver.id, receiver.id, self.schedule.steps+1])
             print('Passing message: "' + command[0] + '" from ' + giver.id + ' to ' + receiver.id)
         else:
-            self.message_history.append([command, giver.id, receiver.id, self.schedule.steps])
+            self.message_history.append([command, giver.id, receiver.id, self.schedule.steps+1])
             print('Passing message: "' + command + '" from ' + giver.id + ' to ' + receiver.id)
 
 
@@ -333,7 +333,7 @@ class Home(Model):
 
 
     def alert_careworker(self, message):
-        self.message_history.append([message, 'robot1', "Care-worker", self.schedule.steps])
+        self.message_history.append([message, 'robot1', "Care-worker", self.schedule.steps+1])
         print('Alerting care-worker: ' + message)
 
 

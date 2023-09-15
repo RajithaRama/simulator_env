@@ -24,7 +24,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
             # if stakeholder == 'patient_0':
             # Autonomy focused utilitarian agent
-            follower_util = (0.4*autonomy + 0.7*wellbeing)/1.1
+            follower_util = (0.3*autonomy + 0.7*wellbeing)
 
             
             desirability = round(follower_util, 6)
