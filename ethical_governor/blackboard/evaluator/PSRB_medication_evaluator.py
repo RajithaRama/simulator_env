@@ -33,7 +33,10 @@ cbr_table_data_features = {
     'follower_autonomy': 'patient_0_autonomy', 'follower_wellbeing': 'patient_0_wellbeing', 'wellbeing_probability': 'patient_0_wellbeing_probability'
 }
 
-dropping_cases = ["Scn6"]
+# dropping_cases = ["Scn6"]
+dropping_cases = []
+
+
 
 class PSRBEvaluator(evaluator.Evaluator):
 
