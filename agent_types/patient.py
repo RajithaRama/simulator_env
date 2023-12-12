@@ -21,7 +21,9 @@ class Patient(HomeAgent):
             return
 
         try:
-            if instruction != '':
+            if instruction == 'turn_off_lights':
+                self.model.turn_off_lights()
+            elif instruction != '':
                 self.model.give_command(instruction, self, self.model.robot)
             self.model.grid.move_agent(self, next_pos)
         except Exception as e:

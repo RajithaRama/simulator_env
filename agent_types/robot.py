@@ -10,7 +10,7 @@ VISIBLE_DIST = 3
 
 
 class Robot(HomeAgent):
-    def __init__(self, unique_id, name, model, follower_name, governor_conf, start_battery):
+    def __init__(self, unique_id, name, model, follower_name, governor_conf, start_battery, character):
         super().__init__(unique_id, name, model, "robot")
         self.buffered_instructions = []
         self.battery = start_battery
@@ -22,9 +22,16 @@ class Robot(HomeAgent):
         self.not_follow_request = False
         self.not_follow_locations = []
         self.ethical_governor = EthicalGovernor(governor_conf)
+        try:
+            self.ethical_governor.blackboard.evaluator.set_character(character)
+        except AttributeError:
+            pass
         self.roles = {follower_name: 'follower'}
 
+
     def step(self):
+        self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
+
         if self.pos in self.model.things['charge_station']:
 
             if self.battery/100 < 1:
@@ -36,6 +43,7 @@ class Robot(HomeAgent):
         # self.follow(env)
         self.next_action(env)
         self.time += 1
+
 
     def next_action(self, env):
 
@@ -58,11 +66,14 @@ class Robot(HomeAgent):
                     if ins_split[1] in self.model.locations.keys():
                         self.do_not_follow_to(to_location=ins_split[1], follower=instruction[1])
                         env['stakeholders']['robot']['not_follow_request'] = self.not_follow_request
+                        env['stakeholders']['robot']['not_follow_locations'] = self.not_follow_locations.copy()
                 if 'continue' == instruction[0] and self.not_follow_request:
                     self.remove_do_not_follow()
+                    env['stakeholders']['robot']['not_follow_request'] = self.not_follow_request
+                    env['stakeholders']['robot']['not_follow_locations'] = self.not_follow_locations.copy()
 
         # get visible neighbours and set follower
-        visible_neighbors = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
+        visible_neighbors = self.model.visible_stakeholders(self.pos, self.visible_dist)
 
         self.follower = None
         for neighbor in visible_neighbors:
@@ -79,6 +90,10 @@ class Robot(HomeAgent):
         else:
             possible_actions.append((self.go_to_last_seen,))
 
+        # if robot in a restricted area and can see the follower move away
+        if self.follower and self.not_follow_request and env['stakeholders']['robot']['location'] in self.not_follow_locations:
+            possible_actions.append((self.move_away, self.follower))
+
         # staying the same place
         possible_actions.append((self.stay,))
 
@@ -89,7 +104,7 @@ class Robot(HomeAgent):
         #     possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
-            possible_actions.append((self.go_to_charge_station,))
+            possible_actions.append((self.go_to_charge_station, ))
 
         self.make_final_decision(possible_actions, env)
 
@@ -99,11 +114,11 @@ class Robot(HomeAgent):
         env['other_inputs'] = {'robot_model': self}
 
         recommendations = self.ethical_governor.recommend(env)
-        print('Action executed at step ' + str(self.time) + ': ' + str(recommendations))
+        # print('Recommendations at ' + str(self.time) + ': ' + str(recommendations))
 
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
-            print('Action executed: ' + str(recommendations[0][0]))
+            print('Action executed at step ' + str(self.time+1) + ': ' + str(recommendations[0][0]))
             return
         else:
             # Check for low battery
@@ -111,14 +126,14 @@ class Robot(HomeAgent):
                 for action in recommendations:
                     if self.go_to_charge_station == action[0]:
                         action[0](*action[1:])
-                        print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+                        print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
                         return
 
             # Check for follow
             for action in recommendations:
                 if self.follow == action[0]:
                     action[0](*action[1:])
-                    print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+                    print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
                     return
                 # if self.move_away == action[0]:
                 #     action[0](*action[1:])
@@ -147,7 +162,7 @@ class Robot(HomeAgent):
                 action = random.choice([recommendations[j] for j in indices])
 
             action[0](*action[1:])
-            print('Action executed at step ' + str(self.time) + ': ' + str(action[0]))
+            print('Action executed at step ' + str(self.time + 1) + ': ' + str(action[0]))
 
             return
 
@@ -250,7 +265,7 @@ class Robot(HomeAgent):
 
     def get_env_data(self):
         env_data = {}
-        visible_stakeholders = self.model.visible_stakeholders(self.pos, VISIBLE_DIST)
+        visible_stakeholders = self.model.visible_stakeholders(self.pos, self.visible_dist)
 
         follower_in_data = False
 
@@ -290,17 +305,17 @@ class Robot(HomeAgent):
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'not_follow_request': self.not_follow_request,
-                      'not_follow_locations': self.not_follow_locations, 'battery_level': self.battery, 'model': self,
-                      'instruction_list': self.model.get_commands(self)}
+                      'not_follow_locations': self.not_follow_locations.copy(), 'battery_level': self.battery, 'model': self,
+                      'visible_dist': self.visible_dist, 'instruction_list': self.model.get_commands(self)}
 
         stakeholders['robot'] = robot_data
 
         env_data['stakeholders'] = stakeholders
         # env['']
 
-        environment = {"time_of_day": 'day', "time": self.time,
+        environment = {"time_of_day": self.model.time_of_day, "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
-                                                              'hall': (10, 5), 'bedroom': (200, 30)},
+                                                              'hall': (10, 5), 'bedroom': (20, 10), 'bedroom_close_bed': (60, 15)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),
                        "follower_health_score": float(self.model.follower_health),
                        "walls": self.model.wall_coordinates,

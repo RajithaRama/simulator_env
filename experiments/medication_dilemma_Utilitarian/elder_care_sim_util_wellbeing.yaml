@@ -1,0 +1,8 @@
+loader: {module_name: sim_loader, class_name: SimLoader}
+tests:
+  Utilitarian: { module_name: medication_utilitarian_test, class_name: MedicationUtilitarianTest, number_of_outputs: 2, output_names: [Autonomy, Wellbeing], per_user_cols: True, other: {}}
+test_order:
+  - Utilitarian
+evaluator: {module_name: utilitarian_medication_evaluator_wellbeing, class_name: UtilitarianEvaluator}
+scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
+log_file: Utilitarian_medication_dilemma.log

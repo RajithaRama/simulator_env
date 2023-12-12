@@ -18,7 +18,7 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_histories, governor_conf, robo_battery):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_histories, governor_conf, robo_battery, time_of_day, robot_character):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -26,14 +26,14 @@ class Home(Model):
 
         self.init_locations()
         self.init_things()
-        self.time_of_day = 'Day'
+        self.time_of_day = time_of_day
         self.instructions = {}
         self.follower_health = patient_healths[0]
         self.follower_history = patient_histories[0]
 
         id_gen = GenId(1)
         # Init robot
-        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, robo_battery)
+        self.robot = Robot(id_gen.get_id(), 'robot1', self, 'patient_0', governor_conf, robo_battery, character=robot_character)
 
         # Init_stakeholders
         self.stakeholders = []
@@ -101,21 +101,22 @@ class Home(Model):
         self.locations["living"] = [[(7, 1), (11, 3)], [(7, 4), (7, 4)]]
         self.locations["hall"] = [[(1, 5), (11, 6)]]
         self.locations["utility"] = [[(1, 8), (3, 11)], [(3, 7), (3, 7)]]
-        self.locations["bedroom"] = [[(5, 8), (8, 11)], [(5, 7), (5, 7)]]
+        self.locations["bedroom_close_bed"] = [[(7, 10), (8, 11)]]
+        self.locations["bedroom"] = [[(5, 8), (8, 9)], [(5, 10), (6, 11)], [(5, 7), (5, 7)]]
         self.locations["bathroom"] = [[(10, 8), (11, 11)], [(9, 8), (9, 8)]]
 
     def init_things(self):
         self.things = {}
 
         # add all the coordinate a thing should cover
-        self.things['Couch'] = [(8, 2), (9, 2), (10, 2)]
-        self.things['Chair'] = [(2, 2)]
+        self.things['couch'] = [(8, 2), (9, 2), (10, 2)]
+        self.things['chair'] = [(2, 2)]
         self.things['table'] = [(3, 2)]
         self.things['bed'] = [(8, 10), (8, 11)]
         self.things['charge_station'] = [(1, 9)]
         self.things['tub'] = [(11, 10), (11, 11)]
 
-        self.things_robot_inaccessible = ['Couch', 'Chair', 'table', 'bed', 'tub']
+        self.things_robot_inaccessible = ['couch', 'chair', 'table', 'bed', 'tub']
 
     def get_location(self, pos):
         location_name = None
@@ -290,6 +291,9 @@ class Home(Model):
             return -1
 
         # return np.linalg.norm(ord=1, x=[a[0]-b[0], a[1]-b[1]])
+
+    def turn_off_lights(self):
+        self.time_of_day = 'night'
 
     def give_command(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])

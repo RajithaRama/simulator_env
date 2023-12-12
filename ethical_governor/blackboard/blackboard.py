@@ -89,7 +89,7 @@ class Blackboard:
         self.data.log_table(self.process_logger)
 
         recommendation = [i.value for i in self.data.get_max_index("desirability_score")]
-        self.process_logger.info('Recommended actions: ' + str(recommendation))
+        self.process_logger.info('Recommended actions at step ' + str(self.data.get_data(['environment', 'time']) + 1 ) + ': ' + str(recommendation))
         # print(self.data._table_df)
         return recommendation
 
