@@ -1,6 +1,7 @@
 import yaml
 import importlib
 import logging
+import json
 
 import ethical_governor.blackboard.data_structure as data_structure
 
@@ -8,6 +9,7 @@ import ethical_governor.blackboard.data_structure as data_structure
 
 CONF_FILE = "../conf.yaml"
 
+utility_sequence = []
 
 def load_yaml(input_yaml):
     with open(input_yaml, 'r') as fp:
@@ -90,6 +92,19 @@ class Blackboard:
 
         recommendation = [i.value for i in self.data.get_max_index("desirability_score")]
         self.process_logger.info('Recommended actions at step ' + str(self.data.get_data(['environment', 'time']) + 1 ) + ': ' + str(recommendation))
+
+        recommendation_action = [i for i in self.data.get_max_index("desirability_score")]
+        utils = {}
+        for action in recommendation_action:
+            action_utils = {"follower_autonomy": self.data.get_table_data(action, "follower_autonomy"),
+                            "follower_wellbeing": self.data.get_table_data(action, "follower_wellbeing"),
+                            "robot_availability": self.data.get_table_data(action, "robot_availability")}
+            utils[action.value[0].__name__] = action_utils
+
+        utility_sequence.append(utils)
+
+        json.dump(utility_sequence, open('utility_sequence.json', 'w'))
+
         # print(self.data._table_df)
         return recommendation
 

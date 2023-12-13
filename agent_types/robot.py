@@ -1,4 +1,5 @@
 import random
+import json
 
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
@@ -7,6 +8,13 @@ import numpy as np
 
 SELF_CHARGING = True
 VISIBLE_DIST = 3
+
+action_sequence = []
+
+
+def dump_action_sequence(action):
+    action_sequence.append(action)
+    json.dump(action_sequence, open('action_sequence.json', 'w'))
 
 
 class Robot(HomeAgent):
@@ -28,13 +36,12 @@ class Robot(HomeAgent):
             pass
         self.roles = {follower_name: 'follower'}
 
-
     def step(self):
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
 
         if self.pos in self.model.things['charge_station']:
 
-            if self.battery/100 < 1:
+            if self.battery / 100 < 1:
                 self.battery += 3 if (100 - self.battery) >= 3 else (100 - self.battery)
         else:
             self.battery -= 0.2
@@ -43,7 +50,6 @@ class Robot(HomeAgent):
         # self.follow(env)
         self.next_action(env)
         self.time += 1
-
 
     def next_action(self, env):
 
@@ -91,7 +97,8 @@ class Robot(HomeAgent):
             possible_actions.append((self.go_to_last_seen,))
 
         # if robot in a restricted area and can see the follower move away
-        if self.follower and self.not_follow_request and env['stakeholders']['robot']['location'] in self.not_follow_locations:
+        if self.follower and self.not_follow_request and env['stakeholders']['robot'][
+            'location'] in self.not_follow_locations:
             possible_actions.append((self.move_away, self.follower))
 
         # staying the same place
@@ -104,7 +111,7 @@ class Robot(HomeAgent):
         #     possible_actions.append((self.stay,))
 
         if SELF_CHARGING:
-            possible_actions.append((self.go_to_charge_station, ))
+            possible_actions.append((self.go_to_charge_station,))
 
         self.make_final_decision(possible_actions, env)
 
@@ -118,7 +125,8 @@ class Robot(HomeAgent):
 
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
-            print('Action executed at step ' + str(self.time+1) + ': ' + str(recommendations[0][0]))
+            print('Action executed at step ' + str(self.time + 1) + ': ' + str(recommendations[0][0]))
+            dump_action_sequence(recommendations[0][0].__name__)
             return
         else:
             # Check for low battery
@@ -126,14 +134,16 @@ class Robot(HomeAgent):
                 for action in recommendations:
                     if self.go_to_charge_station == action[0]:
                         action[0](*action[1:])
-                        print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
+                        print('Action executed at step ' + str(self.time + 1) + ': ' + str(action[0]))
+                        dump_action_sequence(action[0].__name__)
                         return
 
             # Check for follow
             for action in recommendations:
                 if self.follow == action[0]:
                     action[0](*action[1:])
-                    print('Action executed at step ' + str(self.time+1) + ': ' + str(action[0]))
+                    print('Action executed at step ' + str(self.time + 1) + ': ' + str(action[0]))
+                    dump_action_sequence(action[0].__name__)
                     return
                 # if self.move_away == action[0]:
                 #     action[0](*action[1:])
@@ -163,7 +173,7 @@ class Robot(HomeAgent):
 
             action[0](*action[1:])
             print('Action executed at step ' + str(self.time + 1) + ': ' + str(action[0]))
-
+            dump_action_sequence(action[0].__name__)
             return
 
     def move_away(self, follower, act=True):
@@ -305,7 +315,8 @@ class Robot(HomeAgent):
 
         robot_data = {'id': "this", 'type': "robot", 'pos': self.pos, 'location': self.model.get_location(self.pos),
                       'not_follow_request': self.not_follow_request,
-                      'not_follow_locations': self.not_follow_locations.copy(), 'battery_level': self.battery, 'model': self,
+                      'not_follow_locations': self.not_follow_locations.copy(), 'battery_level': self.battery,
+                      'model': self,
                       'visible_dist': self.visible_dist, 'instruction_list': self.model.get_commands(self)}
 
         stakeholders['robot'] = robot_data
@@ -315,7 +326,8 @@ class Robot(HomeAgent):
 
         environment = {"time_of_day": self.model.time_of_day, "time": self.time,
                        "follower_avg_time_and_std_in_rooms": {'bathroom': (20, 10), 'kitchen': (60, 10),
-                                                              'hall': (10, 5), 'bedroom': (20, 10), 'bedroom_close_bed': (60, 15)},
+                                                              'hall': (10, 5), 'bedroom': (20, 10),
+                                                              'bedroom_close_bed': (60, 15)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),
                        "follower_health_score": float(self.model.follower_health),
                        "walls": self.model.wall_coordinates,

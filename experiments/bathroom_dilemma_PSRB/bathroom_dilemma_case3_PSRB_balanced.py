@@ -8,7 +8,7 @@ from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home import Home
 
-# The patient go to the bathroom and stay 20 steps (average time)
+# The patient go to the bathroom and stay 20 steps (too long)
 
 def agent_portrayal(agent):
     portrayal = {
@@ -38,14 +38,37 @@ def agent_portrayal(agent):
 # Patient 1 path
 # start
 patient_1_path = [((6, 5), '')]
+#
+# # move to Kitchen
+# patient_1_path.extend(
+#     [((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''), ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
+#
+# # wait in kitchen chair for 30 steps
+# for i in range(20):
+#     patient_1_path.append(((2, 2), ''))
 
-# Path to bed (with command 'do_not_follow_to__bathroom')
+# Path to bathroom (with command 'do_not_follow_to__bathroom')
+# patient_1_path.extend([((2, 3), ''), ((3, 3), ''), ((4, 3), ''), ((5, 3), ''), ((5, 4), ''), ((5, 5), ''), ((5, 6), ''),
+#                        ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''),
+#                        ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
+#                        ((10, 9), '')])
+
+# Path to bathroom (with command 'do_not_follow_to__bathroom')
 patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
-                       ((5, 7), ''), ((5, 8), ''), ((5, 9), ''), ((5, 10), ''), ((5, 11), ''), ((6, 11), ''),
-                       ((7, 11), 'do_not_follow_to__bedroom_close_bed'), ((8, 11), 'turn_off_lights')])
+                       ((5, 7), ''), ((5, 8), ''), ((6, 8), ''), ((7, 8), ''), ((8, 8), ''),
+                       ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
+                       ((10, 9), '')])
 
+# Wait in Bathroom for 20 steps
+for i in range(40):
+    patient_1_path.append(((10, 10), ''))
 
-robot_character = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
+robot_character = {'wellbeing': 3, 'autonomy': 3, 'availability': 3}
+
+# Path to kitchen (with command 'continue')
+patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), ''), ((8, 8), 'continue'), ((7, 8), ''), ((6, 8), ''),
+                       ((5, 8), ''), ((5, 7), ''), ((5, 6), ''), ((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''),
+                       ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
