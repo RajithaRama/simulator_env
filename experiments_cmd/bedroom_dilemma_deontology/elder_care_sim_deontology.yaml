@@ -1,0 +1,8 @@
+loader: {module_name: sim_loader, class_name: SimLoader}
+tests:
+  Deontology: { module_name: elder_care_deontology_test, class_name: ElderCareRuleTest, other: {rule_file: elder_care_rules.yaml}}
+test_order:
+  - Deontology
+evaluator: {module_name: deontology_eldercare_evaluator, class_name: DeontologyEvaluator}
+scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
+log_file: Deontology_bathroom_dilemma.log

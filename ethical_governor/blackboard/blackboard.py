@@ -105,6 +105,6 @@ class Blackboard:
 
         json.dump(utility_sequence, open('utility_sequence.json', 'w'))
 
-        # print(self.data._table_df)
+        print(self.data._table_df)
         return recommendation
 
