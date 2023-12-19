@@ -60,13 +60,13 @@ patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((10, 9), '')])
 
 # Wait in Bathroom for 20 steps
-for i in range(20):
+for i in range(50):
     patient_1_path.append(((10, 10), ''))
 
 # Path to kitchen (with command 'continue')
-patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), ''), ((8, 8), 'continue'), ((7, 8), ''), ((6, 8), ''),
-                       ((5, 8), ''), ((5, 7), ''), ((5, 6), ''), ((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''),
-                       ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
+# patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), ''), ((8, 8), 'continue'), ((7, 8), ''), ((6, 8), ''),
+#                        ((5, 8), ''), ((5, 7), ''), ((5, 6), ''), ((5, 5), ''), ((5, 4), ''), ((5, 3), ''), ((4, 3), ''),
+#                        ((3, 3), ''), ((2, 3), ''), ((2, 2), '')])
 
 
 robot_character = {'wellbeing': 3, 'autonomy': 9, 'availability': 3}
@@ -77,7 +77,7 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf":
+                   "patient_paths": [patient_1_path], "patient_histories": [0], "governor_conf":
                        'experiments/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robo_battery": 10, "time_of_day": "day", "robot_character": robot_character}
 )
 

@@ -21,13 +21,12 @@ cbr_context_data_feature_map = {
     'battery_level': ['stakeholders', 'robot', 'battery_level'],
     'instructions_given': ['stakeholders', 'robot', 'instruction_list'],
     "time": ['environment', 'time_of_day'],
-    "follower_health": ['environment', 'follower_health_score'],
     "follower_history": ['environment', 'no_of_follower_emergencies_in_past']
 }
 
 cbr_table_data_features = ["follower_autonomy", "follower_wellbeing", "follower_availability", "action"]
 
-DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = True # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 dropping_cases = []
 
@@ -46,10 +45,10 @@ class PSRBEvaluator(evaluator.Evaluator):
                     case_range = list(range(start, end + 1))
                     data_df = data_df[~data_df['case_id'].isin(case_range)]
 
-            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
-                ['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']].astype(float)
-            data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))
-            data_df['instructions_given'] = data_df['instructions_given'].apply(lambda x: self.convert_lists(x))
+            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[
+                ['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
+            # data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))
+            # data_df['instructions_given'] = data_df['instructions_given'].apply(lambda x: self.convert_lists(x))
             self.feature_list = self.expert_db.add_data(data_df)
 
         if DUMP_query:

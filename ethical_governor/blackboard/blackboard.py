@@ -11,6 +11,8 @@ CONF_FILE = "../conf.yaml"
 
 utility_sequence = []
 
+ROBOT_TYPE = 'MEDICATION'
+
 def load_yaml(input_yaml):
     with open(input_yaml, 'r') as fp:
         yaml_data = yaml.load(fp, Loader=yaml.FullLoader)
@@ -81,6 +83,10 @@ class Blackboard:
 
     def recommend(self):
         # print(self.data._table_df)
+
+        # Code for generalisation experiment - read k value from json file.
+        k_value = json.load(open('genralisability_exp_scripts/k_value.json', 'r'))
+
         self.process_logger.info('Calling the final evaluator.')
         self.evaluator.evaluate(self.data, self.process_logger)
         results = self.evaluator.get_results()
@@ -94,16 +100,39 @@ class Blackboard:
         self.process_logger.info('Recommended actions at step ' + str(self.data.get_data(['environment', 'time']) + 1 ) + ': ' + str(recommendation))
 
         recommendation_action = [i for i in self.data.get_max_index("desirability_score")]
+
+        ########### Code for generalisation experiment ###########
         utils = {}
-        for action in recommendation_action:
-            action_utils = {"follower_autonomy": self.data.get_table_data(action, "follower_autonomy"),
-                            "follower_wellbeing": self.data.get_table_data(action, "follower_wellbeing"),
-                            "robot_availability": self.data.get_table_data(action, "robot_availability")}
-            utils[action.value[0].__name__] = action_utils
+        match ROBOT_TYPE:
+            case "MONITORING":
+                for action in recommendation_action:
+                    action_utils = {"follower_autonomy": self.data.get_table_data(action, "follower_autonomy"),
+                                    "follower_wellbeing": self.data.get_table_data(action, "follower_wellbeing"),
+                                    "robot_availability": self.data.get_table_data(action, "robot_availability")}
+                    utils[action.value[0].__name__] = action_utils
+            case "MEDICATION":
+                for action in recommendation_action:
+                    action_utils = {"patient_0_autonomy": self.data.get_table_data(action, "patient_0_autonomy"),
+                                    "patient_0_wellbeing": self.data.get_table_data(action, "patient_0_wellbeing"),
+                                    "patient_0_wellbeing_distribution": list(self.data.get_table_data(action, "patient_0_wellbeing_distribution"))}
+                    utils[action.value[0].__name__] = action_utils
+            case "TELEPRESENCE":
+                for action in recommendation_action:
+                    # action_utils = {"caller_autonomy": self.data.get_table_data(action, "caller_autonomy"),
+                    #                 "receiver_wellbeing": self.data.get_table_data(action, "receiver_wellbeing"),
+                    #                 "receiver_privacy": self.data.get_table_data(action, "receiver_privacy"),
+                    #                 "worker_privacy": self.data.get_table_data(action, "worker_privacy"),
+                    #                 "other_resident_privacy": self.data.get_table_data(action, "other_resident_privacy")}
+                    action_utils = self.data._table_df.loc[action, :].to_dict()
+                    utils[action.value[0].__name__] = action_utils
+            case _:
+                pass
 
         utility_sequence.append(utils)
 
         json.dump(utility_sequence, open('utility_sequence.json', 'w'))
+
+        ##############################################################
 
         print(self.data._table_df)
         return recommendation

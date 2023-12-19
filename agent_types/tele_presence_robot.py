@@ -1,4 +1,5 @@
 import random
+import json
 
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
@@ -9,6 +10,10 @@ import numpy as np
 SELF_CHARGING = True
 VISIBLE_DIST = 3
 
+action_sequence = []
+def dump_action_sequence(action, time):
+    action_sequence.append((action, time))
+    json.dump(action_sequence, open('action_sequence.json', 'w'))
 
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, caller_name, governor_conf, start_battery, patient_preferences, character):
@@ -58,6 +63,10 @@ class Robot(HomeAgent):
         # get and apply buffered_instructions
         if buffered_instructions:
             for instruction in buffered_instructions:
+
+                # Dumping caller commands
+                dump_action_sequence(instruction[0], self.time)
+
                 action = self.instruction_func_map[instruction[0]]
                 
                 if action == self.take_call:
@@ -83,6 +92,7 @@ class Robot(HomeAgent):
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
             print('Action executed: ' + str(recommendations[0][0]))
+            dump_action_sequence(recommendations[0][0].__name__, self.time)
             return
         else:
             
@@ -91,10 +101,12 @@ class Robot(HomeAgent):
                 if recommendation[0] in user_commands:
                     recommendations[0][0](*recommendations[0][1:])
                     print('Action executed: ' + str(recommendation[0]))
+                    dump_action_sequence(recommendations[0][0].__name__, self.time)
                     return
 
             # if no user command is found, execute the first recommendation
             recommendations[0][0](*recommendations[0][1:])
+            dump_action_sequence(recommendations[0][0].__name__, self.time)
             return
 
     def is_possible_move(self, move):

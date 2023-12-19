@@ -294,8 +294,15 @@ class Robot(HomeAgent):
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
 
+
             if agent.id == self.follower_name:
                 follower_in_data = True
+
+                # Updating the last seen time and pos.
+                self.last_seen_time = self.time
+                self.last_seen_pos = agent.pos
+
+
                 agent_data['last_seen_time'] = self.last_seen_time
                 agent_data['last_seen_pos'] = self.last_seen_pos
                 agent_data['last_seen_location'] = self.model.get_location(
@@ -329,7 +336,6 @@ class Robot(HomeAgent):
                                                               'hall': (10, 5), 'bedroom': (20, 10),
                                                               'bedroom_close_bed': (60, 15)},
                        "no_of_follower_emergencies_in_past": float(self.model.follower_history),
-                       "follower_health_score": float(self.model.follower_health),
                        "walls": self.model.wall_coordinates,
                        "things": self.model.things,
                        "things_robot_inaccessible": self.model.things_robot_inaccessible

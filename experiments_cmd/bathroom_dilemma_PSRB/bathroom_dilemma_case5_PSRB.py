@@ -86,8 +86,8 @@ robot_character = {'wellbeing': 9, 'autonomy': 3, 'availability': 3}
 # server.launch()
 
 model = Home(no_patients=1, patient_starts=[patient_1_path[0][0]], robot_start=(5, 5), patient_paths=[patient_1_path],
-                patient_healths=[1], patient_histories=[3], governor_conf='experiments_cmd/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml',
-                robo_battery=100, time_of_day="day", robot_character=robot_character)
+             patient_histories=[3], governor_conf='experiments_cmd/bathroom_dilemma_PSRB/elder_care_sim_PSRB.yaml',
+             robo_battery=100, time_of_day="day", robot_character=robot_character)
 
 for i in range(55):
     model.step()

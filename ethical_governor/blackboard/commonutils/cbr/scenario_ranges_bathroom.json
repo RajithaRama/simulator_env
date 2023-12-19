@@ -1,36 +1,34 @@
 {
-    "Scn1": {
+    "Bathroom_Scn1": {
         "start": "1",
         "end": "156"
     },
-    "Scn3": {
+    "Bathroom_Scn3": {
         "start": "157",
         "end": "295"
     },
-    "Scn4": {
+    "Bathroom_Scn4": {
         "start": "296",
         "end": "510"
     },
-    "Scn5": {
+    "Bathroom_Scn5": {
         "start": "511",
         "end": "641"
     },
-    "Scn6":{
+    "Bathroom_Scn6": {
+        "start": "1332",
+        "end": "1462"
+    },
+    "Bedroom_Scn1":{
         "start": "642",
-        "end": "772"
+        "end": "896"
     },
-    "Scn7":{
-        "start": "773",
-        "end": "1027"
+    "Bedroom_Scn2":{
+        "start": "897",
+        "end": "1073"
     },
-    "Scn9":{
-        "start": "1028",
-        "end": "1204"
-    },
-    "Scn8":{
-        "start": "1205",
-        "end": "1450"
+    "Bedroom_Scn3":{
+        "start": "1074",
+        "end": "1331"
     }
-    
-
 }

@@ -47,17 +47,30 @@ timer_data = [[2, 60, 'med_c', 'patient_0', 2]]
 character = {'wellbeing': 4, 'autonomy': 7, 'risk_propensity': 5}
 
 
-grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
-conversations = modules.ConversationBox()
+# grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
+# conversations = modules.ConversationBox()
+#
+# server = ModularVisualization.ModularServer(
+#     Home,
+#     [grid, conversations],
+#     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (2, 1), "patient_healths": [0], "med_info": med_info,
+#                    "patient_paths": [patient_1_path], "patient_preferences": [patient_1_medication_preference], "governor_conf":
+#                        'experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robot_character": character, "time_of_day": "day", "timer_data": timer_data}
+# )
+#
+# server.port = 8123
+#
+# server.launch()
 
-server = ModularVisualization.ModularServer(
-    Home,
-    [grid, conversations],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (2, 1), "patient_healths": [0], "med_info": med_info,
-                   "patient_paths": [patient_1_path], "patient_preferences": [patient_1_medication_preference], "governor_conf":
-                       'experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', "robot_character": character, "time_of_day": "day", "timer_data": timer_data}
-)
+model = Home(no_patients=1, patient_starts=[patient_1_path[0][0]], robot_start=(2, 1), patient_healths=[0], med_info=med_info,
+                patient_paths=[patient_1_path], patient_preferences=[patient_1_medication_preference],
+             governor_conf='experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', robot_character=character, time_of_day="day", timer_data=timer_data)
 
-server.port = 8123
-
-server.launch()
+for i in range(30):
+    model.step()
+    # robot_pos = model.robot.pos
+    # robot_location = model.get_location(robot_pos)
+    # res_seen = model.robot.env['stakeholders']['follower']['seen']
+    # robot_state.append((robot_location, res_seen))
+    # print("step:" + str(model.schedule.time))
+print("Medication dilemma PSRB case 6 finished.")

@@ -1,4 +1,5 @@
 import random
+import json
 from enum import IntEnum
 
 from agent_types.home_agent import HomeAgent
@@ -22,6 +23,10 @@ class MessageCode(IntEnum):
     FOLLOW_UP = 2
     NOT_DETECTED = 3
 
+action_sequence = []
+def dump_action_sequence(action, time):
+    action_sequence.append((action, time))
+    json.dump(action_sequence, open('action_sequence.json', 'w'))
 
 class Robot(HomeAgent):
     def __init__(self, unique_id, name, model, responsible_resident_name, governor_conf, start_battery, timer_data, character):
@@ -79,6 +84,7 @@ class Robot(HomeAgent):
         if buffered_instructions:
             for instruction in buffered_instructions:
                 # instructions = instruction.split('__')
+                dump_action_sequence(instruction[0], self.time)
                 func = self.instruction_func_map[instruction[0]]
                 if func == self.snooze:
                     try:
@@ -135,6 +141,7 @@ class Robot(HomeAgent):
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
             print('Action executed: ' + str(recommendations[0][0]))
+            dump_action_sequence(recommendations[0][0].__name__, self.time)
             return
         else:
             user_commands = {value for key, value in self.instruction_func_map.items()}
@@ -142,17 +149,18 @@ class Robot(HomeAgent):
                 if recommendation[0] in user_commands:
                     recommendation[0](*recommendation[1:])
                     print('Action executed: ' + str(recommendation[0]))
+                    dump_action_sequence(recommendations[0][0].__name__, self.time)
                     return
 
             # if no user command is found, execute the first recommendation
             recommendations[0][0](*recommendations[0][1:])
+            print('Action executed: ' + str(recommendations[0][0]))
+            dump_action_sequence(recommendations[0][0].__name__, self.time)
             return
 
     def remind_medication(self, timer):
-        self.model.pass_message((
-                                'It is time take the medication: ' + timer.med_name + '. Please acknowledge or snooze the reminder.',
+        self.model.pass_message(('It is time take the medication: ' + timer.med_name + '. Please acknowledge or snooze the reminder.',
                                 MessageCode.REMIND), self, self.model.get_stakeholder(timer.recipient))
-
         try:
             reminder = self.reminders[self.model.get_stakeholder(timer.recipient)]
             reminder['time'] = self.time
