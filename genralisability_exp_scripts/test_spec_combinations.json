@@ -1,0 +1,15 @@
+{
+  "experiment_name": "Percentage_v_case_combinations",
+  "k_range": [3],
+  "p_range": [0.1, 0.25, 0.5, 0.8, 1.0],
+  "k_start_index": 0,
+  "k_end_index": 1,
+  "p_start_index": 0,
+  "p_end_index": 5,
+  "scn_dirs": [
+    ["experiments_cmd", "bathroom_dilemma_PSRB"],
+    ["experiments_cmd", "bedroom_dilemma_PSRB"]
+  ],
+  "scenarios": ["Bathroom_Scn1", "Bathroom_Scn3", "Bathroom_Scn4", "Bathroom_Scn5", "Bathroom_Scn6", "Bedroom_Scn1",
+             "Bedroom_Scn2", "Bedroom_Scn3"]
+}

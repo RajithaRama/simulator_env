@@ -23,7 +23,9 @@ def str_to_list(cell):
     return var
 
 
-def generate_KB_json(sceanrios, percentage=1):
+def generate_KB_json(scenarios, percentage=1, KB_path=KB_JSON_PATH):
+
+    KB_JSON_PATH = KB_path
     df = pd.read_excel(CASE_BASE, header=0, index_col=None, dtype={"seen": bool,
                                                                    "not_follow_request": bool}) # , "not_follow_locations": list,  "instructions_given": list})
     # df.astype({"not_follow_locations": list,  "instructions_given": list})
@@ -32,7 +34,7 @@ def generate_KB_json(sceanrios, percentage=1):
     sampled_df = pd.DataFrame(columns=df.columns)
     scn_ranges = json.load(open(SCN_RANGES_JSON_PATH, 'r'))
     for scn, boundaries in scn_ranges.items():
-        if scn not in sceanrios:
+        if scn not in scenarios:
             # start = int(boundaries['start'])
             # end = int(boundaries['end'])
             # case_range = list(range(start, end + 1))
@@ -62,6 +64,11 @@ def generate_KB_json(sceanrios, percentage=1):
     print(sampled_df.dtypes)
 
     sampled_df.to_json(KB_JSON_PATH, orient='records', indent=4)
+
+
+    # returning kb information
+    number_of_cases = len(sampled_df)
+    return number_of_cases
 
 
 def dump_k_value(k_value):

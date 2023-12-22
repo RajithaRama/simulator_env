@@ -11,7 +11,7 @@ CONF_FILE = "../conf.yaml"
 
 utility_sequence = []
 
-ROBOT_TYPE = 'MEDICATION'
+ROBOT_TYPE = 'MONITORING'
 
 def load_yaml(input_yaml):
     with open(input_yaml, 'r') as fp:
@@ -83,9 +83,6 @@ class Blackboard:
 
     def recommend(self):
         # print(self.data._table_df)
-
-        # Code for generalisation experiment - read k value from json file.
-        k_value = json.load(open('genralisability_exp_scripts/k_value.json', 'r'))
 
         self.process_logger.info('Calling the final evaluator.')
         self.evaluator.evaluate(self.data, self.process_logger)

@@ -1,7 +1,9 @@
+import json
 import shutil
 import subprocess
 import sys
 import os
+import time
 
 python_interpreter_path = "C:\\Users\\rajit\\AppData\\Local\\pypoetry\\Cache\\virtualenvs\\simulator-env-qWiytRf7-py3.11\\Scripts\\python.exe"
 cases = []
@@ -10,11 +12,18 @@ data_dir = "Data"
 
 
 def run_case(dir, case_name, experiment, condition, output_name=None):
+
+
     if output_name is None:
         output_name = case_name.replace('.py', '')
+
+    case_run_start = time.time()
     # Run a case
     # case_name: name of the simulating case
     subprocess.run([python_interpreter_path, os.path.join(dir, case_name)], check=True)
+    case_run_end = time.time()
+    case_run_time = case_run_end - case_run_start
+
 
     # subprocess.run(['mkdir', '-p', os.path.join(data_dir, case_name)], check=True)
     if not os.path.exists(os.path.join(data_dir, experiment, condition, output_name)):
@@ -28,6 +37,10 @@ def run_case(dir, case_name, experiment, condition, output_name=None):
         shutil.copy('PSRB_bedroom_dilemma.log', os.path.join(data_dir, experiment, condition, output_name))
     # subprocess.run(['cp', 'action_sequence.json', os.path.join(data_dir, case_name)], check=True)
     # subprocess.run(['cp', 'utility_sequence.json', os.path.join(data_dir, case_name)], check=True)
+
+    # dump run time info.
+    json.dump({'case_run_time': case_run_time},
+              open(os.path.join(data_dir, experiment, condition, output_name, 'case_run_time.json'), 'w'))
 
 
 if __name__ == "__main__":
