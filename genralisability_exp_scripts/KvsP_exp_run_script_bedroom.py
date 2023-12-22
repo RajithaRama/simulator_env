@@ -109,7 +109,7 @@ def run_experiment(spec_json, cases_to_run):
 
             json.dump({'k': k_value, 'percentage': percentage, 'scenarios': scenarios_in_kb, 'cond_run_time': cond_run_end - cond_run_start,
                        'number_of_cases_in_kb': number_of_cases_in_kb},
-                      open(os.path.join(data_dir, experiment, str(k_value) + '_' + str(percentage * 100), 'cond_run_time.json'), 'w'))
+                      open(os.path.join(data_dir, experiment, str(k_value) + '_' + str(int(percentage * 100)), 'cond_run_time.json'), 'w'))
 
     # resetting full knowledge base
     shutil.copyfile(FULL_KB_BAK_PATH, FULL_KB_PATH)

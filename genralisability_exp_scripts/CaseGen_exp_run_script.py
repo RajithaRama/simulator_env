@@ -53,7 +53,7 @@ bedroom_scenarios_special = ['Bedroom_Scn2', 'Bedroom_Scn3']
 #
 # print(n) # 240 combinations if ran all
 
-st = time.time()
+
 ###### Method 1 ###############
 variation_0_bathroom = list(itertools.combinations(bathroom_scenarios, 4))  # all bathroom scenarios holding 1 off
 variation_0_bedroom = list(itertools.combinations(bedroom_scenarios, 2))  # all bedroom scenarios holding 1 off
@@ -130,51 +130,61 @@ def run_combinations(spec_json):
     experiment = spec['experiment_name']
 
     scn_dirs = spec['scn_dirs']
-
+    combination_lengths = spec['length_of_combinations']
     combinations = []
 
-    for i in range(len(scenarios)):
-        for comb in itertools.combinations(scenarios, i + 1):
+    for i in combination_lengths:
+        for comb in itertools.combinations(scenarios, i):
             combinations.append(comb)
 
+    st = time.time()
     for combination in combinations:
         print(combination)
+        st_combination = time.time()
         spec_name = '_'.join([scnario_dir_name_ids_map[i] for i in combination])
-        dump_spec(spec_name=spec_name, k=k, percentages=percentages, k_start_index=k_start_index,
+        spec_json_path = dump_spec(spec_name=spec_name, k=k, percentages=percentages, k_start_index=k_start_index,
                   p_start_index=p_start_index, k_end_index=k_end_index, p_end_index=p_end_index,
                   scenarios_in_kb=combination, experiment=os.path.join(experiment, spec_name), scn_dirs=scn_dirs)
 
         file_list = []
         omitted_cases = []
+        all_relvant_cases = []
+        for scn in scenarios:
+            all_relvant_cases.extend(scenario_casename_map[scn])
+
         for scn in combination:
             omitted_cases.extend(scenario_casename_map[scn])
 
         for scn_dir in scn_dirs:
             scn_dir_files = os.listdir(os.path.join(*scn_dir))
-            scn_dir_files = [i for i in scn_dir_files if i.endswith('.py') and i not in omitted_cases]
+            scn_dir_files = [i for i in scn_dir_files if i.endswith('.py') and (i not in omitted_cases) and (i in all_relvant_cases)]
 
             file_list.append((scn_dir, scn_dir_files))
+
+        KvsP_exp_run_script_bedroom.run_experiment(spec_json_path, file_list)
+        et_combination = time.time()
+        json.dump({'combination_run_time': et_combination - st_combination, 'combination': combination, 'tested_file_list': file_list},
+                  open(os.path.join(data_dir, experiment, spec_name, 'combination_run_data.json'), 'w'))
+
+    et_experiment = time.time()
+    json.dump({'experiment_run_time': et_experiment - st, 'experiment': experiment, 'tested_combinations': combinations},
+              open(os.path.join(data_dir, experiment, 'experiment_run_data_'+time.strftime("%Y%m%d-%H%M%S")+'.json'), 'w'))
 
 
 def dump_spec(spec_name, k, percentages, k_start_index, p_start_index, k_end_index, p_end_index, scenarios_in_kb,
               experiment, scn_dirs):
-    # k = spec['k_range']
-    # percentages = spec['p_range']
-    # k_start_index = spec['k_start_index']
-    # p_start_index = spec['p_start_index']
-    # k_end_index = spec['k_end_index']
-    # p_end_index = spec['p_end_index']
-    #
-    # scenarios_in_kb = spec['scenarios_in_kb']
-    # experiment = spec['experiment_name']
+
     KvP_spec = {
         'k_range': k[k_start_index:k_end_index],
         'p_range': percentages[p_start_index:p_end_index],
         'scenarios_in_kb': scenarios_in_kb,
         'experiment_name': experiment
     }
+    if not os.path.exists(os.path.join(data_dir, experiment)):
+        os.makedirs(os.path.join(data_dir, experiment))
+    json.dump(KvP_spec, open(os.path.join(data_dir, experiment, spec_name + '_spec.json'), 'w'))
 
-    json.dump(KvP_spec, open(os.path.join(data_dir, experiment, spec_name + '.json'), 'w'))
+    return os.path.join(data_dir, experiment, spec_name + '_spec.json')
 
 
 if __name__ == '__main__':
@@ -186,57 +196,4 @@ if __name__ == '__main__':
     run_combinations(spec_json)
 
     shutil.copyfile(FULL_KB_BAK_PATH, FULL_KB_PATH)
-    # spec = json.load(open(spec_json, 'r'))
 
-    # k = spec['k_range']
-    # percentages = spec['p_range']
-    # k_start_index = spec['k_start_index']
-    # p_start_index = spec['p_start_index']
-    # k_end_index = spec['k_end_index']
-    # p_end_index = spec['p_end_index']
-    #
-    # scenarios_in_kb = spec['scenarios_in_kb']
-    # experiment = spec['experiment_name']
-    #
-    # scn_dirs = spec['scn_dirs']
-    #
-    # dump_spec(spec, k, percentages, k_start_index, p_start_index, k_end_index, p_end_index, scenarios_in_kb, experiment, scn_dirs)
-
-    # file_list = list(itertools.chain.from_iterable(file_list))
-
-    # print(file_list)
-
-#     # measuring the time taken for tests.
-#     st = time.time()
-#
-# temp backup full knowledge base
-
-#     for file_list_item in file_list:
-#         for k_value in k:
-#             modify_case_base.dump_k_value(k_value)
-#             for percentage in percentages:
-#                 # variation 0
-#                 cond_run_start = time.time()
-#                 modify_case_base.generate_KB_json(scenarios=scenarios, percentage=percentage, KB_path=FULL_KB_PATH)
-#                 for case in file_list_item[1]:
-#                     if case.endswith('.py'):
-#                         test_run.run_case(dir=os.path.join(*file_list_item[0]), case_name=case,
-#                                           experiment=experiment, condition=str(k_value)+'_'+str(int(percentage*100)))
-#                 cond_run_end = time.time()
-#
-#                 json.dump({'k': k_value, 'percentage': percentage, 'cond_run_time':cond_run_end-cond_run_start}, open(os.path.join(data_dir, experiment, str(k_value)+'_'+str(percentage*100)), 'w'))
-#     # resetting full knowledge base
-#     shutil.copyfile(FULL_KB_BAK_PATH, FULL_KB_PATH)
-#
-#     et = time.time()
-#
-#     print('Time taken: ', et-st, ' seconds')
-#     json.dump({'total_run_time': et-st}, open(os.path.join(data_dir, experiment, 'total_run_time.json'), 'w'))
-#
-#
-# resetting full knowledge base
-
-#
-# et = time.time()
-#
-# print('Time taken: ', et-st, ' seconds')
