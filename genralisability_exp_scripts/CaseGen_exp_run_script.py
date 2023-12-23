@@ -3,7 +3,12 @@ import os
 import shutil
 import time
 import json
+
+from pathlib import Path
 import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
+
 import genralisability_exp_scripts.modify_case_base as modify_case_base
 import genralisability_exp_scripts.test_run as test_run
 import genralisability_exp_scripts.KvsP_exp_run_script_bedroom as KvsP_exp_run_script_bedroom

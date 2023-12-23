@@ -92,14 +92,14 @@ class PSRBEvaluator(evaluator.Evaluator):
                         data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken and the expert '
                                                                                           'system is unable to '
                                                                                           'provide an opinion.')
-                    return
+                    continue
                 else:
                     data.put_table_data(action=action, column='desirability_score', value=1)
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules '
                                                                                             'broken and'
                                                                                             'the expert system is unable to '
                                                                                             'provide an opinion.')
-                    return
+                    continue
 
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
