@@ -2,11 +2,10 @@ from agent_types.home_agent import HomeAgent
 
 
 class Patient(HomeAgent):
-    def __init__(self, unique_id, name, model, path, health, history):
+    def __init__(self, unique_id, name, model, path, history):
         super().__init__(unique_id, name, model, "patient")
         self.path = path
         self.steps = 0
-        self.health = health
         self.no_of_emergencies_in_past = history
 
     def step(self):

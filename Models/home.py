@@ -18,7 +18,7 @@ GRID_HEIGHT = 13
 
 
 class Home(Model):
-    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_healths, patient_histories, governor_conf, robo_battery, time_of_day, robot_character):
+    def __init__(self, no_patients, patient_starts, robot_start, patient_paths, patient_histories, governor_conf, robo_battery, time_of_day, robot_character):
         super().__init__()
         self.things_robot_inaccessible = None
         self.locations = None
@@ -28,7 +28,7 @@ class Home(Model):
         self.init_things()
         self.time_of_day = time_of_day
         self.instructions = {}
-        self.follower_health = patient_healths[0]
+
         self.follower_history = patient_histories[0]
 
         id_gen = GenId(1)
@@ -38,7 +38,7 @@ class Home(Model):
         # Init_stakeholders
         self.stakeholders = []
         for i in range(no_patients):
-            self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_healths[i], patient_histories[i]))
+            self.stakeholders.append(Patient(id_gen.get_id(), 'patient_' + str(i), self, patient_paths[i], patient_histories[i]))
 
         self.grid = space.SingleGrid(GRID_WIDTH, GRID_HEIGHT, False)
 

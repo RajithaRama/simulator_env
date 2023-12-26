@@ -21,7 +21,6 @@ cbr_context_data_feature_map = {
     'battery_level': ['stakeholders', 'robot', 'battery_level'],
     'instructions_given': ['stakeholders', 'robot', 'instruction_list'],
     "time": ['environment', 'time_of_day'],
-    "follower_health": ['environment', 'follower_health_score'],
     "follower_history": ['environment', 'no_of_follower_emergencies_in_past']
 }
 
@@ -46,10 +45,10 @@ class PSRBEvaluator(evaluator.Evaluator):
                     case_range = list(range(start, end + 1))
                     data_df = data_df[~data_df['case_id'].isin(case_range)]
 
-            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']] = data_df[
-                ['follower_autonomy', 'follower_wellbeing', 'robot_availability', 'follower_health']].astype(float)
-            data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))
-            data_df['instructions_given'] = data_df['instructions_given'].apply(lambda x: self.convert_lists(x))
+            data_df[['follower_autonomy', 'follower_wellbeing', 'robot_availability']] = data_df[
+                ['follower_autonomy', 'follower_wellbeing', 'robot_availability']].astype(float)
+            # data_df['not_follow_locations'] = data_df['not_follow_locations'].apply(lambda x: self.convert_lists(x))
+            # data_df['instructions_given'] = data_df['instructions_given'].apply(lambda x: self.convert_lists(x))
             self.feature_list = self.expert_db.add_data(data_df)
 
         if DUMP_query:
@@ -71,9 +70,35 @@ class PSRBEvaluator(evaluator.Evaluator):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
         self.score = {}
 
+        k_value = 3
+
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
-            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+            expert_opinion, expert_intention = self.get_expert_opinion(action=action, data=data, k=k_value, logger=logger)
+
+            # get rule broken
+            rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
+
+            # When the expert opinion fail because it does not have enough data.
+            if expert_opinion == -1:
+                logger.info('Not enough cases in the case base.')
+                if rule_broken:
+                    data.put_table_data(action=action, column='desirability_score', value=0)
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
+                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken and the expert '
+                                                                                          'system is unable to '
+                                                                                          'provide an opinion.')
+                    continue
+                else:
+                    data.put_table_data(action=action, column='desirability_score', value=1)
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules '
+                                                                                            'broken and'
+                                                                                            'the expert system is unable to '
+                                                                                            'provide an opinion.')
+                    continue
+
+
+
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
             # print(expert_opinion)
@@ -85,9 +110,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             # diff_wellbeing_autonomy = wellbeing - autonomy
             # diff_wellbeing_availability = wellbeing - availability
             # diff_autonomy_availability = autonomy - availability
-            
-                
-            rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
+
             if DUMP_query:
                 expert_opinion = not rule_broken
 
@@ -154,16 +177,23 @@ class PSRBEvaluator(evaluator.Evaluator):
                 data.put_table_data(action=action, column='desirability_score', value=not rule_broken) 
 
 
-    def get_expert_opinion(self, action, data, logger):
+    def get_expert_opinion(self, action, data, k, logger):
         query = self.generate_query(action, data)
         # print(query)
+        logger.info(
+            'query generated at step ' + str(data.get_data(path_to_data=['environment', 'time'])) + ' : ' + str(query))
+
         if DUMP_query:
             self.dump_query(query)
             vote = 1
             intention = 'test'
         else:
-            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
-            logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
+            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, k=k, logger=logger)
+            if neighbours_with_dist == None:
+                return -1, "Not enough cases in the case base."
+
+            logger.info('closest neighbours to the case at step ' + str(data.get_data(path_to_data=['environment', 'time']))
+                        + ': ' + str(neighbours_with_dist))
             vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3,
                                                                 logger=logger)
 
@@ -218,7 +248,7 @@ if __name__ == '__main__':
                      columns=['seen', 'follower_seen_location', 'follower_time_since_last_seen', 'last_seen_location',
                               'robot_location', 'not_follow_request', 'not_follow_locations', 'battery_level',
                               'instructions_given', 'time', 'follower_autonomy', 'follower_wellbeing',
-                              'follower_availability', 'action']))
+                              'follower_availability', 'action']), k=3, logger=None)
     # print(neighbours)
 
     vote = ex1.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours, threshold=3, logger=None)

@@ -5,6 +5,6 @@ tests:
 test_order:
   - Deontology
   - Utilitarian
-evaluator: {module_name: PSRB_eldercare_evaluator, class_name: PSRBEvaluator}
+evaluator: {module_name: PSRB_monitoring_evaluator, class_name: PSRBEvaluator}
 scheduler: {module_name: round_robin_scheduler, class_name: RoundRobin}
 log_file: PSRB_bathroom_dilemma.log

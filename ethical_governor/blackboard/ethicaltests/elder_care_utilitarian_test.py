@@ -128,13 +128,12 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
         """
         Calculating wellbeing utility values for stakeholders.
 
-        wellbeing = 2/(1+e^((x-(m+n))(h(1-t))/2)) - 1
+        wellbeing = 2/(1+e^((x-(m+n))((1-t))/2)) - 1
 
         x = time from last seen
         m = average time stay in
         n = std time stay in
         k = logistic growth rate = 1/2
-        h = health (0<h<=1)
         t = history of emergencies = 1/(1+e^-kx) - x = number of emergencies of the past
         """
 
@@ -171,9 +170,8 @@ class ElderCareUtilitarianTest(ethical_test.EthicalTest):
                     m, n = env['follower_avg_time_and_std_in_rooms'][data['last_seen_location']]  # avg time not visible to robot
                     num_emer = env['no_of_follower_emergencies_in_past']
                     t = 1 / (1 + np.exp(num_emer - 2))
-                    h = env['follower_health_score']
 
-                    wellbeing_util = 2 / (1 + np.exp(((h * (1 - t)) * (x - (m + n)) / 2))) - 1
+                    wellbeing_util = 2 / (1 + np.exp(((1 - t) * (x - (m + n)) / 2))) - 1
 
                 if action.value[0].__name__ == 'go_to_last_seen' and wellbeing_util < 0.7:
                     # if wellbeing_util < 0:

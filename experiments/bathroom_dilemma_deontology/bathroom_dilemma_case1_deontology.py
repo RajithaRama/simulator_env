@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 print(sys.path)
@@ -7,6 +8,7 @@ print(sys.path)
 from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home import Home
+
 
 # The patient go to the bathroom and stay 20 steps (avg time)
 
@@ -74,8 +76,10 @@ server = ModularVisualization.ModularServer(
     Home,
     [grid],
     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf": 'experiments/bathroom_dilemma_deontology'
-                                                                       '/elder_care_sim_deontology.yaml', "robo_battery": 100, "time_of_day": "day", "robot_character": {}}
+                   "patient_paths": [patient_1_path], "patient_histories": [0],
+                   "governor_conf": 'experiments/bathroom_dilemma_deontology'
+                                    '/elder_care_sim_deontology.yaml', "robo_battery": 100, "time_of_day": "day",
+                   "robot_character": {}}
 )
 
 server.port = 8123
