@@ -7,8 +7,10 @@ import ast
 import ethical_governor.blackboard.evaluator.evaluator as evaluator
 from ethical_governor.blackboard.commonutils.cbr.cbr_following import CBRFollowing
 
-CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_bathroom.json')
-SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_bathroom.json')
+CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr',
+                         'case_base_gen_bathroom.json')
+SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr',
+                              'scenario_ranges_bathroom.json')
 
 cbr_context_data_feature_map = {
     'seen': ['stakeholders', 'follower', 'seen'],
@@ -26,7 +28,7 @@ cbr_context_data_feature_map = {
 
 cbr_table_data_features = ["follower_autonomy", "follower_wellbeing", "follower_availability", "action"]
 
-DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False  # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 
 dropping_cases = []
 
@@ -74,7 +76,8 @@ class PSRBEvaluator(evaluator.Evaluator):
 
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
-            expert_opinion, expert_intention = self.get_expert_opinion(action=action, data=data, k=k_value, logger=logger)
+            expert_opinion, expert_intention = self.get_expert_opinion(action=action, data=data, k=k_value,
+                                                                       logger=logger)
 
             # get rule broken
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
@@ -97,8 +100,6 @@ class PSRBEvaluator(evaluator.Evaluator):
                                                                                             'provide an opinion.')
                     continue
 
-
-
             logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
             # print(expert_opinion)
@@ -118,7 +119,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 # When rules and expert both accept, accept
                 data.put_table_data(action=action, column='desirability_score', value=1)
                 logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken and '
-                                                                                       'accepted by experts.')
+                                                                                        'accepted by experts.')
             elif not expert_opinion and rule_broken:
                 # When rules and expert reject, reject
                 data.put_table_data(action=action, column='desirability_score', value=0)
@@ -130,27 +131,33 @@ class PSRBEvaluator(evaluator.Evaluator):
                 values = self.character.keys()
 
                 acceptability = 1
+                other_values = []
                 for value in values:
                     if value in expert_intention:
                         threshold = (10 - self.character[value]) / 10
                         if eval(value) < threshold:
                             acceptability = 0
-                    
+
                     else:
+                        other_values.append(value)
                         threshold = (self.character[value] - 10) / 10
                         if eval(value) < threshold:
                             acceptability = 0
+
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
 
                 if acceptability:
-                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
-                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
-                                                                                          'experts. Since it increases ' + str(expert_intention) + 'values greatly, deemed accepted by PSRB '
-                                                                                                                                              'system.')
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: The action breaks the rules ' +
+                                str(data.get_table_data(action=action, column='breaking_rule_ids')) +
+                                '. However, this action in this context is considered desirable by experts. Since it increases ' +
+                                str(expert_intention) + ' values greatly, while not reducing the other values ' +
+                                str(other_values) + ' by a considerable amount, the action is '
+                                                                             'deemed accepted by the system.')
                 else:
-                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
-                        data.get_table_data(action=action, column='breaking_rule_ids')) + 'broken, but accepted by '
-                        'experts. However, the value tradeoff is not satisfactory to bend the rule.')
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: The action breaks the rules ' +
+                                str(data.get_table_data(action=action, column='breaking_rule_ids')) +
+                                '. However, this action in this context is considered desirable by experts. '
+                                'But, the PSRB system suggest that the value tradeoff not satisfactory to bend the rule.')
             else:
                 # When rules accept and experts reject
                 acceptability = 1
@@ -161,27 +168,29 @@ class PSRBEvaluator(evaluator.Evaluator):
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
 
                 if acceptability:
-                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
-                        'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: The action does not break any rules.'
+                                ' However, this action in this context is considered undesirable by experts. '
+                               ' But, the PSRB system suggest that the value tradeoff not satisfactory to override the rule.')
 
                 else:
-                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
-                        'experts. Since it decreases ' + str(expert_intention) + 'values too much, deemed not accepted by '
-                                                                                                                       'PSRB system.')
+                    logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: The action does not break any rules.'
+                                ' However, this action in this context is considered undesirable by experts. '
+                                'Since it decreases ' + str(expert_intention) + 'values by a considerable amount, '
+                                'the action is deemed unacceptable by the system')
 
                 # for item1, item2 in itertools.combinations(self.charactor.keys(), 2):
                 #     if eval(item1) == eval(item2)
                 #     if item1(eval(item1)-eval(item2))/abs(eval(item1)-eval(item2)) == (self.charactor[item1] - self.charactor[
                 #         item2]) / abs((self.charactor[item1] - self.charactor[item2])):
             if DUMP_query:
-                data.put_table_data(action=action, column='desirability_score', value=not rule_broken) 
-
+                data.put_table_data(action=action, column='desirability_score', value=not rule_broken)
 
     def get_expert_opinion(self, action, data, k, logger):
         query = self.generate_query(action, data)
         # print(query)
         logger.info(
-            'query generated at step ' + str(data.get_data(path_to_data=['environment', 'time'])) + ' : ' + str(query))
+            'query generated at step ' + str(data.get_data(path_to_data=['environment', 'time']) + 1) + ' : ' + str(
+                query))
 
         if DUMP_query:
             self.dump_query(query)
@@ -192,10 +201,12 @@ class PSRBEvaluator(evaluator.Evaluator):
             if neighbours_with_dist == None:
                 return -1, "Not enough cases in the case base."
 
-            logger.info('closest neighbours to the case at step ' + str(data.get_data(path_to_data=['environment', 'time']))
-                        + ': ' + str(neighbours_with_dist))
-            vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist, threshold=3,
-                                                                logger=logger)
+            logger.info(
+                'closest neighbours to the case at step ' + str(data.get_data(path_to_data=['environment', 'time'])+1)
+                + ': ' + str(neighbours_with_dist))
+            vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist,
+                                                                    threshold=3,
+                                                                    logger=logger)
 
         return vote, intention
 
@@ -206,7 +217,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             if feature in ['case_id', 'acceptability', 'intention']:
                 continue
             if feature == 'action':
-                query[feature] = [action.value[0].__name__] 
+                query[feature] = [action.value[0].__name__]
                 continue
             try:
                 path = cbr_context_data_feature_map[feature]
@@ -216,7 +227,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 if feature == "follower_time_since_last_seen":
                     last_seen_time = data.get_data(path) if data.get_data(path) is not None else 0
                     value = data.get_data(['environment', 'time']) - last_seen_time
-                elif feature=="instructions_given": 
+                elif feature == "instructions_given":
                     value = data.get_data(path)
                     if value == None:
                         value = []
@@ -240,6 +251,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         # self.queries = self.queries.append(query, ignore_index=True)
         queries = pd.concat(self.query_list, ignore_index=True)
         queries.to_excel('query_dump.xlsx', sheet_name='query')
+
 
 if __name__ == '__main__':
     ex1 = PSRBEvaluator()

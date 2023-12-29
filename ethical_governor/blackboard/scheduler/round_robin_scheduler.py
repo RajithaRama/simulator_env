@@ -12,10 +12,13 @@ class RoundRobin(scheduler.Scheduler):
 
 
 if __name__ == "__main__":
-    conf = {"order": [1, 2, 3, 4]}
+    conf = {"test_order": [1, 2, 3, 4]}
 
     scheduler = RoundRobin(conf)
-    for i in scheduler.next():
+    for i in scheduler.next(data=None):
+        print(i)
+
+    for i in scheduler.next(data=None):
         print(i)
 
     print(scheduler.next)
