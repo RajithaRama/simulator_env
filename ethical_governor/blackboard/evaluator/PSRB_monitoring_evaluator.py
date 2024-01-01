@@ -157,7 +157,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: The action breaks the rules ' +
                                 str(data.get_table_data(action=action, column='breaking_rule_ids')) +
                                 '. However, this action in this context is considered desirable by experts. '
-                                'But, the PSRB system suggest that the value tradeoff not satisfactory to bend the rule.')
+                                'But, the PSRB system suggests that the value tradeoff is not satisfactory to bend the rule.')
             else:
                 # When rules accept and experts reject
                 acceptability = 1
@@ -170,7 +170,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                 if acceptability:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: The action does not break any rules.'
                                 ' However, this action in this context is considered undesirable by experts. '
-                               ' But, the PSRB system suggest that the value tradeoff not satisfactory to override the rule.')
+                               ' But, the PSRB system suggests that the value tradeoff is not satisfactory to bend the rule.')
 
                 else:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: The action does not break any rules.'

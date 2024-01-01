@@ -264,7 +264,6 @@ class Robot(HomeAgent):
                        "walls": self.model.wall_coordinates,
                        "things": self.model.things,
                        "things_robot_inaccessible": self.model.things_robot_inaccessible,
-                    #    "follower_health_score": float(self.model.patient_healths[0]),
                        "Medication_info": self.model.medication_info
                        }
         env_data['environment'] = environment
