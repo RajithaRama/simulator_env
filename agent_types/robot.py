@@ -1,5 +1,4 @@
 import random
-import json
 
 from agent_types.home_agent import HomeAgent
 from ethical_governor.ethical_governor import EthicalGovernor
@@ -36,12 +35,13 @@ class Robot(HomeAgent):
             pass
         self.roles = {follower_name: 'follower'}
 
+
     def step(self):
         self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
 
         if self.pos in self.model.things['charge_station']:
 
-            if self.battery / 100 < 1:
+            if self.battery/100 < 1:
                 self.battery += 3 if (100 - self.battery) >= 3 else (100 - self.battery)
         else:
             self.battery -= 0.2
@@ -50,6 +50,7 @@ class Robot(HomeAgent):
         # self.follow(env)
         self.next_action(env)
         self.time += 1
+
 
     def next_action(self, env):
 
@@ -294,14 +295,12 @@ class Robot(HomeAgent):
             agent_data['pos'] = agent.pos
             agent_data['seen'] = True
 
-
             if agent.id == self.follower_name:
                 follower_in_data = True
 
                 # Updating the last seen time and pos.
                 self.last_seen_time = self.time
                 self.last_seen_pos = agent.pos
-
 
                 agent_data['last_seen_time'] = self.last_seen_time
                 agent_data['last_seen_pos'] = self.last_seen_pos

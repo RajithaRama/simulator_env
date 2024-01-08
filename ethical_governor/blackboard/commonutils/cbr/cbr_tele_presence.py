@@ -17,7 +17,7 @@ class CBRTelePresence(cbr.CBR):
         self.value_diff_mat = vdm.VDM()
         self.categorical_data_cols = ['robot_location', 'caller_type', 'caller_instruction', 'receiver_location', 'receiver_with_company', 'worker_location', 'action']
         self.numerical_data_cols = ['other_negative_preference_%', 'caller_autonomy', 'receiver_wellbeing', 'receiver_privacy', 'worker_privacy', 'other_resident_privacy']
-        self.list_data_cols = ['other_patient_locations']
+        self.list_data_cols = ['other_resident_locations']
         self.categorical_encoder = OrdinalEncoder()
 
         # Features to be encoded using power transform

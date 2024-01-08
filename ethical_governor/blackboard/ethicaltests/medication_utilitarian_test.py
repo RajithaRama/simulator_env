@@ -4,7 +4,7 @@ from scipy.stats import gamma
 import ethical_governor.blackboard.ethicaltests.ethical_test as ethical_test
 import agent_types.medication_robot as ROBOT
 
-RESOLUTION = 0.1
+RESOLUTION = 0.05
 
 
 class MedicationUtilitarianTest(ethical_test.EthicalTest):
@@ -185,13 +185,13 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
         Calculate the wellbeing values for the stakeholder
         """
 
-        highest_prob_util, proba = self.highest_probable_utility(e_m, d_m, resolution/2)
+        highest_prob_util, proba = self.highest_probable_utility(e_m, d_m, resolution)
         _, prob_dist = self.Utility_dist(e_m, d_m, resolution)
 
         return highest_prob_util, proba, prob_dist
 
-    def highest_probable_utility(self, e_m, d_m, resolution=0.1):
-        "Calculate the highest probable utility of the stakeholder"
+    def highest_probable_utility(self, e_m, d_m, resolution=0.05):
+        """Calculate the highest probable utility of the stakeholder"""
 
         if d_m > 0:
             x, y = self.Utility_dist(e_m, d_m, resolution)
@@ -241,7 +241,7 @@ class MedicationUtilitarianTest(ethical_test.EthicalTest):
 
     #     return x, y
 
-    def Utility_dist(self, e_m, d_m, resolution=0.1):
+    def Utility_dist(self, e_m, d_m, resolution=0.05):
         """Generate a probability distribution of the utility of stakeholder
         """
 

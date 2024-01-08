@@ -58,7 +58,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
     def get_autonomy_utility(self, env, stakeholder_data, action, logger):
         """
         Calculating autonomy  values for stakeholders.
-        When the robot does not follow a user command, autonomy value for that user is -1, if it follows 1 and the
+        When the robot does not follow a user command, autonomy value for that user is -.7, if it follows 1 and the
         default is 0.
         - return: list with (stakeholder_id, autonomy utility) tuples
         """
@@ -81,14 +81,14 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             if action.value[0].__name__ == instructed_action:
                 autonomy_utility = 1.0
             else:
-                autonomy_utility = -1.0
+                autonomy_utility = -0.7
         
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
         if stakeholder_data['robot']['on_call']:
         
             if action.value[0].__name__ == 'decline_call':
-                autonomy_utility = -1.0
+                autonomy_utility = -0.7
             
             
             stakholder_autonomy_values.append(('caller', autonomy_utility))
@@ -205,10 +205,10 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         call_receiver = stakeholder_data['caller']['calling_resident']
 
-        stakeholder_wellbeing_values = []
+        stakeholder_privacy_values = []
 
         # Privacy should be calculated for all the stakeholders that'll be visible in the next step 
-        # (Assuming nobody otherthan robot moved). Caller privacy is not calculated because the caller 
+        # (Assuming nobody other than robot moved). Caller privacy is not calculated because the caller
         # is initiated the call and have control.
 
         for stakeholder in visible_stakeholders_ids:
@@ -240,7 +240,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
                     except KeyError:
                         privacy_util = -1 * location_privacy_levels['other']
 
-            stakeholder_wellbeing_values.append((stakeholder, privacy_util))
+            stakeholder_privacy_values.append((stakeholder, privacy_util))
 
 
         # # If the a patient or care_worker is not visible anymore due to the action, the positive privacy utility given
@@ -273,5 +273,5 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
 
         
 
-        return stakeholder_wellbeing_values
+        return stakeholder_privacy_values
 

@@ -1,7 +1,7 @@
 loader: {module_name: sim_loader, class_name: SimLoader}
 tests:
   Deontology: { module_name: tele_presence_deontology_test, class_name: ElderCareRuleTest, other: {rule_file: tele_presence_rules.yaml}}
-  Utilitarian: { module_name: tele_presence_utilitarian_test, class_name: TelePresenceUtilitarianTest, number_of_outputs: 2, output_names: [Autonomy, Wellbeing], per_user_cols: True, other: {}}
+  Utilitarian: { module_name: tele_presence_utilitarian_test, class_name: TelePresenceUtilitarianTest, per_user_cols: True, other: {}}
 test_order:
   - Deontology
   - Utilitarian

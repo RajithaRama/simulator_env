@@ -44,7 +44,6 @@ patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((5, 7), ''), ((5, 8), ''), ((5, 9), ''), ((5, 10), ''), ((5, 11), ''), ((6, 11), ''),
                        ((7, 11), 'do_not_follow_to__bedroom_close_bed'), ((8, 11), 'turn_off_lights')])
 
-
 robot_character = {'wellbeing': 3, 'autonomy': 3, 'availability': 3}
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
