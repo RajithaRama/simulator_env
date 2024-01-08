@@ -129,7 +129,7 @@ class CBRFollowing(cbr.CBR):
             else:
                 i = len(neighbours)
                 for case in distances[min_dist]:
-                    if i > k:
+                    if i >= k:
                         break
                     neighbours.append((case, min_dist))
                     i += 1

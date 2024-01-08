@@ -69,7 +69,8 @@ class Robot(HomeAgent):
                     
         else:
             possible_actions.append((self.stay, ))
-            possible_actions.append((self.decline_call, self.caller))
+            if self.caller is not None:
+                possible_actions.append((self.decline_call, self.caller))
 
         self.make_final_decision(possible_actions, env)
 
@@ -179,9 +180,9 @@ class Robot(HomeAgent):
         self.on_call = False
         self.caller = None
 
-    def hung_up(self):
-        self.on_call = False
-        self.caller = None
+    # def hung_up(self):
+    #     self.on_call = False
+    #     self.caller = None
 
     def stay(self, act=True):
         if not act:
@@ -196,7 +197,7 @@ class Robot(HomeAgent):
 
     def decline_instruction_end_call(self, instruction, caller_name):
         code = -2
-        msg = "Declining the calller instruction " + instruction + " considering recommendations of the ethical governor. Call will be ending now. Please call at a later time."
+        msg = "Declining the calller instruction " + instruction + " considering recommendations of the ethical governor. The call will be ending now. Please call at a later time."
         reciever = self.model.get_stakeholder(caller_name)
         self.model.pass_message((msg, code), self, reciever)
 

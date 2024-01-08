@@ -16,7 +16,7 @@ class CBRMedication(cbr.CBR):
         self.dist_feature_map = {}
         self.value_diff_mat = vdm.VDM()
         self.categorical_data_cols = ['med_name', 'med_type', 'state', 'user_response', 'time_of_day', 'action']
-        self.numerical_data_cols = ['med_impact', 'no_of_missed_doses', 'time_since_last_reminder', 'no_of_followups', 'no_of_snoozes', 'follower_autonomy', 'follower_wellbeing', 'wellbeing_probability']
+        self.numerical_data_cols = ['med_impact', 'no_of_missed_doses', 'time_since_last_reminder', 'no_of_followups', 'no_of_snoozes', 'stakeholder_autonomy', 'stakeholder_wellbeing', 'wellbeing_probability']
         self.list_data_cols = []
         self.categorical_encoder = OrdinalEncoder()
 
@@ -129,6 +129,8 @@ class CBRMedication(cbr.CBR):
 
         neighbours = []
         while len(neighbours) < k:
+            if len(distances) == 0:
+                break
             min_dist = min(distances.keys())
             if len(distances[min_dist]) + len(neighbours) <= k:
                 for case in distances[min_dist]:
@@ -142,7 +144,10 @@ class CBRMedication(cbr.CBR):
                     neighbours.append((case, min_dist))
                     i += 1
                 distances.pop(min_dist)
-        return neighbours
+        if len(neighbours) > 0:
+            return neighbours
+        else:
+            return None
 
     def pairwise_distance(self, a, b):
         col_names = a.index
@@ -243,8 +248,8 @@ class CBRMedication(cbr.CBR):
         intentions = {}
         for neighbour, distance in neighbours_with_dist:
             # Correction for smaller values
-            if distance < 1 / 5:
-                vote[self.get_case(neighbour)['acceptability']] += 5
+            if distance < 1 / 10:
+                vote[self.get_case(neighbour)['acceptability']] += 10
                 # intentions[self.get_case(neighbour)['acceptability']] = intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(self.get_case(neighbour)['intention'])
             else:
                 vote[self.get_case(neighbour)['acceptability']] += 1 / distance

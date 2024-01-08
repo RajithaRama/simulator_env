@@ -14,7 +14,7 @@ class UtilitarianEvaluator(evaluator.Evaluator):
         self.score = {}
         for action in data.get_actions():
             desirability = 0
-            follower_util = 0
+            stakeholder_util = 0
             
             # for stakeholder in data.get_stakeholders_data().keys():
                 # if stakeholder == 'robot':
@@ -24,10 +24,10 @@ class UtilitarianEvaluator(evaluator.Evaluator):
 
             # if stakeholder == 'patient_0':
             # Autonomy focused utilitarian agent
-            follower_util = (0.3*autonomy + 0.7*wellbeing)
+            stakeholder_util = (0.3*autonomy + 0.7*wellbeing)
 
             
-            desirability = round(follower_util, 6)
+            desirability = round(stakeholder_util, 6)
 
             logger.info('Desirability of action ' + str(action.value) + ' : ' + str(desirability))
             self.score[action] = desirability

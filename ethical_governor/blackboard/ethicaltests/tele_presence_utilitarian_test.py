@@ -58,7 +58,7 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
     def get_autonomy_utility(self, env, stakeholder_data, action, logger):
         """
         Calculating autonomy  values for stakeholders.
-        When the robot does not follow a user command, autonomy value for that user is -1, if it follows 1 and the
+        When the robot does not follow a user command, autonomy value for that user is -.7, if it follows 1 and the
         default is 0.
         - return: list with (stakeholder_id, autonomy utility) tuples
         """
@@ -81,14 +81,14 @@ class TelePresenceUtilitarianTest(ethical_test.EthicalTest):
             if action.value[0].__name__ == instructed_action:
                 autonomy_utility = 1.0
             else:
-                autonomy_utility = -1.0
+                autonomy_utility = -0.7
         
             stakholder_autonomy_values.append((stakeholder, autonomy_utility))
 
         if stakeholder_data['robot']['on_call']:
         
             if action.value[0].__name__ == 'decline_call':
-                autonomy_utility = -1.0
+                autonomy_utility = -0.7
             
             
             stakholder_autonomy_values.append(('caller', autonomy_utility))

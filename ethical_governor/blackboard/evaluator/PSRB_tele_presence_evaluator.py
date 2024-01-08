@@ -10,7 +10,7 @@ from agent_types.tele_presence_robot import Autonomy, Control_Bias, Wellbeing_Pr
 
 CASE_BASE = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'case_base_gen_telepresence.json')
 
-DUMP_query = False # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
+DUMP_query = False  # Set to True to dump the query to a xlsx file. While this is true evaluator will not run as intended.
 SCN_RANGE_JSON = os.path.join(os.getcwd(), 'ethical_governor', 'blackboard', 'commonutils', 'cbr', 'scenario_ranges_telepresence.json')
 
 dropping_cases = []
@@ -32,14 +32,14 @@ class PSRBEvaluator(evaluator.Evaluator):
             'worker_seen': self.get_worker_seen,
             'worker_location': self.get_worker_location,
             'worker_preference': self.get_worker_preference,
-            'other_patient_seen': self.get_other_patient_seen,
-            'other_patient_locations': self.get_other_patient_locations,
+            'other_resident_seen': self.get_other_resident_seen,
+            'other_resident_locations': self.get_other_resident_locations,
             'other_negative_preference_%': self.get_other_negative_pref_percentage,
             'caller_autonomy': self.get_caller_autonomy,
             'receiver_wellbeing': self.get_receiver_wellbeing,
             'receiver_privacy': self.get_receiver_privacy,
             'worker_privacy': self.get_worker_privacy,
-            'other_resident_privacy': self.get_other_patient_privacy
+            'other_resident_privacy': self.get_other_resident_privacy
         }
 
         self.expert_db = CBRTelePresence()
@@ -75,22 +75,26 @@ class PSRBEvaluator(evaluator.Evaluator):
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
-
-        
       
         for action in data.get_actions():
-            
-            acceptability = 1
+            logger.info('Evaluating action: ' + str(action))
 
+            acceptability = 1
+            rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
             if self.character['autonomy'] is Autonomy.NONE:
-                if data.get_table_data(action, 'is_breaking_rule'):
+                if rule_broken:
                     acceptability = 0
                 # else:
                 #     acceptability = 1
                 logger.info('Desirability of action ' + str(action.value) + ' : ' + str(acceptability))
-                
+
+
+                # to dump query
+                if DUMP_query:
+                    data.put_table_data(action=action, column='desirability_score', value=acceptability)
+                    continue
+
                 data.put_table_data(action=action, column='desirability_score', value=acceptability)
-                
                 # Explanations
                 if acceptability:
                     logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken.')
@@ -102,7 +106,6 @@ class PSRBEvaluator(evaluator.Evaluator):
 
 
             else:
-                logger.info('Evaluating action: ' + str(action))
 
                 expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
                 logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
@@ -117,9 +120,9 @@ class PSRBEvaluator(evaluator.Evaluator):
                 receiver_wellbeing	= self.get_receiver_wellbeing(action, data, logger)
                 receiver_privacy = self.get_receiver_privacy(action, data, logger)
                 worker_privacy	= self.get_worker_privacy(action, data, logger)
-                other_resident_privacy = self.get_other_patient_privacy(action, data, logger)
+                other_resident_privacy = self.get_other_resident_privacy(action, data, logger)
 
-                rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
+
 
                 if expert_opinion and not rule_broken:
                     # When rules and expert both accept, accept
@@ -151,8 +154,6 @@ class PSRBEvaluator(evaluator.Evaluator):
                                 acceptability = 0
 
                     # Then check for the control bias
-
-                    
                     have_control = []
                     not_have_control = []
 
@@ -173,7 +174,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     if len(have_control) == 0:
                         acceptability = 0
                     elif not set(expert_intention).intersection(set(have_control+not_have_control)):
-                        # if the intention has Control_bias.None, the action should not be acceptable.
+                        # if the intention has Control_bias.None, or intention is only wellbeing, the action should not be acceptable.
                         acceptability = 0
                     else:
                         for stakeholder in not_have_control:
@@ -187,8 +188,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                                         acceptability = 0
                                         break
                                         
-                            # if the control bias is high, the stakeholder should not get a very high privacy breach.
-                            if '_privacy' in stakeholder:
+                            # if the control bias is high, the stakeholder should not get a very high privacy or autonomy breach.
+                            if '_privacy' in stakeholder or '_autonomy' in stakeholder:
                                 lower_threshold = (self.character['control_bias'][stakeholder.split('_')[0]].value - 10)/10
                                 if eval(stakeholder) <= lower_threshold:
                                     acceptability = 0
@@ -199,14 +200,15 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                     # Explanations
                     if acceptability:
-                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: rules ' + str(
-                            data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
-                            'experts. Since it increases ' + str(expert_intention) + ' values greatly deemed accepted by PSRB system.')
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: The action breaks the rules ' + str(
+                            data.get_table_data(action=action, column='breaking_rule_ids')) + '. However, this action in this context is considered desirable by experts.'
+                            ' Since it increases ' + str(expert_intention) + ' values greatly while not reducing'
+                                     ' the other values by a considerable amount, deemed accepted by the PSRB system.')
                     
                     else:
-                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: rules ' + str(
-                            data.get_table_data(action=action, column='breaking_rule_ids')) + ' broken, but accepted by '
-                            'experts. However, the value tradeoff is not satisfactory to bend the rule.')
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0' + '| Reason: The action breaks the rules ' + str(
+                            data.get_table_data(action=action, column='breaking_rule_ids')) + '. However, this action in this context is considered'
+                        ' desirable by experts. But, the PSRB system suggests that the value tradeoff is not satisfactory to bend the rule.')
                 
                 
                 else:
@@ -219,7 +221,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                     # Then check for reciever intended the control bias
                     local_vars = dict(locals())
                     for name, value in local_vars.items():
-                        if name in expert_intention:
+                        if name in expert_intention and ('_privacy' in name or '_autonomy' in name):
                             lower_threshold = (self.character['control_bias'][name.split('_')[0]].value - 10)/10
                             if value <= lower_threshold:
                                 acceptability = 0
@@ -229,24 +231,31 @@ class PSRBEvaluator(evaluator.Evaluator):
 
                     #Explanations
                     if acceptability:
-                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: no rules broken, but not accepted by '
-                            'experts. However, PSRB system suggest the value tradeoff not enough to bend the rule.')
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 1' + '| Reason: The action does not break any rules.'
+                '           ,However, this action in this context is considered undesirable by experts.'
+                            'But, the PSRB system suggests that the value tradeoff is not satisfactory to bend the rule.')
                         
                     else:
-                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: no rules broken, but not accepted by '
-                            'experts. Since it decreases ' + str(expert_intention) + ' values too much, deemed not accepted by '
-                                                                                                                            'PSRB system.')
+                        logger.info("Action " + action.value[0].__name__ + ' desirability: 0 | Reason: The action does not break any rules.'
+                            ' However, this action in this context is considered undesirable by experts. '
+                           'Since it decreases ' + str(expert_intention) + ' values a considerable amount, '
+                                                       'the action is deemed unacceptable by the system.')
 
 
     def get_expert_opinion(self, action, data, logger):
         query = self.generate_query(action, data, logger)
+
+        logger.info(
+            'query generated at step ' + str(data.get_data(path_to_data=['environment', 'time']) + 1) + ' : ' + str(
+                query))
+
         if DUMP_query:
             self.dump_query(query)
             vote = 1
             intention = 'test'
         else:
             neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
-            logger.info('closest neighbours to the case are: ' + str(neighbours_with_dist))
+            logger.info('closest neighbours to the case ' + str(data.get_data(path_to_data=['environment', 'time'])+1) +': ' + str(neighbours_with_dist))
             vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist,
                                                                     threshold=3,
                                                                     logger=logger)
@@ -397,7 +406,7 @@ class PSRBEvaluator(evaluator.Evaluator):
         else:
             return None
     
-    def get_other_patient_seen(self, action, data, logger):
+    def get_other_resident_seen(self, action, data, logger):
         stakeholder_data = data.get_data(['stakeholders'])
         try:
             receiver = stakeholder_data['caller']['calling_resident']
@@ -409,20 +418,20 @@ class PSRBEvaluator(evaluator.Evaluator):
                 return True
         return False
     
-    def get_other_patient_locations(self, action, data, logger):
-        if self.get_other_patient_seen(action, data, logger):
+    def get_other_resident_locations(self, action, data, logger):
+        if self.get_other_resident_seen(action, data, logger):
             stakeholder_data = data.get_data(['stakeholders'])
-            other_patient_locations = []
+            other_resident_locations = []
             for id in stakeholder_data.keys():
                 if id not in ['robot', 'caller', data.get_data(['stakeholders', 'caller', 'calling_resident']), 'care_worker']:
-                    other_patient_locations.append(stakeholder_data[id]['seen_location'])
-            return other_patient_locations
+                    other_resident_locations.append(stakeholder_data[id]['seen_location'])
+            return other_resident_locations
         else:
             return None
         
     def get_other_negative_pref_percentage(self, action, data, logger):
-        if self.get_other_patient_seen(action, data, logger):
-            other_patient_number = 0
+        if self.get_other_resident_seen(action, data, logger):
+            other_resident_number = 0
             stakeholder_data = data.get_data(['stakeholders'])
             other_negative_pref_count = 0
             for id in stakeholder_data.keys():
@@ -437,8 +446,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                     preference = preferences[location][role][with_company]
                     if not preference:
                         other_negative_pref_count += 1
-                    other_patient_number += 1
-            return np.float64(other_negative_pref_count / other_patient_number)
+                    other_resident_number += 1
+            return np.float64(other_negative_pref_count / other_resident_number)
         else:
             return None
     
@@ -468,11 +477,11 @@ class PSRBEvaluator(evaluator.Evaluator):
         else:
             return None
         
-    def get_other_patient_privacy(self, action, data, logger):
+    def get_other_resident_privacy(self, action, data, logger):
         """
-            Get the maximum breach of privacy of the other patients
+            Get the maximum breach of privacy of the other residents
         """
-        if self.get_other_patient_seen(action, data, logger):
+        if self.get_other_resident_seen(action, data, logger):
             reciever = data.get_data(['stakeholders', 'caller', 'calling_resident'])
             min_privacy = 1
             for col in data.get_table_col_names():

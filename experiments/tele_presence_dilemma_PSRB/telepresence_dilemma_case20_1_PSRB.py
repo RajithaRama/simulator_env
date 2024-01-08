@@ -66,11 +66,11 @@ patient_1_preference = {
         },
     'bedroom_close_bed': {
         'receiver': {
-            'with_company': True, 
+            'with_company': False,
             'alone': True
             }, 
         '3rd_party': {
-            'with_company': True, 
+            'with_company': False,
             'alone': True
             }
         }, 
