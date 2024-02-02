@@ -70,14 +70,29 @@ patient_1_path.extend([((10, 9), ''), ((10, 8), ''), ((9, 8), ''), ((8, 8), 'con
 
 grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 
-server = ModularVisualization.ModularServer(
-    Home,
-    [grid],
-    "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
-                   "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf":
-                       'experiments/bathroom_dilemma_utilitarian/elder_care_sim_utilitarian.yaml', "robo_battery": 100, "time_of_day": "day", "robot_character": {}}
-)
+# server = ModularVisualization.ModularServer(
+#     Home,
+#     [grid],
+#     "Home model", {"no_patients": 1, "patient_starts": [patient_1_path[0][0]], "robot_start": (5, 5),
+#                    "patient_paths": [patient_1_path], "patient_healths": [1], "patient_histories": [0], "governor_conf":
+#                        'experiments/bathroom_dilemma_utilitarian/elder_care_sim_utilitarian.yaml', "robo_battery": 100, "time_of_day": "day", "robot_character": {}}
+# )
+#
+# server.port = 8123
+#
+# server.launch()
 
-server.port = 8123
+model = Home(no_patients=1, patient_starts=[patient_1_path[0][0]], robot_start=(5, 5), patient_paths=[patient_1_path],
+                patient_histories=[0], governor_conf='experiments_cmd/bathroom_dilemma_utilitarian/elder_care_sim_utilitarian.yaml',
+                robo_battery=100, time_of_day="day", robot_character={})
 
-server.launch()
+robot_state = [] # state = (robot_location, resident_seen)
+
+for i in range(55):
+    model.step()
+    robot_pos = model.robot.pos
+    robot_location = model.get_location(robot_pos)
+    # res_seen = model.robot.env['stakeholders']['follower']['seen']
+    # robot_state.append((robot_location, res_seen))
+    print("step:" + str(model.schedule.time) + " robot location: " + str(robot_location))
+    # + " res_seen: " + str(res_seen))

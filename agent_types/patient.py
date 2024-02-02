@@ -1,5 +1,10 @@
 from agent_types.home_agent import HomeAgent
+import json
 
+action_sequence = []
+def dump_action_sequence(action):
+    action_sequence.append(action)
+    json.dump(action_sequence, open('human_action_sequence.json', 'w'))
 
 class Patient(HomeAgent):
     def __init__(self, unique_id, name, model, path, history):
@@ -22,13 +27,17 @@ class Patient(HomeAgent):
         try:
             if instruction == 'turn_off_lights':
                 self.model.turn_off_lights()
+            elif instruction == 'move':
+                self.model.movement()
             elif instruction != '':
                 self.model.give_command(instruction, self, self.model.robot)
             self.model.grid.move_agent(self, next_pos)
+            dump_action_sequence((self.steps+1, next_pos, instruction))
         except Exception as e:
             print(e)
             self.model.grid.move_agent(self, self.pos)
             self.model.give_command('move_away', self, self.model.robot)
+            dump_action_sequence((self.steps + 1, self.pos, 'move_away'))
             return
 
         self.steps += 1

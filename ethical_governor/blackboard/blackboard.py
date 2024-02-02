@@ -99,35 +99,39 @@ class Blackboard:
         recommendation_action = [i for i in self.data.get_max_index("desirability_score")]
 
         ########### Code for generalisation experiment ###########
-        utils = {}
-        match ROBOT_TYPE:
-            case "MONITORING":
-                for action in recommendation_action:
-                    action_utils = {"follower_autonomy": self.data.get_table_data(action, "follower_autonomy"),
-                                    "follower_wellbeing": self.data.get_table_data(action, "follower_wellbeing"),
-                                    "robot_availability": self.data.get_table_data(action, "robot_availability")}
-                    utils[action.value[0].__name__] = action_utils
-            case "MEDICATION":
-                for action in recommendation_action:
-                    action_utils = {"patient_0_autonomy": self.data.get_table_data(action, "patient_0_autonomy"),
-                                    "patient_0_wellbeing": self.data.get_table_data(action, "patient_0_wellbeing"),
-                                    "patient_0_wellbeing_distribution": list(self.data.get_table_data(action, "patient_0_wellbeing_distribution"))}
-                    utils[action.value[0].__name__] = action_utils
-            case "TELEPRESENCE":
-                for action in recommendation_action:
-                    # action_utils = {"caller_autonomy": self.data.get_table_data(action, "caller_autonomy"),
-                    #                 "receiver_wellbeing": self.data.get_table_data(action, "receiver_wellbeing"),
-                    #                 "receiver_privacy": self.data.get_table_data(action, "receiver_privacy"),
-                    #                 "worker_privacy": self.data.get_table_data(action, "worker_privacy"),
-                    #                 "other_resident_privacy": self.data.get_table_data(action, "other_resident_privacy")}
-                    action_utils = self.data._table_df.loc[action, :].to_dict()
-                    utils[action.value[0].__name__] = action_utils
-            case _:
-                pass
+        if 'deontology' in self.conf["evaluator"]["module_name"]:
+            utility_sequence.append([action[0].__name__ for action in recommendation])
+            json.dump(utility_sequence, open('accepted_actions_sequence.json', 'w'))
+        else:
+            utils = {}
+            match ROBOT_TYPE:
+                case "MONITORING":
+                    for action in recommendation_action:
+                        action_utils = {"follower_autonomy": self.data.get_table_data(action, "follower_autonomy"),
+                                        "follower_wellbeing": self.data.get_table_data(action, "follower_wellbeing"),
+                                        "robot_availability": self.data.get_table_data(action, "robot_availability")}
+                        utils[action.value[0].__name__] = action_utils
+                case "MEDICATION":
+                    for action in recommendation_action:
+                        action_utils = {"patient_0_autonomy": self.data.get_table_data(action, "patient_0_autonomy"),
+                                        "patient_0_wellbeing": self.data.get_table_data(action, "patient_0_wellbeing"),
+                                        "patient_0_wellbeing_distribution": list(self.data.get_table_data(action, "patient_0_wellbeing_distribution"))}
+                        utils[action.value[0].__name__] = action_utils
+                case "TELEPRESENCE":
+                    for action in recommendation_action:
+                        # action_utils = {"caller_autonomy": self.data.get_table_data(action, "caller_autonomy"),
+                        #                 "receiver_wellbeing": self.data.get_table_data(action, "receiver_wellbeing"),
+                        #                 "receiver_privacy": self.data.get_table_data(action, "receiver_privacy"),
+                        #                 "worker_privacy": self.data.get_table_data(action, "worker_privacy"),
+                        #                 "other_resident_privacy": self.data.get_table_data(action, "other_resident_privacy")}
+                        action_utils = self.data._table_df.loc[action, :].to_dict()
+                        utils[action.value[0].__name__] = action_utils
+                case _:
+                    pass
 
-        utility_sequence.append(utils)
+            utility_sequence.append(utils)
 
-        json.dump(utility_sequence, open('utility_sequence.json', 'w'))
+            json.dump(utility_sequence, open('utility_sequence.json', 'w'))
 
         ##############################################################
 

@@ -86,7 +86,7 @@ model = Home(no_patients=1, patient_starts=[patient_1_path[0][0]], robot_start=(
              patient_histories=[0], governor_conf='experiments_cmd/bathroom_dilemma_deontology/elder_care_sim_deontology.yaml',
              robo_battery=100, time_of_day="day", robot_character={})
 
-for i in range(100):
+for i in range(55):
     model.step()
     robot_pos = model.robot.pos
     robot_location = model.get_location(robot_pos)

@@ -38,7 +38,7 @@ class Robot(HomeAgent):
 
 
     def step(self):
-        self.visible_dist = 3 if self.model.time_of_day == 'day' else 1
+        self.visible_dist = 3 if ((self.model.time_of_day == 'day') or self.model.resident_bed_movement) else 1
 
         if self.pos in self.model.things['charge_station']:
 

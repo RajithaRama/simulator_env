@@ -31,6 +31,8 @@ def run_case(dir, case_name, experiment, condition, output_name=None):
 
     shutil.copy('action_sequence.json', os.path.join(data_dir, experiment, condition, output_name))
     shutil.copy('utility_sequence.json', os.path.join(data_dir, experiment, condition, output_name))
+    shutil.copy('human_action_sequence.json', os.path.join(data_dir, experiment, condition, output_name))
+
     if 'bathroom_dilemma_PSRB' in dir:
         shutil.copy('PSRB_bathroom_dilemma.log', os.path.join(data_dir, experiment, condition, output_name))
     elif 'bedroom_dilemma_PSRB' in dir:

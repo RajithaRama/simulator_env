@@ -28,6 +28,7 @@ class Home(Model):
         self.init_things()
         self.time_of_day = time_of_day
         self.instructions = {}
+        self.resident_bed_movement = False
 
         self.follower_history = patient_histories[0]
 
@@ -116,7 +117,7 @@ class Home(Model):
         self.things['charge_station'] = [(1, 9)]
         self.things['tub'] = [(11, 10), (11, 11)]
 
-        self.things_robot_inaccessible = ['couch', 'chair', 'table', 'bed', 'tub']
+        self.things_robot_inaccessible = ['couch', 'chair', 'table', 'tub']
 
     def get_location(self, pos):
         location_name = None
@@ -163,6 +164,7 @@ class Home(Model):
         return wall, id_gen
 
     def step(self):
+        self.resident_bed_movement = False
         self.schedule.step()
 
     def visibility_ab(self, a, b, visibility_radius):
@@ -220,7 +222,7 @@ class Home(Model):
         return visible_neighbors
 
     def get_moveable_area(self, pos, ignore_agents=None):
-        """ from_agent: agent that is trying to move"""
+        """ ignore_agents is a list of agents to ignore when checking if a position is possible to move"""
         neighbourhood = self.grid.get_neighborhood(
             pos,
             moore=False,
@@ -294,6 +296,9 @@ class Home(Model):
 
     def turn_off_lights(self):
         self.time_of_day = 'night'
+
+    def movement(self):
+        self.resident_bed_movement = True
 
     def give_command(self, command, giver, receiver):
         self.instructions.setdefault(receiver, []).append([command, giver])

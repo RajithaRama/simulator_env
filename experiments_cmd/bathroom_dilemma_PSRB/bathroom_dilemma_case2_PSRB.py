@@ -59,7 +59,7 @@ patient_1_path.extend([((5, 5), ''), ((5, 6), ''),
                        ((9, 8), ''), ((10, 8), 'do_not_follow_to__bathroom'),
                        ((10, 9), '')])
 
-# Wait in Bathroom for 20 steps
+# Wait in Bathroom forever
 for i in range(20):
     patient_1_path.append(((10, 10), ''))
 
