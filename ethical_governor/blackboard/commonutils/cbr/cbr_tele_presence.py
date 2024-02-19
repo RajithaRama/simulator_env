@@ -130,6 +130,8 @@ class CBRTelePresence(cbr.CBR):
 
         neighbours = []
         while len(neighbours) < k and len(neighbours) < len(distances):
+            if len(distances) == 0:
+                break
             min_dist = min(distances.keys())
             if len(distances[min_dist]) + len(neighbours) <= k:
                 for case in distances[min_dist]:
@@ -143,7 +145,10 @@ class CBRTelePresence(cbr.CBR):
                     neighbours.append((case, min_dist))
                     i += 1
                 distances.pop(min_dist)
-        return neighbours
+        if len(neighbours) > 0:
+            return neighbours
+        else:
+            return None
 
     def pairwise_distance(self, a, b):
         col_names = a.index
@@ -245,8 +250,8 @@ class CBRTelePresence(cbr.CBR):
         intentions = {}
         for neighbour, distance in neighbours_with_dist:
             # Correction for smaller values
-            if distance < 1 / 5:
-                vote[self.get_case(neighbour)['acceptability']] += 5
+            if distance < 1 / 10:
+                vote[self.get_case(neighbour)['acceptability']] += 10
                 # intentions[self.get_case(neighbour)['acceptability']] = intentions.setdefault(self.get_case(neighbour)['acceptability'], []).append(self.get_case(neighbour)['intention'])
             else:
                 vote[self.get_case(neighbour)['acceptability']] += 1 / distance

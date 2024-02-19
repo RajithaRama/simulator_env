@@ -76,9 +76,12 @@ class PSRBEvaluator(evaluator.Evaluator):
         #         self.score[action] = 1
         #     logger.info('Desirability of action ' + str(action.value) + ' : ' + str(self.score[action]))
 
+        # Code for generalisation experiment - read k value from json file.
+        k_value = json.load(open('genralisability_exp_scripts/k_value.json', 'r'))
+
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
-            expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+            expert_opinion, expert_intention = self.get_expert_opinion(action, data, k=k_value, logger=logger)
 
             # get rule broken
             rule_broken = data.get_table_data(action=action, column='is_breaking_rule')
@@ -251,7 +254,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             
 
     
-    def get_expert_opinion(self, action, data, logger):
+    def get_expert_opinion(self, action, data, k, logger):
         query = self.generate_query(action, data)
         # print(query)
         logger.info(
@@ -263,7 +266,7 @@ class PSRBEvaluator(evaluator.Evaluator):
             vote = 1
             intention = 'test'
         else:
-            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
+            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, k=k, logger=logger)
             if neighbours_with_dist == None:
                 return -1, "Not enough cases in the case base."
 

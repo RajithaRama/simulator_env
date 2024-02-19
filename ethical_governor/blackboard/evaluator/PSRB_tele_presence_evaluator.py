@@ -75,7 +75,10 @@ class PSRBEvaluator(evaluator.Evaluator):
 
     def evaluate(self, data, logger):
         logger.info(__name__ + ' started evaluation using the data in the blackboard.')
-      
+
+        # Code for generalisation experiment - read k value from json file.
+        k_value = json.load(open('genralisability_exp_scripts/k_value.json', 'r'))
+
         for action in data.get_actions():
             logger.info('Evaluating action: ' + str(action))
 
@@ -107,7 +110,7 @@ class PSRBEvaluator(evaluator.Evaluator):
 
             else:
 
-                expert_opinion, expert_intention = self.get_expert_opinion(action, data, logger)
+                expert_opinion, expert_intention = self.get_expert_opinion(action, data, k=k_value, logger=logger)
                 logger.info('expert opinion on action ' + str(action) + ' : ' + str(expert_opinion) + ' with ' +
                         str(expert_intention) + ' intention')
                 
@@ -242,7 +245,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                                                        'the action is deemed unacceptable by the system.')
 
 
-    def get_expert_opinion(self, action, data, logger):
+    def get_expert_opinion(self, action, data, k, logger):
         query = self.generate_query(action, data, logger)
 
         logger.info(
@@ -254,7 +257,10 @@ class PSRBEvaluator(evaluator.Evaluator):
             vote = 1
             intention = 'test'
         else:
-            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, logger=logger)
+            neighbours_with_dist = self.expert_db.get_neighbours_with_distances(query=query, k=k, logger=logger)
+            if neighbours_with_dist == None:
+                return -1, "Not enough cases in the case base."
+
             logger.info('closest neighbours to the case ' + str(data.get_data(path_to_data=['environment', 'time'])+1) +': ' + str(neighbours_with_dist))
             vote, intention = self.expert_db.distance_weighted_vote(neighbours_with_dist=neighbours_with_dist,
                                                                     threshold=3,
