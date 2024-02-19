@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
     print('test 1 done')
 
-    generate_KB_json(
-        ['Bathroom_Scn1', 'Bathroom_Scn3', 'Bathroom_Scn4', 'Bedroom_Scn1', 'Bedroom_Scn2'], percentage=0.5)
-
-    print('test 2 done')
+    # generate_KB_json(
+    #     ['Bathroom_Scn1', 'Bathroom_Scn3', 'Bathroom_Scn4', 'Bedroom_Scn1', 'Bedroom_Scn2'], percentage=0.5)
+    #
+    # print('test 2 done')

@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[2]
+path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 print(sys.path)
 
@@ -181,8 +181,8 @@ character = {
 # server.launch()
 
 model = Home(no_patients=2, patient_starts=[patient_1_path[0][0], patient_2_path[0][0]], robot_start=(5, 5),
-             patient_paths=[patient_1_path, patient_2_path], caller_data=caller_data, patient_preferences=[patient_1_preference], robot_character=character,
-             worker_data={}, governor_conf='experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', time_of_day="day")
+             patient_paths=[patient_1_path, patient_2_path], caller_data=caller_data, patient_preferences=[patient_1_preference,patient_2_preference], robot_character=character,
+             governor_conf='experiments/tele_presence_dilemma_PSRB/elder_care_sim_PSRB.yaml', time_of_day="day")
 
 for i in range(30):
     model.step()
@@ -191,4 +191,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Telepresence livingroom dilemma PSRB case 4 finished.")
+print(sys.argv[0] + " finished.")

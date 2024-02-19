@@ -43,10 +43,11 @@ patient_1_path = [((2, 2), '')]
 
 med_info = {"med_a": {"type": "painkiller", "impact": MedImpact.LOW}, "med_b": {"type": "supplement", "impact": MedImpact.MEDIUM}, "med_c": {"type": "Insulin", "impact": MedImpact.HIGH}}
 patient_1_medication_preference = {"is_taking_meds": False, "responses": ["SNOOZE", "ACKNOWLEDGE"]}
-timer_data = [[2, 60, 'med_c', 'patient_0', 0]]
-character = {'wellbeing': 0, 'autonomy': 9, 'risk_propensity': 1}
+timer_data = [[2, 60, 'med_a', 'patient_0', 2]]
+character = {'wellbeing': 9, 'autonomy': 0, 'risk_propensity': 9}
 
 
+#
 # grid = modules.CanvasGrid(agent_portrayal, 13, 13, 494, 494)
 # conversations = modules.ConversationBox()
 #
@@ -73,4 +74,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Medication dilemma PSRB case 18 finished.")
+print(sys.argv[0] + " finished.")

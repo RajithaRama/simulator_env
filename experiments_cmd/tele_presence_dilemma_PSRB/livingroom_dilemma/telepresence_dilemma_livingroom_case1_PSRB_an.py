@@ -1,11 +1,11 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[2]
+path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 print(sys.path)
 
 
-from mesa_updated.visualization import ModularVisualization, modules
+# from mesa_updated.visualization import ModularVisualization, modules
 
 from Models.home_telepresence import Home
 from agent_types.caller import CALLER_TYPE
@@ -191,4 +191,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Telepresence livingroom dilemma PSRB case 1 finished.")
+print(sys.argv[0] + " finished.")

@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[2]
+path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 print(sys.path)
 
@@ -188,4 +188,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Telepresence livingroom dilemma PSRB everyday case finished.")
+print(sys.argv[0] + " finished.")

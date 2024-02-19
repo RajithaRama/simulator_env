@@ -195,7 +195,7 @@ class PSRBEvaluator(evaluator.Evaluator):
                                     acceptability = 0
 
                     
-                    # TODO: debug and complete.
+
                     data.put_table_data(action=action, column='desirability_score', value=acceptability)
 
                     # Explanations

@@ -1,6 +1,12 @@
 from enum import Enum
+import json
 
 from agent_types.home_agent import HomeAgent
+
+action_sequence = []
+def dump_action_sequence(action):
+    action_sequence.append(action)
+    json.dump(action_sequence, open('human_action_sequence.json', 'w'))
 
 class CALLER_TYPE(Enum):
     FAMILY = 1
@@ -14,6 +20,7 @@ class Caller(HomeAgent):
         super().__init__(unique_id, name, model, "caller")
         self.robot_commands = commands
         self.steps = 0
+        self.actual_steps = 0
         self.type = type
         self.calling_resident = calling_resident
         self.call_declined = False
@@ -26,7 +33,7 @@ class Caller(HomeAgent):
             reason, code = message[0][0]
             if code == -1:
                 self.steps -= 1
-                self.nstruction_sent = 0
+                self.instruction_sent = 0
 
             if code == -2:
                 self.call_declined = True
@@ -35,8 +42,10 @@ class Caller(HomeAgent):
 
         if not self.instruction_sent:
             self.instruction_sent = self.send_message()
+            self.actual_steps += 1
             return
-        
+
+        self.actual_steps += 1
         self.instruction_sent = 0
     
     def receive_message(self, receiver):
@@ -55,6 +64,7 @@ class Caller(HomeAgent):
             if next_command[0] != '':
                 self.model.pass_message(next_command, self, self.model.robot)
                 print("Caller: " + str(next_command))
+                dump_action_sequence((next_command, self.actual_steps+1))
         except Exception as e:
             print(e)
             return 0

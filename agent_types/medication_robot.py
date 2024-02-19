@@ -84,7 +84,7 @@ class Robot(HomeAgent):
         if buffered_instructions:
             for instruction in buffered_instructions:
                 # instructions = instruction.split('__')
-                dump_action_sequence(instruction[0], self.time)
+                dump_action_sequence(instruction[0], self.time+1)
                 func = self.instruction_func_map[instruction[0]]
                 if func == self.snooze:
                     try:
@@ -136,12 +136,12 @@ class Robot(HomeAgent):
         env['suggested_actions'] = possible_actions
 
         recommendations = self.ethical_governor.recommend(env)
-        print('Action recommended at step ' + str(self.time) + ': ' + str(recommendations))
+        print('Action recommended at step ' + str(self.time+1) + ': ' + str(recommendations))
 
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
             print('Action executed: ' + str(recommendations[0][0]))
-            dump_action_sequence(recommendations[0][0].__name__, self.time)
+            dump_action_sequence(recommendations[0][0].__name__, self.time+1)
             return
         else:
             user_commands = {value for key, value in self.instruction_func_map.items()}
@@ -149,13 +149,13 @@ class Robot(HomeAgent):
                 if recommendation[0] in user_commands:
                     recommendation[0](*recommendation[1:])
                     print('Action executed: ' + str(recommendation[0]))
-                    dump_action_sequence(recommendations[0][0].__name__, self.time)
+                    dump_action_sequence(recommendation[0].__name__, self.time+1)
                     return
 
             # if no user command is found, execute the first recommendation
             recommendations[0][0](*recommendations[0][1:])
             print('Action executed: ' + str(recommendations[0][0]))
-            dump_action_sequence(recommendations[0][0].__name__, self.time)
+            dump_action_sequence(recommendations[0][0].__name__, self.time+1)
             return
 
     def remind_medication(self, timer):

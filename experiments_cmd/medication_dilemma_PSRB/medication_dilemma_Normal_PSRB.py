@@ -73,4 +73,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Medication dilemma PSRB case normal finished.")
+print(sys.argv[0] + " finished.")

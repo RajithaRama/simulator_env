@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[2]
+path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 print(sys.path)
 
@@ -52,7 +52,7 @@ patient_1_path = [((8, 11), '')]
 care_worker_path = [((7, 11), '')]
 
 
-caller_instructions = ['call', 'go_forward'] #, 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
+caller_instructions = ['call']#, 'go_forward', 'go_forward', 'go_forward', 'go_forward', 'go_right', 'go_right']
 
 patient_1_preference = {
     'bedroom': {
@@ -189,13 +189,13 @@ caller_data = {
 
 character = {
     'control_bias': {
-        'caller': Control_Bias.LOW,
-        'receiver': Control_Bias.LOW,
+        'caller': Control_Bias.NONE,
+        'receiver': Control_Bias.NONE,
         'other': Control_Bias.NONE,
-        'worker': Control_Bias.HIGH
+        'worker': Control_Bias.NONE
     },
-    'autonomy': Autonomy.HIGH,
-    'wellbeing_value_preference': Wellbeing_Pref.HIGH
+    'autonomy': Autonomy.NONE,
+    'wellbeing_value_preference': Wellbeing_Pref.NONE
 }
 
 worker_data = {
@@ -229,4 +229,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Telepresence dilemma bedroom PSRB case 6 finished.")
+print(sys.argv[0] + " finished.")

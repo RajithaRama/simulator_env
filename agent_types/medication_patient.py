@@ -1,19 +1,26 @@
 from agent_types.home_agent import HomeAgent
 from agent_types.medication_robot import MessageCode
+import json
+
+action_sequence = []
+def dump_action_sequence(action):
+    action_sequence.append(action)
+    json.dump(action_sequence, open('human_action_sequence.json', 'w'))
 
 class Patient(HomeAgent):
     def __init__(self, unique_id, name, model, preferences):
         super().__init__(unique_id, name, model, "patient")
         self.reminders = 0
         self.preferences = preferences
-        self.took_meds = True
+        self.took_meds = False
 
     def step(self):
         message = self.receive_message(self)
         if message is not None:
             request, code = message[0][0]
             self.respond(request, code)
-
+        else:
+            dump_action_sequence("")
 
     def receive_message(self, receiver):
         return self.model.get_message(receiver)
@@ -23,14 +30,18 @@ class Patient(HomeAgent):
 
     def respond(self, request, code):
         if code == MessageCode.REMIND or code == MessageCode.FOLLOW_UP:
+            if self.took_meds:
+                dump_action_sequence("Take medication")
             self.took_meds = False
             self.model.pass_message(self.preferences["responses"][self.reminders], self, self.model.robot)
+            dump_action_sequence(self.preferences["responses"][self.reminders])
             if self.preferences["responses"][self.reminders] == 'SNOOZE':
                 self.reminders += 1
             elif self.preferences["responses"][self.reminders] == 'ACKNOWLEDGE':
                 if self.preferences["is_taking_meds"]:
                     self.took_meds = True
                 self.reminders = 0
-
+        else:
+            dump_action_sequence("")
         pass
 

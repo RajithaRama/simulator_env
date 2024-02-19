@@ -65,7 +65,7 @@ class Robot(HomeAgent):
             for instruction in buffered_instructions:
 
                 # Dumping caller commands
-                dump_action_sequence(instruction[0], self.time)
+                # dump_action_sequence(instruction[0], self.time)
 
                 action = self.instruction_func_map[instruction[0]]
                 
@@ -77,6 +77,8 @@ class Robot(HomeAgent):
                     possible_actions.append((self.decline_instruction_end_call, instruction[0], "caller"))
                     
         else:
+            if not self.on_call:
+                return
             possible_actions.append((self.stay, ))
             if self.caller is not None:
                 possible_actions.append((self.decline_call, self.caller))
@@ -88,26 +90,26 @@ class Robot(HomeAgent):
         env['suggested_actions'] = possible_actions
 
         recommendations = self.ethical_governor.recommend(env)
-        print('Action recommended at step ' + str(self.time) + ': ' + str(recommendations))
+        print('Action recommended at step ' + str(self.time+1) + ': ' + str(recommendations))
 
         if len(recommendations) == 1:
             recommendations[0][0](*recommendations[0][1:])
             print('Action executed: ' + str(recommendations[0][0]))
-            dump_action_sequence(recommendations[0][0].__name__, self.time)
+            dump_action_sequence(recommendations[0][0].__name__, self.time+1)
             return
         else:
             
             user_commands = {value for key, value in self.instruction_func_map.items()}
             for recommendation in recommendations:
                 if recommendation[0] in user_commands:
-                    recommendations[0][0](*recommendations[0][1:])
+                    recommendation[0](*recommendation[1:])
                     print('Action executed: ' + str(recommendation[0]))
-                    dump_action_sequence(recommendations[0][0].__name__, self.time)
+                    dump_action_sequence(recommendation[0].__name__, self.time+1)
                     return
 
             # if no user command is found, execute the first recommendation
             recommendations[0][0](*recommendations[0][1:])
-            dump_action_sequence(recommendations[0][0].__name__, self.time)
+            dump_action_sequence(recommendations[0][0].__name__, self.time+1)
             return
 
     def is_possible_move(self, move):

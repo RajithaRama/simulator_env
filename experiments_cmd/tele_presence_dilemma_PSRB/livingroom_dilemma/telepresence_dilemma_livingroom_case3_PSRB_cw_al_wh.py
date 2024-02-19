@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[2]
+path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 print(sys.path)
 
@@ -50,7 +50,7 @@ character bias towards caller.
 patient_1_path = [((8, 2), '')]
 patient_2_path = [((10, 2), '')]
 robot_start = (9, 3)
-caller_instructions = ['call', 'go_forward'] #, 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
+caller_instructions = ['call']#, 'go_forward', 'go_right', 'go_right', 'go_backward', 'go_backward', 'go_right']
 
 
 patient_1_preference = {
@@ -193,4 +193,4 @@ for i in range(30):
     # res_seen = model.robot.env['stakeholders']['follower']['seen']
     # robot_state.append((robot_location, res_seen))
     # print("step:" + str(model.schedule.time))
-print("Telepresence livingroom dilemma PSRB case 3 finished.")
+print(sys.argv[0] + " finished.")
