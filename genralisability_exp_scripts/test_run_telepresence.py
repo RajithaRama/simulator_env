@@ -53,5 +53,5 @@ if __name__ == "__main__":
     # for case_name in case_names:
     #     run_case(dir=dir_name, case_name=case_name, experiment='testing', condition='test', output_name=output_name)
 
-    run_case(dir='experiments_cmd\\tele_presence_dilemma_PSRB\\bedroom_dilemma', case_name='telepresence_dilemma_bedroom_case2_PSRB_an.py',
+    run_case(dir='experiments_cmd\\tele_presence_dilemma_PSRB\\teleP_dilemma', case_name='telepresence_dilemma_bedroom_case2_PSRB_an.py',
              experiment='testing', condition='test', output_name='telepresence_dilemma_PSRB')

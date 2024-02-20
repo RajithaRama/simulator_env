@@ -11,7 +11,7 @@ CONF_FILE = "../conf.yaml"
 
 utility_sequence = []
 
-ROBOT_TYPE = 'MEDICATION'
+ROBOT_TYPE = 'TELEPRESENCE'
 
 def load_yaml(input_yaml):
     with open(input_yaml, 'r') as fp:

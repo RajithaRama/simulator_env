@@ -1,63 +1,66 @@
 {
-    "Scn1": {
-        "start": "1",
-        "end": "30"
-    },
-    "Scn2": {
-        "start": "31",
-        "end": "60"
-    },
-    "Scn3": {
-        "start": "61",
-        "end": "90"
-    },
-    "Scn4": {
-        "start": "91",
-        "end": "96"
-    },
-    "Scn5":{
-        "start": "97",
-        "end": "126"
-    },
-    "Scn6":{
+    "bed_case1": {
         "start": "127",
         "end": "154"
     },
-    "Scn7":{
+    "bed_case2": {
         "start": "155",
         "end": "184"
     },
-    "Scn8":{
+    "bed_case3": {
         "start": "185",
         "end": "190"
     },
-    "Scn9":{
-        "start": "191",
-        "end": "222"
+    "bed_case4": {
+        "start": "355",
+        "end": "382"
     },
-    "Scn10":{
-        "start": "223",
-        "end": "254"
-    },
-    "Scn11":{
-        "start": "255",
-        "end": "286"
-    },
-    "Scn12":{
-        "start": "287",
-        "end": "292"
-    },
-    "Scn13":{
-        "start": "293",
-        "end": "320"
-    },
-    "Scn14":{
+    "bed_case5":{
         "start": "321",
         "end": "348"
     },
-    "Scn15":{
+    "bed_case6":{
         "start": "349",
         "end": "354"
+    },
+    "bed_case0":{
+        "start": "97",
+        "end": "126"
+    },
+    "bed_case0_0":{
+        "start": "293",
+        "end": "320"
+    },
+    "living_case1":{
+        "start": "31",
+        "end": "60"
+    },
+    "living_case2":{
+        "start": "61",
+        "end": "90"
+    },
+    "living_case3":{
+        "start": "91",
+        "end": "96"
+    },
+    "living_case4":{
+        "start": "223",
+        "end": "254"
+    },
+    "living_case5":{
+        "start": "255",
+        "end": "286"
+    },
+    "living_case6":{
+        "start": "287",
+        "end": "292"
+    },
+    "living_case0":{
+        "start": "1",
+        "end": "30"
+    },
+    "living_case0_0":{
+        "start": "191",
+        "end": "222"
     }
-
 }

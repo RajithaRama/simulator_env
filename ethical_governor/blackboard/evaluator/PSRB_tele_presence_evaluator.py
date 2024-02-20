@@ -149,11 +149,11 @@ class PSRBEvaluator(evaluator.Evaluator):
                     if self.character['wellbeing_value_preference'] is not Wellbeing_Pref.NONE:
                         if 'receiver_wellbeing' in expert_intention:
                             threshold = (10 - self.character['wellbeing_value_preference'].value)/10
-                            if receiver_wellbeing <= threshold:
+                            if receiver_wellbeing is not None and receiver_wellbeing <= threshold:
                                 acceptability = 0
                         else:
                             threshold = (self.character['wellbeing_value_preference'].value - 10)/10
-                            if receiver_wellbeing <= threshold:
+                            if receiver_wellbeing is not None and receiver_wellbeing <= threshold:
                                 acceptability = 0
 
                     # Then check for the control bias
@@ -226,6 +226,8 @@ class PSRBEvaluator(evaluator.Evaluator):
                     for name, value in local_vars.items():
                         if name in expert_intention and ('_privacy' in name or '_autonomy' in name):
                             lower_threshold = (self.character['control_bias'][name.split('_')[0]].value - 10)/10
+                            if value is None:
+                                continue
                             if value <= lower_threshold:
                                 acceptability = 0
                                 break
