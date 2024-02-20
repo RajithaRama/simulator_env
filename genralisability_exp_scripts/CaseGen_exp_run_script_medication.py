@@ -107,6 +107,8 @@ def run_combinations(spec_json):
 
     for i in combination_lengths:
         for comb in itertools.combinations(scenarios, i):
+            if len(comb) == 1 and ('Scn0' in comb):
+                continue
             combinations.append(comb)
 
     st = time.time()

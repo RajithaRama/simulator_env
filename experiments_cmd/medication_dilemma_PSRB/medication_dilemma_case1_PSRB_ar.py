@@ -1,6 +1,6 @@
 from pathlib import Path
 import sys
-path_root = Path(__file__).parents[3]
+path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
 print(sys.path)
 
@@ -65,7 +65,7 @@ character = {'wellbeing': 0, 'autonomy': 9, 'risk_propensity': 9}
 
 model = Home(no_patients=1, patient_starts=[patient_1_path[0][0]], robot_start=(2, 1), patient_healths=[0], med_info=med_info,
                 patient_paths=[patient_1_path], patient_preferences=[patient_1_medication_preference],
-             governor_conf='experiments/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', robot_character=character, time_of_day="day", timer_data=timer_data)
+             governor_conf='experiments_cmd/medication_dilemma_PSRB/elder_care_sim_PSRB.yaml', robot_character=character, time_of_day="day", timer_data=timer_data)
 
 for i in range(30):
     model.step()
