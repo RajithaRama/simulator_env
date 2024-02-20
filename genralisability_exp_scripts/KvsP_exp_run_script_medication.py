@@ -21,15 +21,6 @@ FULL_KB_BAK_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_me
 # scenarios = ['Bathroom_Scn1', 'Bathroom_Scn3', 'Bathroom_Scn4', 'Bathroom_Scn5', 'Bathroom_Scn6', 'Bedroom_Scn1',
 #              'Bedroom_Scn2', 'Bedroom_Scn3']
 
-bathroom_scenarios = ['Bathroom_Scn1', 'Bathroom_Scn3', 'Bathroom_Scn4', 'Bathroom_Scn5', 'Bathroom_Scn6']
-bathroom_scenarios_normal = ['Bathroom_Scn1', 'Bathroom_Scn3']
-bathroom_scenarios_special = ['Bathroom_Scn4', 'Bathroom_Scn5', 'Bathroom_Scn6']
-
-bedroom_scenarios = ['Bedroom_Scn1', 'Bedroom_Scn2', 'Bedroom_Scn3']
-bedroom_scenarios_normal = ['Bedroom_Scn1']
-bedroom_scenarios_special = ['Bedroom_Scn2', 'Bedroom_Scn3']
-
-file_list = os.listdir(os.path.join('experiments_cmd', 'bedroom_dilemma_PSRB'))
 
 # n = 0
 

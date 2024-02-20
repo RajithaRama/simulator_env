@@ -1,0 +1,14 @@
+{
+  "experiment_name": "Percentage_v_case_combinations_medication",
+  "k_range": [3, 5, 8],
+  "p_range": [0.1, 0.25, 0.5, 0.8, 1.0],
+  "k_start_index": 0,
+  "k_end_index": 3,
+  "p_start_index": 0,
+  "p_end_index": 5,
+  "length_of_combinations": [1, 2, 3, 4, 5, 6],
+  "scn_dirs": [
+    ["experiments_cmd", "medication_dilemma_PSRB"]
+  ],
+  "scenarios": ["Scn0", "Scn1", "Scn2", "Scn3", "Scn4", "Scn5", "Scn6"]
+}

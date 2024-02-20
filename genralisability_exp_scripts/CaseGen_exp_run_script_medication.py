@@ -9,12 +9,12 @@ import sys
 path_root = Path(__file__).parents[1]
 sys.path.append(str(path_root))
 
-import genralisability_exp_scripts.modify_case_base as modify_case_base
-import genralisability_exp_scripts.test_run as test_run
-import genralisability_exp_scripts.KvsP_exp_run_script_bedroom as KvsP_exp_run_script_bedroom
+import genralisability_exp_scripts.modify_case_base_medication as modify_case_base
+import genralisability_exp_scripts.test_run_medication as test_run
+import genralisability_exp_scripts.KvsP_exp_run_script_medication as KvsP_exp_run_script_medication
 
-FULL_KB_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_bathroom.json'
-FULL_KB_BAK_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_bathroom_temp_bak.json'
+FULL_KB_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_medication.json'
+FULL_KB_BAK_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_medication_temp_bak.json'
 
 # k = [2, 3, 5, 8]
 # percentages = [0.1, 0.25, 0.5, 0.8, 1]
@@ -24,13 +24,7 @@ FULL_KB_BAK_PATH = 'ethical_governor/blackboard/commonutils/cbr/case_base_gen_ba
 
 data_dir = "Data"
 
-bathroom_scenarios = ['Bathroom_Scn1', 'Bathroom_Scn3', 'Bathroom_Scn4', 'Bathroom_Scn5', 'Bathroom_Scn6']
-bathroom_scenarios_normal = ['Bathroom_Scn1', 'Bathroom_Scn3']
-bathroom_scenarios_special = ['Bathroom_Scn4', 'Bathroom_Scn5', 'Bathroom_Scn6']
 
-bedroom_scenarios = ['Bedroom_Scn1', 'Bedroom_Scn2', 'Bedroom_Scn3']
-bedroom_scenarios_normal = ['Bedroom_Scn1']
-bedroom_scenarios_special = ['Bedroom_Scn2', 'Bedroom_Scn3']
 
 # file_list = os.listdir(os.path.join('experiments_cmd', 'bathroom_dilemma_PSRB'))
 
@@ -59,28 +53,6 @@ bedroom_scenarios_special = ['Bedroom_Scn2', 'Bedroom_Scn3']
 # print(n) # 240 combinations if ran all
 
 
-###### Method 1 ###############
-variation_0_bathroom = list(itertools.combinations(bathroom_scenarios, 4))  # all bathroom scenarios holding 1 off
-variation_0_bedroom = list(itertools.combinations(bedroom_scenarios, 2))  # all bedroom scenarios holding 1 off
-
-variation_1 = []  # 2 variations from each dilemma ( 1- normal and 1-special)
-for bathroom_normal in bathroom_scenarios_normal:
-    for bathroom_special in bathroom_scenarios_special:
-        for bedroom_normal in bedroom_scenarios_normal:
-            for bedroom_special in bedroom_scenarios_special:
-                variation_1.append([bathroom_normal, bathroom_special, bedroom_normal, bedroom_special])
-
-# print(len(variation_1)) # 12
-
-variation_2 = [bathroom_scenarios, bedroom_scenarios]  # only variations from 1 dilemma
-
-variation_3 = [bathroom_scenarios_normal + bedroom_scenarios_special,
-               bathroom_scenarios_special + bedroom_scenarios_normal]  # only normal in one dilemma and special in other
-#######################################
-
-################### Medthod 2 #############################
-
-# n = 0
 
 # for k_value in k:
 #     for percentage in percentages:
@@ -92,34 +64,29 @@ variation_3 = [bathroom_scenarios_normal + bedroom_scenarios_special,
 # print(n) # 5100 combinations if ran all
 
 
-scenario_casename_map = {'Bathroom_Scn1': ['bathroom_dilemma_case1_PSRB.py', 'bathroom_dilemma_case1_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case1_PSRB_balanced.py'],
-                         'Bathroom_Scn3': ['bathroom_dilemma_case2_PSRB.py', 'bathroom_dilemma_case2_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case2_PSRB_balanced.py', 'bathroom_dilemma_case3_PSRB.py',
-                                           'bathroom_dilemma_case3_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case3_PSRB_balanced.py'],
-                         'Bathroom_Scn4': ['bathroom_dilemma_case4_PSRB.py', 'bathroom_dilemma_case4_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case4_PSRB_balanced.py'],
-                         'Bathroom_Scn5': ['bathroom_dilemma_case5_PSRB.py', 'bathroom_dilemma_case5_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case5_PSRB_balanced.py'],
-                         'Bathroom_Scn6': ['bathroom_dilemma_case6_PSRB.py', 'bathroom_dilemma_case6_PSRB_autonomy.py',
-                                           'bathroom_dilemma_case6_PSRB_balanced.py'],
-                         'Bedroom_Scn1': ['bedroom_dilemma_case1_PSRB.py', 'bedroom_dilemma_case1_PSRB_autonomy.py',
-                                          'bedroom_dilemma_case1_PSRB_balanced.py'],
-                         'Bedroom_Scn2': ['bedroom_dilemma_case2_PSRB.py', 'bedroom_dilemma_case2_PSRB_autonomy.py',
-                                          'bedroom_dilemma_case2_PSRB_balanced.py'],
-                         'Bedroom_Scn3': ['bedroom_dilemma_case3_PSRB.py', 'bedroom_dilemma_case3_PSRB_autonomy.py',
-                                          'bedroom_dilemma_case3_PSRB_balanced.py']}
+scenario_casename_map = {'Scn1': ['medication_dilemma_case1_PSRB_a.py', 'medication_dilemma_case1_PSRB_ar.py',
+                                           'medication_dilemma_case1_PSRB_arw.py', 'medication_dilemma_case1_PSRB_wr.py'],
+                         'Scn2': ['medication_dilemma_case2_PSRB_a.py', 'medication_dilemma_case2_PSRB_ar.py',
+                                           'medication_dilemma_case2_PSRB_arw.py', 'medication_dilemma_case2_PSRB_wr.py'],
+                         'Scn3': ['medication_dilemma_case3_PSRB_a.py', 'medication_dilemma_case3_PSRB_ar.py',
+                                           'medication_dilemma_case3_PSRB_arw.py', 'medication_dilemma_case3_PSRB_wr.py'],
+                         'Scn4': ['medication_dilemma_case4_PSRB_a.py', 'medication_dilemma_case4_PSRB_ar.py',
+                                           'medication_dilemma_case4_PSRB_arw.py', 'medication_dilemma_case4_PSRB_wr.py'],
+                        'Scn5': ['medication_dilemma_case5_PSRB_a.py', 'medication_dilemma_case5_PSRB_ar.py',
+                                           'medication_dilemma_case5_PSRB_arw.py', 'medication_dilemma_case5_PSRB_wr.py'],
+                        'Scn6': ['medication_dilemma_case6_PSRB_a.py', 'medication_dilemma_case6_PSRB_ar.py',
+                                             'medication_dilemma_case6_PSRB_arw.py', 'medication_dilemma_case6_PSRB_wr.py'],
+                        'Scn0': ['medication_dilemma_Normal_PSRB.py']
+                         }
 
-scnario_dir_name_ids_map = {'Bathroom_Scn1': 'BT1',
-                            'Bathroom_Scn3': 'BT3',
-                            'Bathroom_Scn4': 'BT4',
-                            'Bathroom_Scn5': 'BT5',
-                            'Bathroom_Scn6': 'BT6',
-                            'Bedroom_Scn1': 'BD1',
-                            'Bedroom_Scn2': 'BD2',
-                            'Bedroom_Scn3': 'BD3'}
 
+scnario_dir_name_ids_map = {'Scn1': 'Med1',
+                            'Scn2': 'Med2',
+                            'Scn3': 'Med3',
+                            'Scn4': 'Med4',
+                            'Scn5': 'Med5',
+                            'Scn6': 'Med6',
+                            'Scn0': 'Med0'}
 
 def run_combinations(spec_json):
     spec = json.load(open(spec_json, 'r'))
@@ -166,7 +133,7 @@ def run_combinations(spec_json):
 
             file_list.append((scn_dir, scn_dir_files))
 
-        KvsP_exp_run_script_bedroom.run_experiment(spec_json_path, file_list)
+        KvsP_exp_run_script_medication.run_experiment(spec_json_path, file_list)
         et_combination = time.time()
         json.dump({'combination_run_time': et_combination - st_combination, 'combination': combination, 'tested_file_list': file_list},
                   open(os.path.join(data_dir, experiment, spec_name, 'combination_run_data.json'), 'w'))
