@@ -2,9 +2,10 @@ import collections
 
 import numpy as np
 import pandas as pd
+import scipy as scipy
 import ethical_governor.blackboard.commonutils.cbr.cbr as cbr
 import ethical_governor.blackboard.commonutils.cbr.vdm as vdm
-from sklearn.preprocessing import OrdinalEncoder, PowerTransformer, MinMaxScaler
+from sklearn.preprocessing import OrdinalEncoder, PowerTransformer, MinMaxScaler, QuantileTransformer
 
 
 class CBRMedication(cbr.CBR):
@@ -178,7 +179,10 @@ class CBRMedication(cbr.CBR):
         # Encoding power transformed numerical variables
         for feature in self.p_transform_features:
             feature_data = data[feature].to_numpy().reshape(-1, 1)
-            power_transformer = PowerTransformer().fit(feature_data)
+            try:
+                power_transformer = PowerTransformer().fit(feature_data)
+            except scipy.optimize._optimize.BracketError:
+                power_transformer = QuantileTransformer().fit(feature_data)
             data[feature] = power_transformer.transform(feature_data).astype('float64')
             self.power_transformers[feature] = power_transformer
 
